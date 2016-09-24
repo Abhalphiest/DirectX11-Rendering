@@ -192,7 +192,7 @@ Mesh* Mesh::Cube(float p_size, ID3D11Device* p_device)
 {
 	std::vector<Vertex> vertices = std::vector<Vertex>();
 	std::vector<unsigned int> indices = std::vector<unsigned int>();
-	std::map<Vertex, int, VertexComparison> indexMap = std::map<Vertex, int, VertexComparison>();
+	std::map<Vertex, int> indexMap = std::map<Vertex, int>();
 
 	
 	float len = p_size / 2.0f;
@@ -220,7 +220,7 @@ Mesh* Mesh::Sphere(float p_radius, unsigned int p_subdivisions, ID3D11Device* p_
 {
 	std::vector<Vertex> vertices = std::vector<Vertex>();
 	std::vector<unsigned int> indices = std::vector<unsigned int>();
-	std::map<Vertex, int, VertexComparison> indexMap = std::map<Vertex, int, VertexComparison>();
+	std::map<Vertex, int> indexMap = std::map<Vertex, int>();
 
 	if (p_subdivisions < 3)
 		p_subdivisions = 3;
@@ -274,7 +274,7 @@ Mesh* Mesh::Torus(float p_innerRad, float p_outerRad, unsigned int p_subdivision
 {
 	std::vector<Vertex> vertices = std::vector<Vertex>();
 	std::vector<unsigned int> indices = std::vector<unsigned int>();
-	std::map<Vertex, int, VertexComparison> indexMap = std::map<Vertex, int, VertexComparison>();
+	std::map<Vertex, int> indexMap = std::map<Vertex, int>();
 
 	if (p_subdivisions < 3)
 		p_subdivisions = 3;
@@ -329,7 +329,7 @@ Mesh* Mesh::Torus(float p_innerRad, float p_outerRad, unsigned int p_subdivision
 
 void Mesh::AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3,
 	std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, 
-	std::map<Vertex, int, VertexComparison> &p_indexMap)
+	std::map<Vertex, int> &p_indexMap)
 {
 	//calculate normals
 	DirectX::XMVECTOR vect1, vect2, t1, t2, t3;
@@ -339,7 +339,8 @@ void Mesh::AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 
 	vect1 = DirectX::XMVectorSubtract(t2, t1);
 	vect2 = DirectX::XMVectorSubtract(t3, t1);
 	DirectX::XMFLOAT3 normal;
-	DirectX::XMStoreFloat3(&normal, DirectX::XMVector3Cross(vect1, vect2));
+	DirectX::XMStoreFloat3(&normal, DirectX::XMVector3Normalize(DirectX::XMVector3Cross(vect1, vect2)));
+	printf("Normal x: %f y: %f z: %f \n", normal.x, normal.y, normal.z);
 
 	//see if these vertices have already been used, because we're doing indexed rendering
 	CheckVertex(p1, normal, p_verts, p_indices, p_indexMap);
@@ -360,24 +361,30 @@ void Mesh::AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 
 }
 
 void Mesh::AddQuad(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3, DirectX::XMFLOAT3 p4,
-			 std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int, VertexComparison> &p_indexMap)
+			 std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int> &p_indexMap)
 {
 	AddTri(p1, p2, p3,p_verts, p_indices, p_indexMap);
 	AddTri(p1, p3, p4, p_verts,  p_indices, p_indexMap);
 }
 
 void Mesh::CheckVertex(DirectX::XMFLOAT3 &p, DirectX::XMFLOAT3 &n, std::vector<Vertex> &p_vertices, std::vector<unsigned int> &p_indices,
-	std::map<Vertex, int, VertexComparison> &p_indexMap)
+	std::map<Vertex, int> &p_indexMap)
 {
 	p = TruncateVector(p); //get rid of redundant points due to rounding error
 	n = TruncateVector(n);
 	Vertex v = { p, n,DirectX::XMFLOAT2(0,0)};
-	if (p_indexMap.find(v) == p_indexMap.end()) //not in there already
+	auto index = p_indexMap.find(v);
+	if (index == p_indexMap.end()) //not in there already
 	{
 
 		p_indexMap[v] = p_vertices.size();
 		p_vertices.push_back(v);
 
+	}
+	else if (!(index->first == v)) //attempting to handle different normals, uvs
+	{
+		p_indexMap[v] = p_vertices.size();
+		p_vertices.push_back(v);
 	}
 }
 

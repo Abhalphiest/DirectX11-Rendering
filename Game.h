@@ -58,5 +58,10 @@ private:
 	//light for assignment 4
 	DirectionalLight dlight, dlight2;
 	PointLight plight;
+
+	//textures for assignment 5
+	ID3D11ShaderResourceView* marbleTextureSRV;
+	ID3D11ShaderResourceView* woodTextureSRV;
+	ID3D11SamplerState* sampler;
 };
 

@@ -44,8 +44,28 @@ void Entity::Scale(DirectX::XMFLOAT3 p_scale)
 	m_scale.z += p_scale.z;
 }
 
-void Entity::Draw(ID3D11DeviceContext* context)
+void Entity::Draw(ID3D11DeviceContext* context, DirectX::XMFLOAT4X4 p_view, DirectX::XMFLOAT4X4 p_proj )
 {
+	
+
+	DirectX::XMFLOAT4X4 world;
+	XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&GetWorld()))); // transpose for hlsl
+	m_material->GetVertexShader()->SetMatrix4x4("world", world);
+	m_material->GetVertexShader()->SetMatrix4x4("view", p_view);
+	m_material->GetVertexShader()->SetMatrix4x4("projection", p_proj);
+
+	// Once you've set all of the data you care to change for
+	// the next draw call, you need to actually send it to the GPU
+	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
+	m_material->GetVertexShader()->CopyAllBufferData();
+	m_material->GetPixelShader()->CopyAllBufferData();
+	m_material->GetPixelShader()->SetSamplerState("sampleState",m_material->GetSampleState());
+	m_material->GetPixelShader()->SetShaderResourceView("diffuseTexture", m_material->GetSRV());
+	// Set our vertex and pixel shaders to use for the next draw
+	m_material->GetVertexShader()->SetShader();
+	m_material->GetPixelShader()->SetShader();
+
+
 	// Set buffers in the input assembler
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;

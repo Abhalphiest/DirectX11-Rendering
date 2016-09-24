@@ -27,7 +27,7 @@ public:
 	void Scale(DirectX::XMFLOAT3 p_scale);
 
 	//draw functions
-	void Draw(ID3D11DeviceContext* context);
+	void Draw(ID3D11DeviceContext* context, DirectX::XMFLOAT4X4 p_view, DirectX::XMFLOAT4X4 p_proj);
 private:
 	Mesh* m_mesh;
 	Material* m_material;

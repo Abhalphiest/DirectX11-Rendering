@@ -36,11 +36,11 @@ public:
 
 
 	static void AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3,
-		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int, VertexComparison> &p_indexMap);
+		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int> &p_indexMap);
 	static void AddQuad(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3, DirectX::XMFLOAT3 p4,
-		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int, VertexComparison> &p_indexMap);
+		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int> &p_indexMap);
 	static void CheckVertex(DirectX::XMFLOAT3 &p, DirectX::XMFLOAT3 &n, std::vector<Vertex> &p_vertices,
-		std::vector<unsigned int> &p_indices, std::map<Vertex, int, VertexComparison> &p_indexMap);
+		std::vector<unsigned int> &p_indices, std::map<Vertex, int> &p_indexMap);
 	static DirectX::XMFLOAT3 TruncateVector(const DirectX::XMFLOAT3 v);
 
 

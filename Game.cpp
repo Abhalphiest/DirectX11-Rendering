@@ -63,7 +63,6 @@ void Game::Init()
 	plight = { DirectX::XMFLOAT4(0,0,0,0),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
 	CreateBasicGeometry();
 
-
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
 	// Essentially: "What kind of shape should the GPU draw with our data?"
@@ -81,8 +80,8 @@ void Game::CreateBasicGeometry()
 	//generate our three meshes
 	//the mesh constructor will also work, but it's easier to just
 	// let the computer generate our vertices and indices for us
-	mesh1 = Mesh::LoadObj("../Assets/Models/cone.obj", device);
-	mesh2 = Mesh::LoadObj("../Assets/Models/cube.obj", device);
+	mesh1 = Mesh::LoadObj("../Assets/Models/cube.obj", device);
+	mesh2 = Mesh::LoadObj("../Assets/Models/cone.obj", device);
 	mesh3 = Mesh::LoadObj("../Assets/Models/helix.obj", device);
 
 	vertexShader = new SimpleVertexShader(device, context);
@@ -93,7 +92,30 @@ void Game::CreateBasicGeometry()
 	if (!pixelShader->LoadShaderFile(L"../Debug/PixelShader.cso"))
 		pixelShader->LoadShaderFile(L"../PixelShader.cso");
 
-	Material* material = new Material(vertexShader, pixelShader);
+	//texture loading
+	CreateWICTextureFromFile(
+		device,
+		context, // If I provide the context, it will auto-generate Mipmaps
+		L"../Assets/Textures/marble.jpg",
+		0, // We don't actually need the texture reference
+		&marbleTextureSRV);
+	CreateWICTextureFromFile(
+		device,
+		context, 
+		L"../Assets/Textures/wood.jpg",
+		0, 
+		&woodTextureSRV);
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
+	samplerDesc.MaxAnisotropy = 16;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	device->CreateSamplerState(&samplerDesc, &sampler);
+
+	Material* material1 = new Material(vertexShader, pixelShader,marbleTextureSRV,sampler);
+	Material* material2 = new Material(vertexShader, pixelShader, woodTextureSRV, sampler);
 	// You'll notice that the code above attempts to load each
 	// compiled shader file (.cso) from two different relative paths.
 
@@ -104,11 +126,11 @@ void Game::CreateBasicGeometry()
 
 	// Checking both paths is the easiest way to ensure both 
 	// scenarios work correctly, although others exist
-	e1 = new Entity(mesh1, material);
+	e1 = new Entity(mesh1, material1);
 	e1->SetPosition(XMFLOAT3(-2.5, 1.5, 0));
-	e2 = new Entity(mesh2, material);
+	e2 = new Entity(mesh2, material1);
 	e2->SetPosition(XMFLOAT3(0, 1.5, 4));
-	e3 = new Entity(mesh3, material);
+	e3 = new Entity(mesh3, material2);
 	e3->SetPosition(XMFLOAT3(0, -1.0, 0));
 }
 
@@ -132,9 +154,7 @@ void Game::OnResize()
 void Game::Update(float deltaTime, float totalTime)
 {
 	e1->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
-	e1->Scale(XMFLOAT3( .5*(deltaTime*XMScalarCos(totalTime)),
-						.5*(deltaTime*XMScalarCos(totalTime)), 
-						.5*(deltaTime*XMScalarCos(totalTime))));
+	e2->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
 	e2->Move(XMFLOAT3(deltaTime*XMScalarSin(totalTime), 0, 0));
 	e3->Move(XMFLOAT3(-deltaTime*XMScalarCos( totalTime), 0, 0));
 
@@ -196,25 +216,7 @@ void Game::Draw(float deltaTime, float totalTime)
 		sizeof(PointLight)); // The size of the data to copy
 
 
-	XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&e1->GetWorld()))); // transpose for hlsl
-	vertexShader->SetMatrix4x4("world", world);
-	vertexShader->SetMatrix4x4("view", camera->GetView());
-	vertexShader->SetMatrix4x4("projection", camera->GetProjection());
-
-	// Once you've set all of the data you care to change for
-	// the next draw call, you need to actually send it to the GPU
-	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
-	vertexShader->CopyAllBufferData();
-	pixelShader->CopyAllBufferData();
-
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
-	vertexShader->SetShader();
-	pixelShader->SetShader();
-
-	e1->Draw(context);
+	e1->Draw(context, camera->GetView(), camera->GetProjection());
 
 	
 	//mesh 2
@@ -231,15 +233,9 @@ void Game::Draw(float deltaTime, float totalTime)
 		&plight, // The address of the data to copy
 		sizeof(PointLight)); // The size of the data to copy
 	
-	XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&e2->GetWorld()))); // transpose for hlsl
-	vertexShader->SetMatrix4x4("world", world);
-	vertexShader->SetMatrix4x4("view", camera->GetView());
-	vertexShader->SetMatrix4x4("projection", camera->GetProjection());
+	
 
-	vertexShader->CopyAllBufferData();
-	pixelShader->CopyAllBufferData();
-
-	e2->Draw(context);
+	e2->Draw(context, camera->GetView(), camera->GetProjection());
 	
 	//mesh 3
 	pixelShader->SetData(
@@ -255,15 +251,9 @@ void Game::Draw(float deltaTime, float totalTime)
 		&plight, // The address of the data to copy
 		sizeof(PointLight)); // The size of the data to copy
 
-	XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&e3->GetWorld()))); // transpose for hlsl
-	vertexShader->SetMatrix4x4("world", world);
-	vertexShader->SetMatrix4x4("view", camera->GetView());
-	vertexShader->SetMatrix4x4("projection", camera->GetProjection());
+	
 
-	vertexShader->CopyAllBufferData();
-	pixelShader->CopyAllBufferData();
-
-	e3->Draw(context);
+	e3->Draw(context, camera->GetView(), camera->GetProjection());
 	
 
 	// Present the back buffer to the user
