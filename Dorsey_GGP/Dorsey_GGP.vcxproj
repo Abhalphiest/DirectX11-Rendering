@@ -117,6 +117,7 @@
     <ClInclude Include="..\Vertex.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
   </ItemGroup>
   <ItemGroup>

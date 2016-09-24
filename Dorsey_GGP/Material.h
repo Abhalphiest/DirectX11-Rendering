@@ -19,5 +19,6 @@ private:
 	~Material() { //m_vertexShader->RemoveInstance(); m_pixelShader->RemoveInstance();
 	}
 	int m_references;
+	DirectX::XMFLOAT4 m_surfaceColor;
 };
 

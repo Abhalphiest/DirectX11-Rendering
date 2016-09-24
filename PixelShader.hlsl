@@ -12,9 +12,35 @@ struct VertexToPixel
 	//  |    |                |
 	//  v    v                v
 	float4 position		: SV_POSITION;
-	float4 color		: COLOR;
+	float4 worldpos		: WORLD_POSITION;
+	float3 normal		: NORMAL;
 };
 
+struct DirectionalLight
+{
+	float4 AmbientColor;
+	float4 DiffuseColor;
+	float3 Direction;
+};
+struct PointLight {
+	float4 AmbientColor;
+	float4 DiffuseColor;
+	float3 Position;
+};
+
+struct SpotLight {
+	float4 AmbientColor;
+	float4 DiffuseColor;
+	float4 Direction_Angle; //w coordinate is angle of light
+	float3 Position;
+};
+
+cbuffer shaderData : register(b0)
+{
+	DirectionalLight light;
+	DirectionalLight light2;
+	PointLight light3;
+};
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
 // 
@@ -26,9 +52,25 @@ struct VertexToPixel
 // --------------------------------------------------------
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	// Just return the input color
-	// - This color (like most values passing through the rasterizer) is 
-	//   interpolated for each pixel between the corresponding vertices 
-	//   of the triangle we're rendering
-	return input.color;
+	//normalize our normal (heh)
+	input.normal = normalize(input.normal);
+	
+	//directional lights
+	float3 toLight = normalize(-light.Direction);
+	float lightAmount = saturate(dot(toLight, input.normal)); //already normalized
+	float4 lightCompute1 = lightAmount*light.DiffuseColor + light.AmbientColor;
+
+	toLight = normalize(-light2.Direction);
+	lightAmount = saturate(dot(toLight, input.normal)); //already normalized
+	float4 lightCompute2 = lightAmount*light2.DiffuseColor + light2.AmbientColor;
+
+	toLight = -normalize(input.worldpos - light3.Position);
+	float dropoffRatio = length(input.worldpos - light3.Position);
+	if (dropoffRatio < 1) dropoffRatio = 1;
+	lightAmount = 1/dropoffRatio*saturate(dot(toLight, input.normal)); //already normalized
+	float4 lightCompute3 = lightAmount*light3.DiffuseColor + light3.AmbientColor;
+	return lightCompute1
+		  + lightCompute2
+		  + lightCompute3;
+	//return float4(.52,.008,.008,1);
 }

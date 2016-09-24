@@ -3,11 +3,13 @@
 #include "DXCore.h"
 #include "SimpleShader.h"
 #include <DirectXMath.h>
+#include "Dorsey_GGP\Lights.h"
 #include "Mesh.h"
 #include "Dorsey_GGP\Entity.h"
 #include "Dorsey_GGP\Camera.h"
 #include "Dorsey_GGP\Material.h"
-#define CAMERA_DELTA .05
+#define CAMERA_DELTA .005
+#define MOVE_SCALE 10
 
 class Game 
 	: public DXCore
@@ -44,7 +46,7 @@ private:
 
 	//Entities for assignment 3
 	Entity* e1, *e2, *e3;
-	Mesh* mesh1, *mesh2;
+	Mesh* mesh1, *mesh2, *mesh3;
 
 	//Camera for assignment 4
 	Camera* camera;
@@ -52,5 +54,9 @@ private:
 	//stuff for our material, assignment 4
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
+
+	//light for assignment 4
+	DirectionalLight dlight, dlight2;
+	PointLight plight;
 };
 

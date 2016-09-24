@@ -10,7 +10,8 @@
 struct Vertex
 {
 	DirectX::XMFLOAT3 Position;	    // The position of the vertex
-	DirectX::XMFLOAT4 Color;        // The color of the vertex
+	DirectX::XMFLOAT3 Normal;        // The normal of the vertex
+	DirectX::XMFLOAT2 UV;        // The UV coordinate of the vertex
 };
 
 struct VertexComparison
@@ -18,6 +19,7 @@ struct VertexComparison
 	bool operator()(const Vertex& lhs, const Vertex& rhs) const
 	{
 		return lhs.Position.x < rhs.Position.x ||
-			lhs.Position.x == rhs.Position.x && (lhs.Position.y < rhs.Position.y || lhs.Position.y == rhs.Position.y && lhs.Position.z < rhs.Position.z);
+			lhs.Position.x == rhs.Position.x && (lhs.Position.y < rhs.Position.y 
+				|| lhs.Position.y == rhs.Position.y && lhs.Position.z < rhs.Position.z);
 	}
 };

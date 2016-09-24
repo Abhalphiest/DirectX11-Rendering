@@ -58,6 +58,9 @@ void Game::Init()
 	// geometry to draw and some simple camera matrices.
 	//  - You'll be expanding and/or replacing these later
 	camera = new Camera(1280 /(float) 720);
+	dlight = {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
+	dlight2 = { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
+	plight = { DirectX::XMFLOAT4(0,0,0,0),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
 	CreateBasicGeometry();
 
 
@@ -78,8 +81,9 @@ void Game::CreateBasicGeometry()
 	//generate our three meshes
 	//the mesh constructor will also work, but it's easier to just
 	// let the computer generate our vertices and indices for us
-	mesh1 = Mesh::Cube(1.0f, device);
-	mesh2 = Mesh::Torus(0.5f, 1.0f, 20, device);
+	mesh1 = Mesh::LoadObj("../Assets/Models/cone.obj", device);
+	mesh2 = Mesh::LoadObj("../Assets/Models/cube.obj", device);
+	mesh3 = Mesh::LoadObj("../Assets/Models/helix.obj", device);
 
 	vertexShader = new SimpleVertexShader(device, context);
 	if (!vertexShader->LoadShaderFile(L"../Debug/VertexShader.cso"))
@@ -101,9 +105,10 @@ void Game::CreateBasicGeometry()
 	// Checking both paths is the easiest way to ensure both 
 	// scenarios work correctly, although others exist
 	e1 = new Entity(mesh1, material);
+	e1->SetPosition(XMFLOAT3(-2.5, 1.5, 0));
 	e2 = new Entity(mesh2, material);
 	e2->SetPosition(XMFLOAT3(0, 1.5, 4));
-	e3 = new Entity(mesh2, material);
+	e3 = new Entity(mesh3, material);
 	e3->SetPosition(XMFLOAT3(0, -1.0, 0));
 }
 
@@ -127,19 +132,19 @@ void Game::OnResize()
 void Game::Update(float deltaTime, float totalTime)
 {
 	e1->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
-	e1->Scale(XMFLOAT3( .5*(deltaTime*XMScalarSin(totalTime)),
-						.5*(deltaTime*XMScalarSin(totalTime)), 
-						.5*(deltaTime*XMScalarSin(totalTime))));
+	e1->Scale(XMFLOAT3( .5*(deltaTime*XMScalarCos(totalTime)),
+						.5*(deltaTime*XMScalarCos(totalTime)), 
+						.5*(deltaTime*XMScalarCos(totalTime))));
 	e2->Move(XMFLOAT3(deltaTime*XMScalarSin(totalTime), 0, 0));
 	e3->Move(XMFLOAT3(-deltaTime*XMScalarCos( totalTime), 0, 0));
 
 	//handle camera movement here until I can move this logic to an input manager
-	if (GetAsyncKeyState('W') & 0x8000) { camera->Move(XMFLOAT3(0, 0, deltaTime)); }
-	if (GetAsyncKeyState('S') & 0x8000) { camera->Move(XMFLOAT3(0, 0, -deltaTime)); }
-	if (GetAsyncKeyState('A') & 0x8000) { camera->Move(XMFLOAT3(-deltaTime, 0, 0)); }
-	if (GetAsyncKeyState('D') & 0x8000) { camera->Move(XMFLOAT3(deltaTime, 0, 0)); }
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { camera->Move(XMFLOAT3(0, deltaTime, 0)); }
-	if (GetAsyncKeyState('X') & 0x8000) { camera->Move(XMFLOAT3(0, -deltaTime, 0)); }
+	if (GetAsyncKeyState('W') & 0x8000) { camera->Move(XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
+	if (GetAsyncKeyState('S') & 0x8000) { camera->Move(XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
+	if (GetAsyncKeyState('A') & 0x8000) { camera->Move(XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
+	if (GetAsyncKeyState('D') & 0x8000) { camera->Move(XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { camera->Move(XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
+	if (GetAsyncKeyState('X') & 0x8000) { camera->Move(XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
 
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
@@ -170,9 +175,27 @@ void Game::Draw(float deltaTime, float totalTime)
 	//    and then copying that entire buffer to the GPU.  
 	//  - The "SimpleShader" class handles all of that for you.
 
-	//mesh1 
+	
+
+	
 	
 	XMFLOAT4X4 world;
+	//mesh1 
+	
+	pixelShader->SetData(
+	"light", // The name of the variable in the shader
+	&dlight, // The address of the data to copy
+	sizeof(DirectionalLight)); // The size of the data to copy
+	pixelShader->SetData(
+	"light2", // The name of the variable in the shader
+	&dlight2, // The address of the data to copy
+	sizeof(DirectionalLight)); // The size of the data to copy
+	pixelShader->SetData(
+		"light3", // The name of the variable in the shader
+		&plight, // The address of the data to copy
+		sizeof(PointLight)); // The size of the data to copy
+
+
 	XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&e1->GetWorld()))); // transpose for hlsl
 	vertexShader->SetMatrix4x4("world", world);
 	vertexShader->SetMatrix4x4("view", camera->GetView());
@@ -182,6 +205,7 @@ void Game::Draw(float deltaTime, float totalTime)
 	// the next draw call, you need to actually send it to the GPU
 	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
 	vertexShader->CopyAllBufferData();
+	pixelShader->CopyAllBufferData();
 
 	// Set the vertex and pixel shaders to use for the next Draw() command
 	//  - These don't technically need to be set every frame...YET
@@ -192,7 +216,20 @@ void Game::Draw(float deltaTime, float totalTime)
 
 	e1->Draw(context);
 
+	
 	//mesh 2
+	pixelShader->SetData(
+		"light", // The name of the variable in the shader
+		&dlight, // The address of the data to copy
+		sizeof(DirectionalLight)); // The size of the data to copy
+	pixelShader->SetData(
+		"light2", // The name of the variable in the shader
+		&dlight2, // The address of the data to copy
+		sizeof(DirectionalLight)); // The size of the data to copy
+	pixelShader->SetData(
+		"light3", // The name of the variable in the shader
+		&plight, // The address of the data to copy
+		sizeof(PointLight)); // The size of the data to copy
 	
 	XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&e2->GetWorld()))); // transpose for hlsl
 	vertexShader->SetMatrix4x4("world", world);
@@ -200,11 +237,23 @@ void Game::Draw(float deltaTime, float totalTime)
 	vertexShader->SetMatrix4x4("projection", camera->GetProjection());
 
 	vertexShader->CopyAllBufferData();
-
+	pixelShader->CopyAllBufferData();
 
 	e2->Draw(context);
-
+	
 	//mesh 3
+	pixelShader->SetData(
+		"light", // The name of the variable in the shader
+		&dlight, // The address of the data to copy
+		sizeof(DirectionalLight)); // The size of the data to copy
+	pixelShader->SetData(
+		"light2", // The name of the variable in the shader
+		&dlight2, // The address of the data to copy
+		sizeof(DirectionalLight)); // The size of the data to copy
+	pixelShader->SetData(
+		"light3", // The name of the variable in the shader
+		&plight, // The address of the data to copy
+		sizeof(PointLight)); // The size of the data to copy
 
 	XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&e3->GetWorld()))); // transpose for hlsl
 	vertexShader->SetMatrix4x4("world", world);
@@ -212,10 +261,10 @@ void Game::Draw(float deltaTime, float totalTime)
 	vertexShader->SetMatrix4x4("projection", camera->GetProjection());
 
 	vertexShader->CopyAllBufferData();
-
+	pixelShader->CopyAllBufferData();
 
 	e3->Draw(context);
-
+	
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it

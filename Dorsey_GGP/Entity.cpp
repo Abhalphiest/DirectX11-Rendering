@@ -19,7 +19,7 @@ XMFLOAT4X4 Entity::GetWorld()
 	XMMATRIX translation = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX rotation = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
 	XMMATRIX scale = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-	XMStoreFloat4x4(&m_world, translation*rotation*scale);
+	XMStoreFloat4x4(&m_world, scale*rotation*translation);
 	return m_world;
 }
 
