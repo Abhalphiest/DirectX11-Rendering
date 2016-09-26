@@ -37,7 +37,9 @@ Game::Game(HINSTANCE hInstance)
 Game::~Game()
 {
 	
-
+	sampler->Release();
+	woodTextureSRV->Release();
+	marbleTextureSRV->Release();
 	//delete all the stuff we allocated
 	if (e1) delete e1;
 	if (e2) delete e2;

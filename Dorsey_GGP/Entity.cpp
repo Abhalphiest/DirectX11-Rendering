@@ -8,7 +8,7 @@ Entity::Entity(Mesh* p_mesh, Material* p_material)
 	m_mesh = p_mesh;
 	m_mesh->GetInstance(); //increment our instance
 	m_position = XMFLOAT3(0, 0, 0);
-	m_scale = XMFLOAT3(1, 1, 1);
+	m_scale = 1.0;
 	m_rotation = XMFLOAT3(0, 0, 0);
 	m_world = XMFLOAT4X4();
 	this->GetWorld(); //update world matrix
@@ -18,7 +18,7 @@ XMFLOAT4X4 Entity::GetWorld()
 {
 	XMMATRIX translation = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX rotation = XMMatrixRotationRollPitchYaw(m_rotation.x, m_rotation.y, m_rotation.z);
-	XMMATRIX scale = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
+	XMMATRIX scale = XMMatrixScaling(m_scale, m_scale, m_scale);
 	XMStoreFloat4x4(&m_world, scale*rotation*translation);
 	return m_world;
 }
@@ -37,11 +37,9 @@ void Entity::Rotate(DirectX::XMFLOAT3 p_axis, float p_rad)
 	XMStoreFloat3(&m_rotation, rotation+orientation);
 	
 }
-void Entity::Scale(DirectX::XMFLOAT3 p_scale)
+void Entity::Scale(float p_scale)
 {
-	m_scale.x += p_scale.x;
-	m_scale.y += p_scale.y;
-	m_scale.z += p_scale.z;
+	m_scale += p_scale;
 }
 
 void Entity::Draw(ID3D11DeviceContext* context, DirectX::XMFLOAT4X4 p_view, DirectX::XMFLOAT4X4 p_proj )

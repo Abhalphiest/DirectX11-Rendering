@@ -120,6 +120,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DXCore.cpp" />

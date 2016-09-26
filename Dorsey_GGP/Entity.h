@@ -16,15 +16,15 @@ public:
 	DirectX::XMFLOAT3 GetRotation() { return m_rotation; }
 	void SetRotation(DirectX::XMFLOAT3 p_rotation) { m_rotation = p_rotation; }
 
-	DirectX::XMFLOAT3 GetScale() { return m_scale; }
-	void SetScale(DirectX::XMFLOAT3 p_scale) { m_scale = p_scale; }
+	float GetScale() { return m_scale; }
+	void SetScale(float p_scale) { m_scale = p_scale; }
 
 	DirectX::XMFLOAT4X4 GetWorld();
 
 	//movement functions
 	void Move(DirectX::XMFLOAT3 p_moveVector);
 	void Rotate(DirectX::XMFLOAT3 p_axis, float p_rad);
-	void Scale(DirectX::XMFLOAT3 p_scale);
+	void Scale(float p_scale);
 
 	//draw functions
 	void Draw(ID3D11DeviceContext* context, DirectX::XMFLOAT4X4 p_view, DirectX::XMFLOAT4X4 p_proj);
@@ -32,6 +32,7 @@ private:
 	Mesh* m_mesh;
 	Material* m_material;
 	DirectX::XMFLOAT4X4 m_world;
-	DirectX::XMFLOAT3 m_position, m_rotation, m_scale;
+	DirectX::XMFLOAT3 m_position, m_rotation;
+	float m_scale; //no longer allowing non-uniform scaling, to simplify shader code
 	
 };

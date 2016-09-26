@@ -4,7 +4,7 @@
 #include <d3d11.h>
 #include <string>
 #include <iostream>
-
+#define uint unsigned int
 // We can include the correct library files here
 // instead of in Visual Studio settings if we want
 #pragma comment(lib, "d3d11.lib")
