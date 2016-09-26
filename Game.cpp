@@ -39,7 +39,7 @@ Game::~Game()
 	
 	sampler->Release();
 	woodTextureSRV->Release();
-	marbleTextureSRV->Release();
+	metalTextureSRV->Release();
 	//delete all the stuff we allocated
 	if (e1) delete e1;
 	if (e2) delete e2;
@@ -83,7 +83,7 @@ void Game::CreateBasicGeometry()
 	//the mesh constructor will also work, but it's easier to just
 	// let the computer generate our vertices and indices for us
 	mesh1 = Mesh::LoadObj("../Assets/Models/cube.obj", device);
-	mesh2 = Mesh::LoadObj("../Assets/Models/cone.obj", device);
+	mesh2 = Mesh::LoadObj("../Assets/Models/torus.obj", device);
 	mesh3 = Mesh::LoadObj("../Assets/Models/helix.obj", device);
 
 	vertexShader = new SimpleVertexShader(device, context);
@@ -98,9 +98,9 @@ void Game::CreateBasicGeometry()
 	CreateWICTextureFromFile(
 		device,
 		context, // If I provide the context, it will auto-generate Mipmaps
-		L"../Assets/Textures/marble.jpg",
+		L"../Assets/Textures/metal.jpg",
 		0, // We don't actually need the texture reference
-		&marbleTextureSRV);
+		&metalTextureSRV);
 	CreateWICTextureFromFile(
 		device,
 		context, 
@@ -116,7 +116,7 @@ void Game::CreateBasicGeometry()
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &sampler);
 
-	Material* material1 = new Material(vertexShader, pixelShader,marbleTextureSRV,sampler);
+	Material* material1 = new Material(vertexShader, pixelShader,metalTextureSRV,sampler);
 	Material* material2 = new Material(vertexShader, pixelShader, woodTextureSRV, sampler);
 	// You'll notice that the code above attempts to load each
 	// compiled shader file (.cso) from two different relative paths.

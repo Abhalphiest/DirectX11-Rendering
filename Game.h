@@ -60,7 +60,7 @@ private:
 	PointLight plight;
 
 	//textures for assignment 5
-	ID3D11ShaderResourceView* marbleTextureSRV;
+	ID3D11ShaderResourceView* metalTextureSRV;
 	ID3D11ShaderResourceView* woodTextureSRV;
 	ID3D11SamplerState* sampler;
 };
