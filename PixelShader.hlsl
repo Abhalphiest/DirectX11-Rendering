@@ -12,6 +12,7 @@ struct VertexToPixel
 	//  |    |                |
 	//  v    v                v
 	float4 position		: SV_POSITION;
+	float3x3 TBN		: TBN; //for normal mapping
 	float4 worldpos		: WORLD_POSITION;
 	float3 normal		: NORMAL;
 	float2 uv			: UV;
@@ -66,6 +67,9 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	//normalize our normal (heh)
 	input.normal = normalize(input.normal);
+	//normal mapping, not being used yet
+	float3 tangentNormal = normalTexture.Sample(sampleState, input.uv).rgb; //lose the alpha channel
+	float3 worldNormal = mul(input.TBN, tangentNormal);
 	
 	//directional lights
 	float3 toLight = normalize(-light.Direction);
@@ -90,7 +94,9 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 textureColor = diffuseTexture.Sample(sampleState, input.uv);
 	float4 multColor = multiplyTexture.Sample(sampleState, input.uv);
 	float specColor = specularTexture.Sample(sampleState, input.uv).r; //all channels should be equal
-	float4 nColor = normalTexture.Sample(sampleState, input.uv);
+
+	
+
 	return (lightCompute1
 		+ lightCompute2
 		+ lightCompute3)*textureColor*multColor + spec*specColor;

@@ -44,6 +44,7 @@ struct VertexToPixel
 	//  |    |                |
 	//  v    v                v
 	float4 position		: SV_POSITION;	// XYZW position (System Value Position)
+	float3x3 TBN		: TBN;
 	float4 worldpos		: WORLD_POSITION;
 	float3 normal		: NORMAL;
 	float2 uv			: UV;
@@ -70,6 +71,15 @@ VertexToPixel main( VertexShaderInput input )
 	// all of those transformations (world to view to projection space)
 	matrix worldViewProj = mul(mul(world, view), projection);
 
+
+	//calculate our TBN matrix
+	float3 normal = mul(normalize(input.normal), (float3x3)worldViewProj);
+	float3 tangent = mul(normalize(input.tangent), (float3x3)worldViewProj);
+	float3 binormal = mul(normalize(input.binormal),(float3x3)worldViewProj);
+
+	float3x3 TBN = float3x3(normalize(tangent), normalize(binormal), normalize(normal)); //extra normalize might be overkill
+	TBN = transpose(TBN); //directx loads row major
+
 	// Then we convert our 3-component position vector to a 4-component vector
 	// and multiply it by our final 4x4 matrix.
 	//
@@ -79,6 +89,7 @@ VertexToPixel main( VertexShaderInput input )
 	output.normal = mul(input.normal, (float3x3)world); //only works for uniform scaling
 	output.worldpos = mul(float4(input.position, 1.0f), world);
 	output.uv = input.uv;
+	output.TBN = TBN;
 	// Whatever we return will make its way through the pipeline to the
 	// next programmable stage we're using (the pixel shader for now)
 	return output;

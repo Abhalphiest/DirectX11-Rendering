@@ -168,7 +168,7 @@ Mesh* Mesh::LoadObj(char* filepath, ID3D11Device* p_device)
 
 	// Close the file and create the actual buffers
 	obj.close();
-	//CalcTBN(verts, indices); //for normal mapping
+	CalcTBN(verts, indices); //for normal mapping
 
 	// - At this point, "verts" is a vector of Vertex structs, and can be used
 	//    directly to create a vertex buffer:  &verts[0] is the address of the first vert
@@ -417,7 +417,12 @@ void Mesh::AddQuad(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3
 
 void Mesh::IndexVertices(std::vector<Vertex> &p_vertices, std::vector<unsigned int> &p_indices)
 {
-	
+	p_indices.clear(); //to be safe
+
+	for (UINT i = 0; i < p_vertices.size(); i++)
+	{
+		p_indices.push_back(i); //laziness for now.. will actually implement later.
+	}
 }
 
 DirectX::XMFLOAT3 Mesh::TruncateVector(const DirectX::XMFLOAT3 v)
