@@ -62,6 +62,8 @@ private:
 	//textures for assignment 5
 	ID3D11ShaderResourceView* metalTextureSRV;
 	ID3D11ShaderResourceView* woodTextureSRV;
+	ID3D11ShaderResourceView* mTextureSRV, *nTextureSRV, *specTextureSRV;
+	ID3D11ShaderResourceView* defaultSRV,*defaultNSRV; //for the materials with no particular specs, normals, or mults
 	ID3D11SamplerState* sampler;
 };
 

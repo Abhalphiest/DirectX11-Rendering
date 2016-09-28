@@ -57,8 +57,13 @@ void Entity::Draw(ID3D11DeviceContext* context, DirectX::XMFLOAT4X4 p_view, Dire
 	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
 	m_material->GetVertexShader()->CopyAllBufferData();
 	m_material->GetPixelShader()->CopyAllBufferData();
+
+	//simple shader should handle our nullptrs if we happen to pass them
 	m_material->GetPixelShader()->SetSamplerState("sampleState",m_material->GetSampleState());
 	m_material->GetPixelShader()->SetShaderResourceView("diffuseTexture", m_material->GetSRV());
+	m_material->GetPixelShader()->SetShaderResourceView("multiplyTexture", m_material->GetMSRV());
+	m_material->GetPixelShader()->SetShaderResourceView("specularTexture", m_material->GetSpecSRV());
+	m_material->GetPixelShader()->SetShaderResourceView("normalTexture", m_material->GetNSRV());
 	// Set our vertex and pixel shaders to use for the next draw
 	m_material->GetVertexShader()->SetShader();
 	m_material->GetPixelShader()->SetShader();

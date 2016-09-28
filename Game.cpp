@@ -40,6 +40,11 @@ Game::~Game()
 	sampler->Release();
 	woodTextureSRV->Release();
 	metalTextureSRV->Release();
+	mTextureSRV->Release();
+	specTextureSRV->Release();
+	defaultSRV->Release();
+	nTextureSRV->Release();
+	defaultNSRV->Release();
 	//delete all the stuff we allocated
 	if (e1) delete e1;
 	if (e2) delete e2;
@@ -107,6 +112,36 @@ void Game::CreateBasicGeometry()
 		L"../Assets/Textures/wood.jpg",
 		0, 
 		&woodTextureSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/metalspec.jpg",
+		0,
+		&specTextureSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/multiply.jpg",
+		0,
+		&mTextureSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/default.jpg",
+		0,
+		&defaultSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/flatnormal.jpg",
+		0,
+		&defaultNSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/circuitNormal.jpg",
+		0,
+		&nTextureSRV);
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -116,8 +151,10 @@ void Game::CreateBasicGeometry()
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &sampler);
 
-	Material* material1 = new Material(vertexShader, pixelShader,metalTextureSRV,sampler);
-	Material* material2 = new Material(vertexShader, pixelShader, woodTextureSRV, sampler);
+	Material* material1 = new Material(vertexShader, pixelShader,metalTextureSRV,defaultSRV,
+		specTextureSRV,defaultNSRV,sampler);
+	Material* material2 = new Material(vertexShader, pixelShader, woodTextureSRV,mTextureSRV,
+		defaultSRV,nTextureSRV,sampler);
 	// You'll notice that the code above attempts to load each
 	// compiled shader file (.cso) from two different relative paths.
 
@@ -130,9 +167,9 @@ void Game::CreateBasicGeometry()
 	// scenarios work correctly, although others exist
 	e1 = new Entity(mesh1, material1);
 	e1->SetPosition(XMFLOAT3(-2.5, 1.5, 0));
-	e2 = new Entity(mesh2, material1);
+	e2 = new Entity(mesh2, material2);
 	e2->SetPosition(XMFLOAT3(0, 1.5, 4));
-	e3 = new Entity(mesh3, material2);
+	e3 = new Entity(mesh3, material1);
 	e3->SetPosition(XMFLOAT3(0, -1.0, 0));
 }
 
@@ -216,6 +253,10 @@ void Game::Draw(float deltaTime, float totalTime)
 		"light3", // The name of the variable in the shader
 		&plight, // The address of the data to copy
 		sizeof(PointLight)); // The size of the data to copy
+	pixelShader->SetData(
+		"cameraPos", // The name of the variable in the shader
+		&camera->GetPosition(), // The address of the data to copy
+		sizeof(XMFLOAT3)); // The size of the data to copy
 
 
 	e1->Draw(context, camera->GetView(), camera->GetProjection());

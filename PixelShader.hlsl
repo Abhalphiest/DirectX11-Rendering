@@ -41,10 +41,14 @@ cbuffer shaderData : register(b0)
 	DirectionalLight light;
 	DirectionalLight light2;
 	PointLight light3;
+	float3 cameraPos;
 };
 
 //texture variables
 Texture2D diffuseTexture	: register(t0);
+Texture2D multiplyTexture	: register(t1);
+Texture2D specularTexture	: register(t2);
+Texture2D normalTexture		: register(t3);
 SamplerState sampleState	: register(s0);
 
 // --------------------------------------------------------
@@ -77,9 +81,18 @@ float4 main(VertexToPixel input) : SV_TARGET
 	if (dropoffRatio < 1) dropoffRatio = 1;
 	lightAmount = 1/dropoffRatio*saturate(dot(toLight, input.normal)); //already normalized
 	float4 lightCompute3 = lightAmount*light3.DiffuseColor + light3.AmbientColor;
+
+	//specular for the point light
+	float3 toCamera = normalize(cameraPos - input.worldpos);
+	float3 refl = reflect(-toLight, input.normal);
+	float spec = pow(max(dot(refl, toCamera), 0), 32);
+	//textures
 	float4 textureColor = diffuseTexture.Sample(sampleState, input.uv);
+	float4 multColor = multiplyTexture.Sample(sampleState, input.uv);
+	float specColor = specularTexture.Sample(sampleState, input.uv).r; //all channels should be equal
+	float4 nColor = normalTexture.Sample(sampleState, input.uv);
 	return (lightCompute1
 		+ lightCompute2
-		+ lightCompute3)*textureColor;
+		+ lightCompute3)*textureColor*multColor + spec*specColor;
 	//return float4(.52,.008,.008,1);
 }
