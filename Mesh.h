@@ -22,6 +22,7 @@ public:
 	Mesh(Vertex* verts, int numVertices, unsigned int* indices, 
 		int numIndices, ID3D11Device* device);
 	static Mesh* LoadObj(char* filepath,ID3D11Device* p_device);
+	static void CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices);
 
 	ID3D11Buffer** GetVertexBuffer() { return &m_Vbuffer; }
 	ID3D11Buffer* GetIndexBuffer() { return m_Ibuffer; }
@@ -36,11 +37,10 @@ public:
 
 
 	static void AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3,
-		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int> &p_indexMap);
+		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices);
 	static void AddQuad(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3, DirectX::XMFLOAT3 p4,
-		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int> &p_indexMap);
-	static void CheckVertex(DirectX::XMFLOAT3 &p, DirectX::XMFLOAT3 &n, std::vector<Vertex> &p_vertices,
-		std::vector<unsigned int> &p_indices, std::map<Vertex, int> &p_indexMap);
+		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices);
+	static void IndexVertices(std::vector<Vertex> &p_vertices, std::vector<unsigned int> &p_indices);
 	static DirectX::XMFLOAT3 TruncateVector(const DirectX::XMFLOAT3 v);
 
 

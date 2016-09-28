@@ -168,6 +168,7 @@ Mesh* Mesh::LoadObj(char* filepath, ID3D11Device* p_device)
 
 	// Close the file and create the actual buffers
 	obj.close();
+	//CalcTBN(verts, indices); //for normal mapping
 
 	// - At this point, "verts" is a vector of Vertex structs, and can be used
 	//    directly to create a vertex buffer:  &verts[0] is the address of the first vert
@@ -180,7 +181,58 @@ Mesh* Mesh::LoadObj(char* filepath, ID3D11Device* p_device)
 
 	return new Mesh(&verts[0], vertCounter, &indices[0], vertCounter, p_device);
 }
+void Mesh::CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices)
+{
+	Vertex v0, v1, v2;
+	DirectX::XMVECTOR dpos1, dpos2; //dpos is triangle edge, duv is uv edge
+	DirectX::XMVECTOR p0, p1, p2;
+	DirectX::XMFLOAT2 u0, u1, u2, duv1, duv2;
+	DirectX::XMFLOAT3 tangent, binormal;
+	std::vector<Vertex> vertices;
+	for (int i = 0; i < indices.size(); i += 3) //assumes triangulated
+	{
+		//get our data
+		v0 = p_verts[indices[i]];
+		v1 = p_verts[indices[i + 1]];
+		v2 = p_verts[indices[i + 2]];
+		p0 = DirectX::XMLoadFloat3(&v0.Position);
+		p1 = DirectX::XMLoadFloat3(&v1.Position);
+		p2 = DirectX::XMLoadFloat3(&v2.Position);
+		u0 = v0.UV;
+		u1 = v1.UV;
+		u2 = v2.UV;
 
+		//get deltas
+		dpos1 = DirectX::XMVectorSubtract(p1, p0);
+		dpos2 = DirectX::XMVectorSubtract(p2, p0);
+		DirectX::XMStoreFloat2(&duv1,DirectX::XMVectorSubtract(DirectX::XMLoadFloat2(&u1), DirectX::XMLoadFloat2(&u0)));
+		DirectX::XMStoreFloat2(&duv2, DirectX::XMVectorSubtract(DirectX::XMLoadFloat2(&u2), DirectX::XMLoadFloat2(&u0)));
+
+		float r = 1.0f / (duv1.x*duv2.y - duv1.y*duv2.x);
+		DirectX::XMStoreFloat3(&tangent, DirectX::XMVectorScale(
+								DirectX::XMVectorSubtract(DirectX::XMVectorScale(dpos1,duv2.y), 
+								DirectX::XMVectorScale(dpos2, duv1.y))
+								,r));
+		DirectX::XMStoreFloat3(&binormal, DirectX::XMVectorScale(
+			DirectX::XMVectorSubtract(DirectX::XMVectorScale(dpos2, duv1.x),
+				DirectX::XMVectorScale(dpos1, duv2.x))
+			, r));
+
+		//set up our vertices and go
+		v0.Binormal = binormal;
+		v1.Binormal = binormal;
+		v2.Binormal = binormal;
+		v0.Tangent = tangent;
+		v1.Tangent = tangent;
+		v2.Tangent = tangent;
+		vertices.push_back(v0);
+		vertices.push_back(v1);
+		vertices.push_back(v2);
+	}
+	p_verts = vertices;
+	IndexVertices(p_verts, indices); //we'll need to reindex since we differentiated vertices from
+									 //each other.
+}
 Mesh::~Mesh()
 {
 	if (m_Vbuffer) { m_Vbuffer->Release(); }
@@ -192,7 +244,7 @@ Mesh* Mesh::Cube(float p_size, ID3D11Device* p_device)
 {
 	std::vector<Vertex> vertices = std::vector<Vertex>();
 	std::vector<unsigned int> indices = std::vector<unsigned int>();
-	std::map<Vertex, int> indexMap = std::map<Vertex, int>();
+	
 
 	
 	float len = p_size / 2.0f;
@@ -204,12 +256,12 @@ Mesh* Mesh::Cube(float p_size, ID3D11Device* p_device)
 	DirectX::XMFLOAT3 p5 = DirectX::XMFLOAT3(len, len, -len);
 	DirectX::XMFLOAT3 p6 = DirectX::XMFLOAT3(-len, -len, -len);
 	DirectX::XMFLOAT3 p7 = DirectX::XMFLOAT3(len, -len, -len);
-	Mesh::AddQuad(p0, p1, p3, p2, vertices, indices, indexMap);
-	Mesh::AddQuad(p1, p5, p7, p3, vertices, indices, indexMap);
-	Mesh::AddQuad(p4, p6, p7, p5, vertices, indices, indexMap);
-	Mesh::AddQuad(p0, p2, p6, p4, vertices, indices, indexMap);
-	Mesh::AddQuad(p0, p4, p5, p1, vertices, indices, indexMap);
-	Mesh::AddQuad(p2, p3, p7, p6, vertices, indices, indexMap);
+	Mesh::AddQuad(p0, p1, p3, p2, vertices, indices);
+	Mesh::AddQuad(p1, p5, p7, p3, vertices, indices);
+	Mesh::AddQuad(p4, p6, p7, p5, vertices, indices);
+	Mesh::AddQuad(p0, p2, p6, p4, vertices, indices);
+	Mesh::AddQuad(p0, p4, p5, p1, vertices, indices);
+	Mesh::AddQuad(p2, p3, p7, p6, vertices, indices);
 	
 	for (unsigned int i = 0; i<indices.size(); ++i)
 		std::cout << indices[i] << ' ';
@@ -220,7 +272,7 @@ Mesh* Mesh::Sphere(float p_radius, unsigned int p_subdivisions, ID3D11Device* p_
 {
 	std::vector<Vertex> vertices = std::vector<Vertex>();
 	std::vector<unsigned int> indices = std::vector<unsigned int>();
-	std::map<Vertex, int> indexMap = std::map<Vertex, int>();
+	
 
 	if (p_subdivisions < 3)
 		p_subdivisions = 3;
@@ -260,7 +312,7 @@ Mesh* Mesh::Sphere(float p_radius, unsigned int p_subdivisions, ID3D11Device* p_
 			Mesh::AddQuad(DirectX::XMFLOAT3(leftx*toprad, topy, leftz*toprad),
 				DirectX::XMFLOAT3(rightx*toprad, topy, rightz*toprad),
 				DirectX::XMFLOAT3(rightx*bottomrad, bottomy, rightz*bottomrad),
-				DirectX::XMFLOAT3(leftx*bottomrad, bottomy, leftz*bottomrad), vertices, indices, indexMap);
+				DirectX::XMFLOAT3(leftx*bottomrad, bottomy, leftz*bottomrad), vertices, indices);
 		}
 
 	}
@@ -274,7 +326,7 @@ Mesh* Mesh::Torus(float p_innerRad, float p_outerRad, unsigned int p_subdivision
 {
 	std::vector<Vertex> vertices = std::vector<Vertex>();
 	std::vector<unsigned int> indices = std::vector<unsigned int>();
-	std::map<Vertex, int> indexMap = std::map<Vertex, int>();
+	
 
 	if (p_subdivisions < 3)
 		p_subdivisions = 3;
@@ -321,16 +373,18 @@ Mesh* Mesh::Torus(float p_innerRad, float p_outerRad, unsigned int p_subdivision
 				DirectX::XMFLOAT3(leftxbottom, lefty, leftzbottom),
 				DirectX::XMFLOAT3(rightxbottom, righty, rightzbottom),
 				DirectX::XMFLOAT3(rightxtop, righty, rightztop),
-				vertices, indices, indexMap);
+				vertices, indices);
 		}
 	}
 	return new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size(), p_device);
 }
 
 void Mesh::AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3,
-	std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, 
-	std::map<Vertex, int> &p_indexMap)
+	std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices)
 {
+	TruncateVector(p1); //eliminate rounding error creating duplicate vertices in our indexing
+	TruncateVector(p2);
+	TruncateVector(p3);
 	//calculate normals
 	DirectX::XMVECTOR vect1, vect2, t1, t2, t3;
 	t1 = DirectX::XMLoadFloat3(&p1);
@@ -340,52 +394,30 @@ void Mesh::AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 
 	vect2 = DirectX::XMVectorSubtract(t3, t1);
 	DirectX::XMFLOAT3 normal;
 	DirectX::XMStoreFloat3(&normal, DirectX::XMVector3Normalize(DirectX::XMVector3Cross(vect1, vect2)));
-	printf("Normal x: %f y: %f z: %f \n", normal.x, normal.y, normal.z);
+	TruncateVector(normal);
 
-	//see if these vertices have already been used, because we're doing indexed rendering
-	CheckVertex(p1, normal, p_verts, p_indices, p_indexMap);
-	CheckVertex(p2, normal, p_verts, p_indices, p_indexMap);
-	CheckVertex(p3, normal, p_verts, p_indices, p_indexMap);
-	//should check for correct winding here, but I won't. For simplicity I will assume that
-	//we're getting good data because this class is low level enough that end user should never use it
+	//will now post-index for simplicity
 
-	
+	//will calculate tangents and binormals later in building
+
 	//add the vertices
-	Vertex v1 = { p1,normal,DirectX::XMFLOAT2(0,0) };
-	Vertex v2 = { p2,normal,DirectX::XMFLOAT2(0,0) };
-	Vertex v3 = { p3,normal,DirectX::XMFLOAT2(0,0) };
-	p_indices.push_back(p_indexMap[v1]);
-	p_indices.push_back(p_indexMap[v3]);
-	p_indices.push_back(p_indexMap[v2]);
+	Vertex v1 = { p1,normal,DirectX::XMFLOAT3(0,0,0),DirectX::XMFLOAT3(0,0,0),DirectX::XMFLOAT2(0,0) };
+	Vertex v2 = { p2,normal,DirectX::XMFLOAT3(0,0,0),DirectX::XMFLOAT3(0,0,0),DirectX::XMFLOAT2(0,0) };
+	Vertex v3 = { p3,normal,DirectX::XMFLOAT3(0,0,0),DirectX::XMFLOAT3(0,0,0),DirectX::XMFLOAT2(0,0) };
+	
 	
 }
 
 void Mesh::AddQuad(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3, DirectX::XMFLOAT3 p4,
-			 std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices, std::map<Vertex, int> &p_indexMap)
+			 std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices)
 {
-	AddTri(p1, p2, p3,p_verts, p_indices, p_indexMap);
-	AddTri(p1, p3, p4, p_verts,  p_indices, p_indexMap);
+	AddTri(p1, p2, p3,p_verts, p_indices);
+	AddTri(p1, p3, p4, p_verts,  p_indices);
 }
 
-void Mesh::CheckVertex(DirectX::XMFLOAT3 &p, DirectX::XMFLOAT3 &n, std::vector<Vertex> &p_vertices, std::vector<unsigned int> &p_indices,
-	std::map<Vertex, int> &p_indexMap)
+void Mesh::IndexVertices(std::vector<Vertex> &p_vertices, std::vector<unsigned int> &p_indices)
 {
-	p = TruncateVector(p); //get rid of redundant points due to rounding error
-	n = TruncateVector(n);
-	Vertex v = { p, n,DirectX::XMFLOAT2(0,0)};
-	auto index = p_indexMap.find(v);
-	if (index == p_indexMap.end()) //not in there already
-	{
-
-		p_indexMap[v] = p_vertices.size();
-		p_vertices.push_back(v);
-
-	}
-	else if (!(index->first == v)) //attempting to handle different normals, uvs
-	{
-		p_indexMap[v] = p_vertices.size();
-		p_vertices.push_back(v);
-	}
+	
 }
 
 DirectX::XMFLOAT3 Mesh::TruncateVector(const DirectX::XMFLOAT3 v)
