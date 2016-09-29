@@ -209,11 +209,11 @@ void Mesh::CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices)
 		DirectX::XMStoreFloat2(&duv2, DirectX::XMVectorSubtract(DirectX::XMLoadFloat2(&u2), DirectX::XMLoadFloat2(&u0)));
 
 		float r = 1.0f / (duv1.x*duv2.y - duv1.y*duv2.x);
-		DirectX::XMStoreFloat3(&tangent, DirectX::XMVectorScale(
+		DirectX::XMStoreFloat3(&binormal, DirectX::XMVectorScale(
 								DirectX::XMVectorSubtract(DirectX::XMVectorScale(dpos1,duv2.y), 
 								DirectX::XMVectorScale(dpos2, duv1.y))
 								,r));
-		DirectX::XMStoreFloat3(&binormal, DirectX::XMVectorScale(
+		DirectX::XMStoreFloat3(&tangent, DirectX::XMVectorScale(
 			DirectX::XMVectorSubtract(DirectX::XMVectorScale(dpos2, duv1.x),
 				DirectX::XMVectorScale(dpos1, duv2.x))
 			, r));

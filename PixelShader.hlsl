@@ -12,9 +12,10 @@ struct VertexToPixel
 	//  |    |                |
 	//  v    v                v
 	float4 position		: SV_POSITION;
-	float3x3 TBN		: TBN; //for normal mapping
 	float4 worldpos		: WORLD_POSITION;
 	float3 normal		: NORMAL;
+	float3 binormal		: BINORMAL;
+	float3 tangent		: TANGENT;
 	float2 uv			: UV;
 };
 
@@ -67,9 +68,6 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	//normalize our normal (heh)
 	input.normal = normalize(input.normal);
-	//normal mapping, not being used yet
-	float3 tangentNormal = normalTexture.Sample(sampleState, input.uv).rgb; //lose the alpha channel
-	float3 worldNormal = mul(input.TBN, tangentNormal);
 	
 	//directional lights
 	float3 toLight = normalize(-light.Direction);
@@ -100,5 +98,5 @@ float4 main(VertexToPixel input) : SV_TARGET
 	return (lightCompute1
 		+ lightCompute2
 		+ lightCompute3)*textureColor*multColor + spec*specColor;
-	//return float4(.52,.008,.008,1);
+	
 }

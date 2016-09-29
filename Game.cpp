@@ -45,13 +45,20 @@ Game::~Game()
 	defaultSRV->Release();
 	nTextureSRV->Release();
 	defaultNSRV->Release();
+	earthTextureSRV->Release();
+	earthspecTextureSRV->Release();
+	circuitNormalSRV->Release();
+	crystalNormalSRV->Release();
+	crystalSRV->Release();
 	//delete all the stuff we allocated
 	if (e1) delete e1;
 	if (e2) delete e2;
 	if (e3) delete e3;
+	if (e4) delete e4;
 	if (camera) delete camera;
 	if (pixelShader) delete pixelShader;
 	if (vertexShader) delete vertexShader;
+	if (NpixelShader) delete NpixelShader;
 	
 }
 
@@ -67,7 +74,7 @@ void Game::Init()
 	camera = new Camera(1280 /(float) 720);
 	dlight = {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
 	dlight2 = { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
-	plight = { DirectX::XMFLOAT4(0,0,0,0),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
+	plight = { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
 	CreateBasicGeometry();
 
 	// Tell the input assembler stage of the pipeline what kind of
@@ -88,8 +95,9 @@ void Game::CreateBasicGeometry()
 	//the mesh constructor will also work, but it's easier to just
 	// let the computer generate our vertices and indices for us
 	mesh1 = Mesh::LoadObj("../Assets/Models/cube.obj", device);
-	mesh2 = Mesh::LoadObj("../Assets/Models/torus.obj", device);
+	mesh2 = Mesh::LoadObj("../Assets/Models/sphere.obj", device);
 	mesh3 = Mesh::LoadObj("../Assets/Models/helix.obj", device);
+	mesh4 = Mesh::LoadObj("../Assets/Models/keyblade.obj", device);
 
 	vertexShader = new SimpleVertexShader(device, context);
 	if (!vertexShader->LoadShaderFile(L"../Debug/VertexShader.cso"))
@@ -98,6 +106,10 @@ void Game::CreateBasicGeometry()
 	pixelShader = new SimplePixelShader(device, context);
 	if (!pixelShader->LoadShaderFile(L"../Debug/PixelShader.cso"))
 		pixelShader->LoadShaderFile(L"../PixelShader.cso");
+
+	NpixelShader = new SimplePixelShader(device, context);
+	if (!NpixelShader->LoadShaderFile(L"../Debug/nPixelShader.cso"))
+		NpixelShader->LoadShaderFile(L"../nPixelShader.cso");
 
 	//texture loading
 	CreateWICTextureFromFile(
@@ -115,9 +127,21 @@ void Game::CreateBasicGeometry()
 	CreateWICTextureFromFile(
 		device,
 		context,
+		L"../Assets/Textures/earthdiffuse.jpg",
+		0,
+		&earthTextureSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
 		L"../Assets/Textures/metalspec.jpg",
 		0,
 		&specTextureSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/earthspec.png",
+		0,
+		&earthspecTextureSRV);
 	CreateWICTextureFromFile(
 		device,
 		context,
@@ -139,9 +163,27 @@ void Game::CreateBasicGeometry()
 	CreateWICTextureFromFile(
 		device,
 		context,
-		L"../Assets/Textures/circuitNormal.jpg",
+		L"../Assets/Textures/earthnormal.jpg",
 		0,
 		&nTextureSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/circuitnormal.jpg",
+		0,
+		&circuitNormalSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/crystalnormal.jpg",
+		0,
+		&crystalNormalSRV);
+	CreateWICTextureFromFile(
+		device,
+		context,
+		L"../Assets/Textures/crystaldiffuse.jpg",
+		0,
+		&crystalSRV);
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -153,8 +195,12 @@ void Game::CreateBasicGeometry()
 
 	Material* material1 = new Material(vertexShader, pixelShader,metalTextureSRV,defaultSRV,
 		specTextureSRV,defaultNSRV,sampler);
-	Material* material2 = new Material(vertexShader, pixelShader, woodTextureSRV,mTextureSRV,
-		defaultSRV,nTextureSRV,sampler);
+	Material* material2 = new Material(vertexShader, NpixelShader, earthTextureSRV,defaultSRV,
+		earthspecTextureSRV,nTextureSRV,sampler);
+	Material* material3 = new Material(vertexShader, NpixelShader, metalTextureSRV, defaultSRV,
+		specTextureSRV, circuitNormalSRV, sampler);
+	Material* material4 = new Material(vertexShader, NpixelShader, crystalSRV, defaultSRV,
+		defaultSRV, crystalNormalSRV, sampler);
 	// You'll notice that the code above attempts to load each
 	// compiled shader file (.cso) from two different relative paths.
 
@@ -165,12 +211,14 @@ void Game::CreateBasicGeometry()
 
 	// Checking both paths is the easiest way to ensure both 
 	// scenarios work correctly, although others exist
-	e1 = new Entity(mesh1, material1);
+	e1 = new Entity(mesh1, material3);
 	e1->SetPosition(XMFLOAT3(-2.5, 1.5, 0));
 	e2 = new Entity(mesh2, material2);
-	e2->SetPosition(XMFLOAT3(0, 1.5, 4));
+	e2->SetPosition(XMFLOAT3(0, 0, 2));
 	e3 = new Entity(mesh3, material1);
 	e3->SetPosition(XMFLOAT3(0, -1.0, 0));
+	e4 = new Entity(mesh4, material4);
+	e4->SetPosition(XMFLOAT3(-5.0, 0, -2));
 }
 
 
@@ -193,8 +241,7 @@ void Game::OnResize()
 void Game::Update(float deltaTime, float totalTime)
 {
 	e1->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
-	e2->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
-	e2->Move(XMFLOAT3(deltaTime*XMScalarSin(totalTime), 0, 0));
+	e2->Rotate(XMFLOAT3(0, 1, 0), deltaTime);
 	e3->Move(XMFLOAT3(-deltaTime*XMScalarCos( totalTime), 0, 0));
 
 	//handle camera movement here until I can move this logic to an input manager
@@ -259,44 +306,26 @@ void Game::Draw(float deltaTime, float totalTime)
 		sizeof(XMFLOAT3)); // The size of the data to copy
 
 
+	NpixelShader->SetData(
+		"light", // The name of the variable in the shader
+		&dlight, // The address of the data to copy
+		sizeof(DirectionalLight)); // The size of the data to copy
+	NpixelShader->SetData(
+		"light2", // The name of the variable in the shader
+		&dlight2, // The address of the data to copy
+		sizeof(DirectionalLight)); // The size of the data to copy
+	NpixelShader->SetData(
+		"light3", // The name of the variable in the shader
+		&plight, // The address of the data to copy
+		sizeof(PointLight)); // The size of the data to copy
+	NpixelShader->SetData(
+		"cameraPos", // The name of the variable in the shader
+		&camera->GetPosition(), // The address of the data to copy
+		sizeof(XMFLOAT3)); // The size of the data to copy
 	e1->Draw(context, camera->GetView(), camera->GetProjection());
-
-	
-	//mesh 2
-	pixelShader->SetData(
-		"light", // The name of the variable in the shader
-		&dlight, // The address of the data to copy
-		sizeof(DirectionalLight)); // The size of the data to copy
-	pixelShader->SetData(
-		"light2", // The name of the variable in the shader
-		&dlight2, // The address of the data to copy
-		sizeof(DirectionalLight)); // The size of the data to copy
-	pixelShader->SetData(
-		"light3", // The name of the variable in the shader
-		&plight, // The address of the data to copy
-		sizeof(PointLight)); // The size of the data to copy
-	
-	
-
 	e2->Draw(context, camera->GetView(), camera->GetProjection());
-	
-	//mesh 3
-	pixelShader->SetData(
-		"light", // The name of the variable in the shader
-		&dlight, // The address of the data to copy
-		sizeof(DirectionalLight)); // The size of the data to copy
-	pixelShader->SetData(
-		"light2", // The name of the variable in the shader
-		&dlight2, // The address of the data to copy
-		sizeof(DirectionalLight)); // The size of the data to copy
-	pixelShader->SetData(
-		"light3", // The name of the variable in the shader
-		&plight, // The address of the data to copy
-		sizeof(PointLight)); // The size of the data to copy
-
-	
-
 	e3->Draw(context, camera->GetView(), camera->GetProjection());
+	e4->Draw(context, camera->GetView(), camera->GetProjection());
 	
 
 	// Present the back buffer to the user
