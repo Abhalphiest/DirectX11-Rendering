@@ -1,10 +1,11 @@
 #pragma once
 #include <DirectXMath.h>
-#include "../Mesh.h"
+#include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
 #include "Entity.h"
 #include "Lights.h"
+#include "DataStructs.h"
 
 
 class Scene
@@ -14,28 +15,16 @@ public:
 	~Scene();
 	void Render();
 
-	//material list functions
-	uint CreateMaterial(Material* p_material);
-	//removal can fail if the material still has references
-	bool RemoveMaterial(uint p_materialIndex);
 
-	//mesh list functions
-	uint CreateMaterial(Material* p_material);
-	//removal can fail if the material still has references
-	bool RemoveMaterial(uint p_materialIndex);
+	//object constructors and destructors
+	uint CreateObject();
+	//overloads
+	void RemoveObject(uint p_index);
 
-	//entity list functions
-	uint CreateEntity();
-	uint CreateEntity(DirectX::XMFLOAT3 p_position, DirectX::XMFLOAT3 p_orientation);
-	uint CreateEntity(DirectX::XMFLOAT3 p_position, DirectX::XMFLOAT3 p_orientation, uint p_MeshIndex, uint p_MaterialIndex);
-	void RemoveEntity(uint p_index);
+	//accessors
 	void SetEntityMaterial(uint p_entityIndex, uint p_materialIndex);
 	void SetEntityMesh(uint p_entityIndex, uint p_meshIndex);
 
-	//camera functions
-	uint AddCamera(Camera* p_camera);
-	void RemoveCamera(uint p_index);
-	void SetCamera(uint p_index);
 
 	//Light functions, this could be rearchitectured at a later date to be
 	//cleaner
@@ -48,13 +37,20 @@ public:
 
 	
 private:
-	std::vector<Mesh*> m_meshList;
-	std::vector<Material*> m_materialList;
-	std::vector<Entity*> m_entityList;
+	std::vector<Mesh*> m_meshList;  //holds meshes
+	std::vector<Material*> m_materialList; //holds materials
+	std::vector<Collider> m_colliders;  //hold bounding boxes, etc
+	std::vector<WorldData> m_worldDatas; //to hold position, orientation, scale, velocity, etc..
+	std::vector<SimplePixelShader*> m_pixelShaders;
+	std::vector<SimpleVertexShader*> m_vertexShaders;
+
 	std::vector<DirectionalLight*> m_dlightList; //three separate lists for lights.. for now
 	std::vector<SpotLight*> m_slightList;
 	std::vector<PointLight*> m_plightList;
+
 	std::vector<Camera*> m_cameraList;
+
+	//FirstPersonController m_fpc;
 
 	uint m_currentCamera;
 

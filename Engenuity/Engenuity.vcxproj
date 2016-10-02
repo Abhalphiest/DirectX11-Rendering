@@ -112,17 +112,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Header Files\Camera.h" />
-    <ClInclude Include="Header Files\DXCore.h" />
-    <ClInclude Include="Header Files\Entity.h" />
-    <ClInclude Include="Header Files\Game.h" />
-    <ClInclude Include="Header Files\InputMaster.h" />
-    <ClInclude Include="Header Files\Lights.h" />
-    <ClInclude Include="Header Files\Material.h" />
-    <ClInclude Include="Header Files\Mesh.h" />
-    <ClInclude Include="Header Files\Scene.h" />
-    <ClInclude Include="Header Files\SimpleShader.h" />
-    <ClInclude Include="Header Files\Vertex.h" />
+    <ClInclude Include="headers\Camera.h" />
+    <ClInclude Include="headers\DataStructs.h" />
+    <ClInclude Include="headers\DXCore.h" />
+    <ClInclude Include="headers\Entity.h" />
+    <ClInclude Include="headers\Game.h" />
+    <ClInclude Include="headers\InputMaster.h" />
+    <ClInclude Include="headers\Lights.h" />
+    <ClInclude Include="headers\Material.h" />
+    <ClInclude Include="headers\Mesh.h" />
+    <ClInclude Include="headers\Scene.h" />
+    <ClInclude Include="headers\SimpleShader.h" />
+    <ClInclude Include="headers\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sourcefiles\Camera.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="sourcefiles\Main.cpp" />
     <ClCompile Include="sourcefiles\Material.cpp" />
     <ClCompile Include="sourcefiles\Mesh.cpp" />
+    <ClCompile Include="sourcefiles\Scene.cpp" />
     <ClCompile Include="sourcefiles\SimpleShader.cpp" />
   </ItemGroup>
   <ItemGroup>
