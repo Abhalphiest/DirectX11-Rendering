@@ -51,15 +51,12 @@ Game::~Game()
 	crystalNormalSRV->Release();
 	crystalSRV->Release();
 	//delete all the stuff we allocated
-	if (e1) delete e1;
-	if (e2) delete e2;
-	if (e3) delete e3;
-	if (e4) delete e4;
-	if (camera) delete camera;
-	NpixelShader->RemoveInstance();
-	pixelShader->RemoveInstance();
-	vertexShader->RemoveInstance();
-	
+	//if (e1) delete e1;
+	//if (e2) delete e2;
+	//if (e3) delete e3;
+	//if (e4) delete e4;
+	//if (camera) delete camera;
+	if (scene) delete scene;
 }
 
 // --------------------------------------------------------
@@ -71,10 +68,14 @@ void Game::Init()
 	// Helper methods for loading shaders, creating some basic
 	// geometry to draw and some simple camera matrices.
 	//  - You'll be expanding and/or replacing these later
-	camera = new Camera(1280 /(float) 720);
+	fpc = new FirstPersonController(1280 / (float)720);
 	dlight = {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
 	dlight2 = { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
 	plight = { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
+	scene = new Scene(fpc);
+	light1 = scene->AddDirectionalLight(&dlight);
+	light2 = scene->AddDirectionalLight(&dlight2);
+	light3 = scene->AddPointLight(&plight);
 	CreateBasicGeometry();
 
 	// Tell the input assembler stage of the pipeline what kind of
@@ -102,7 +103,6 @@ void Game::CreateBasicGeometry()
 	vertexShader = new SimpleVertexShader(device, context);
 	if (!vertexShader->LoadShaderFile(L"../Debug/VertexShader.cso"))
 		vertexShader->LoadShaderFile(L"../VertexShader.cso");
-
 	pixelShader = new SimplePixelShader(device, context);
 	if (!pixelShader->LoadShaderFile(L"../Debug/PixelShader.cso"))
 		pixelShader->LoadShaderFile(L"../PixelShader.cso");
@@ -201,6 +201,16 @@ void Game::CreateBasicGeometry()
 		specTextureSRV, circuitNormalSRV, sampler);
 	Material* material4 = new Material(vertexShader, NpixelShader, crystalSRV, defaultSRV,
 		defaultSRV, crystalNormalSRV, sampler);
+
+	object1 = scene->CreateObject(mesh1, material3);
+	scene->SetEntityPosition(object1,XMFLOAT3(-2.5, 1.5, 0));
+	object2 = scene->CreateObject(mesh2, material2);
+	scene->SetEntityPosition(object2,XMFLOAT3(0, 0, 2));
+
+	object3 = scene->CreateObject(mesh3, material1);
+	scene->SetEntityPosition(object3,XMFLOAT3(0, -1.0, 0));
+	object4 = scene->CreateObject(mesh4, material4);
+	scene->SetEntityPosition(object4, XMFLOAT3(-5.0, 0, -2));
 	// You'll notice that the code above attempts to load each
 	// compiled shader file (.cso) from two different relative paths.
 
@@ -211,14 +221,14 @@ void Game::CreateBasicGeometry()
 
 	// Checking both paths is the easiest way to ensure both 
 	// scenarios work correctly, although others exist
-	e1 = new Entity(mesh1, material3);
-	e1->SetPosition(XMFLOAT3(-2.5, 1.5, 0));
-	e2 = new Entity(mesh2, material2);
-	e2->SetPosition(XMFLOAT3(0, 0, 2));
-	e3 = new Entity(mesh3, material1);
-	e3->SetPosition(XMFLOAT3(0, -1.0, 0));
-	e4 = new Entity(mesh4, material4);
-	e4->SetPosition(XMFLOAT3(-5.0, 0, -2));
+	//e1 = new Entity(mesh1, material3);
+	//e1->SetPosition(XMFLOAT3(-2.5, 1.5, 0));
+	//e2 = new Entity(mesh2, material2);
+	//e2->SetPosition(XMFLOAT3(0, 0, 2));
+	//e3 = new Entity(mesh3, material1);
+	//e3->SetPosition(XMFLOAT3(0, -1.0, 0));
+	//e4 = new Entity(mesh4, material4);
+	//e4->SetPosition(XMFLOAT3(-5.0, 0, -2));
 }
 
 
@@ -240,17 +250,17 @@ void Game::OnResize()
 // --------------------------------------------------------
 void Game::Update(float deltaTime, float totalTime)
 {
-	e1->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
-	e2->Rotate(XMFLOAT3(0, 1, 0), deltaTime);
-	e3->Move(XMFLOAT3(-deltaTime*XMScalarCos( totalTime), 0, 0));
+	//e1->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
+	//e2->Rotate(XMFLOAT3(0, 1, 0), deltaTime);
+	//e3->Move(XMFLOAT3(-deltaTime*XMScalarCos( totalTime), 0, 0));
 
 	//handle camera movement here until I can move this logic to an input manager
-	if (GetAsyncKeyState('W') & 0x8000) { camera->Move(XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
-	if (GetAsyncKeyState('S') & 0x8000) { camera->Move(XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
-	if (GetAsyncKeyState('A') & 0x8000) { camera->Move(XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
-	if (GetAsyncKeyState('D') & 0x8000) { camera->Move(XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { camera->Move(XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
-	if (GetAsyncKeyState('X') & 0x8000) { camera->Move(XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
+	if (GetAsyncKeyState('W') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
+	if (GetAsyncKeyState('S') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
+	if (GetAsyncKeyState('A') & 0x8000) { fpc->camera->Move(XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
+	if (GetAsyncKeyState('D') & 0x8000) { fpc->camera->Move(XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->camera->Move(XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
+	if (GetAsyncKeyState('X') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
 
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
@@ -275,7 +285,7 @@ void Game::Draw(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-	
+/*	
 	XMFLOAT4X4 world;
 	//mesh1 
 	
@@ -317,8 +327,12 @@ void Game::Draw(float deltaTime, float totalTime)
 	e2->Draw(context, camera->GetView(), camera->GetProjection());
 	e3->Draw(context, camera->GetView(), camera->GetProjection());
 	e4->Draw(context, camera->GetView(), camera->GetProjection());
-	
-
+*/
+	std::vector<uint> objects = { object1,object2,object3,object4 };
+	std::vector<uint> dlights = { light1,light2};
+	std::vector<uint> plights = { light3 };
+	std::vector<uint> slights = {};
+	scene->Render(context, objects, dlights, plights, slights);
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
 	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
@@ -367,7 +381,7 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
 	if(buttonState&0x0001) //left button down
-		camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
+		fpc->camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;

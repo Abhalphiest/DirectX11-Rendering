@@ -29,10 +29,7 @@ public:
 	void SetNSRV(ID3D11ShaderResourceView* p_nsrv) { m_nsrv = p_nsrv; }
 	ID3D11SamplerState* GetSampleState() { return m_sState; }
 private:
-	//will be changing simple shader to have a reference system when I have time, until then
-	//it's more convenient to handle the shader freeing in Game.cpp
-	~Material() { //m_vertexShader->RemoveInstance(); m_pixelShader->RemoveInstance();
-	}
+	~Material() { m_vertexShader->RemoveInstance(); m_pixelShader->RemoveInstance();}
 	SimpleVertexShader* m_vertexShader;
 	SimplePixelShader* m_pixelShader;
 	int m_references;

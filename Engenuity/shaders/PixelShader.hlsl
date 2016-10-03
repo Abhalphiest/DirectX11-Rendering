@@ -40,9 +40,9 @@ struct SpotLight {
 
 cbuffer shaderData : register(b0)
 {
-	DirectionalLight light;
-	DirectionalLight light2;
-	PointLight light3;
+	DirectionalLight dlight0;
+	DirectionalLight dlight1;
+	PointLight plight0;
 	float3 cameraPos;
 };
 
@@ -70,19 +70,19 @@ float4 main(VertexToPixel input) : SV_TARGET
 	input.normal = normalize(input.normal);
 	
 	//directional lights
-	float3 toLight = normalize(-light.Direction);
+	float3 toLight = normalize(-dlight0.Direction);
 	float lightAmount = saturate(dot(toLight, input.normal)); //already normalized
-	float4 lightCompute1 = lightAmount*light.DiffuseColor + light.AmbientColor;
+	float4 lightCompute1 = lightAmount*dlight0.DiffuseColor + dlight0.AmbientColor;
 
-	toLight = normalize(-light2.Direction);
+	toLight = normalize(-dlight1.Direction);
 	lightAmount = saturate(dot(toLight, input.normal)); //already normalized
-	float4 lightCompute2 = lightAmount*light2.DiffuseColor + light2.AmbientColor;
+	float4 lightCompute2 = lightAmount*dlight1.DiffuseColor + dlight1.AmbientColor;
 
-	toLight = -normalize(input.worldpos - light3.Position);
-	float dropoffRatio = length(input.worldpos - light3.Position);
+	toLight = -normalize(input.worldpos - plight0.Position);
+	float dropoffRatio = length(input.worldpos - plight0.Position);
 	if (dropoffRatio < 1) dropoffRatio = 1;
 	lightAmount = 1/dropoffRatio*saturate(dot(toLight, input.normal)); //already normalized
-	float4 lightCompute3 = lightAmount*light3.DiffuseColor + light3.AmbientColor;
+	float4 lightCompute3 = lightAmount*plight0.DiffuseColor + plight0.AmbientColor;
 
 	//specular for the point light
 	float3 toCamera = normalize(cameraPos - input.worldpos);

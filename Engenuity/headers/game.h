@@ -1,13 +1,15 @@
 #pragma once
 
-#include "../headers/DXCore.h"
-#include "../headers/SimpleShader.h"
+#include "DXCore.h"
+#include "SimpleShader.h"
 #include <DirectXMath.h>
-#include "../headers/Lights.h"
-#include "../headers/Mesh.h"
-#include "../headers/Entity.h"
-#include "../headers/Camera.h"
-#include "../headers/Material.h"
+#include "Lights.h"
+#include "Mesh.h"
+#include "Entity.h"
+#include "Camera.h"
+#include "Material.h"
+#include"FirstPersonController.h"
+#include"Scene.h"
 #define CAMERA_DELTA .005
 #define MOVE_SCALE 10
 
@@ -47,7 +49,8 @@ private:
 	//Entities for assignment 3
 	Entity* e1, *e2, *e3, *e4;
 	Mesh* mesh1, *mesh2, *mesh3, *mesh4;
-
+	
+	FirstPersonController* fpc;
 	//Camera for assignment 4
 	Camera* camera;
 
@@ -66,5 +69,9 @@ private:
 	ID3D11ShaderResourceView* mTextureSRV, *nTextureSRV, *specTextureSRV, *earthspecTextureSRV, *earthTextureSRV;
 	ID3D11ShaderResourceView* defaultSRV,*defaultNSRV; //for the materials with no particular specs, normals, or mults
 	ID3D11SamplerState* sampler;
+
+	Scene* scene;
+	uint light1, light2, light3;
+	uint object1, object2, object3, object4;
 };
 
