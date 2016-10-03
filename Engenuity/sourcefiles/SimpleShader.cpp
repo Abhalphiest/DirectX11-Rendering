@@ -17,6 +17,7 @@ ISimpleShader::ISimpleShader(ID3D11Device* device, ID3D11DeviceContext* context)
 	constantBufferCount = 0;
 	constantBuffers = 0;
 	shaderBlob = 0;
+	m_references = 0;
 }
 
 // --------------------------------------------------------

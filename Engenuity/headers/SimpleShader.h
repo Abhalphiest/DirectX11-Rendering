@@ -114,8 +114,12 @@ public:
 	// Misc getters
 	ID3DBlob* GetShaderBlob() { return shaderBlob; }
 
+	//instanced smart pointer behavior
+	void GetInstance() { m_references++; }
+	void RemoveInstance() { m_references--; if (m_references <= 0) delete this; }
+
 protected:
-	
+	int m_references;
 	bool shaderValid;
 	ID3DBlob* shaderBlob;
 	ID3D11Device* device;
@@ -152,7 +156,7 @@ class SimpleVertexShader : public ISimpleShader
 public:
 	SimpleVertexShader(ID3D11Device* device, ID3D11DeviceContext* context);
 	SimpleVertexShader(ID3D11Device* device, ID3D11DeviceContext* context, ID3D11InputLayout* inputLayout, bool perInstanceCompatible);
-	~SimpleVertexShader();
+	
 	ID3D11VertexShader* GetDirectXShader() { return shader; }
 	ID3D11InputLayout* GetInputLayout() { return inputLayout; }
 	bool GetPerInstanceCompatible() { return perInstanceCompatible; }
@@ -167,6 +171,7 @@ protected:
 	bool CreateShader(ID3DBlob* shaderBlob);
 	void SetShaderAndCBs();
 	void CleanUp();
+	~SimpleVertexShader();
 };
 
 
@@ -177,7 +182,7 @@ class SimplePixelShader : public ISimpleShader
 {
 public:
 	SimplePixelShader(ID3D11Device* device, ID3D11DeviceContext* context);
-	~SimplePixelShader();
+	
 	ID3D11PixelShader* GetDirectXShader() { return shader; }
 
 	bool SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv);
@@ -188,6 +193,7 @@ protected:
 	bool CreateShader(ID3DBlob* shaderBlob);
 	void SetShaderAndCBs();
 	void CleanUp();
+	~SimplePixelShader();
 };
 
 // --------------------------------------------------------
@@ -197,7 +203,6 @@ class SimpleDomainShader : public ISimpleShader
 {
 public:
 	SimpleDomainShader(ID3D11Device* device, ID3D11DeviceContext* context);
-	~SimpleDomainShader();
 	ID3D11DomainShader* GetDirectXShader() { return shader; }
 
 	bool SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv);
@@ -208,6 +213,7 @@ protected:
 	bool CreateShader(ID3DBlob* shaderBlob);
 	void SetShaderAndCBs();
 	void CleanUp();
+	~SimpleDomainShader();
 };
 
 // --------------------------------------------------------
@@ -217,7 +223,6 @@ class SimpleHullShader : public ISimpleShader
 {
 public:
 	SimpleHullShader(ID3D11Device* device, ID3D11DeviceContext* context);
-	~SimpleHullShader();
 	ID3D11HullShader* GetDirectXShader() { return shader; }
 
 	bool SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv);
@@ -228,6 +233,7 @@ protected:
 	bool CreateShader(ID3DBlob* shaderBlob);
 	void SetShaderAndCBs();
 	void CleanUp();
+	~SimpleHullShader();
 };
 
 // --------------------------------------------------------
@@ -237,7 +243,6 @@ class SimpleGeometryShader : public ISimpleShader
 {
 public:
 	SimpleGeometryShader(ID3D11Device* device, ID3D11DeviceContext* context, bool useStreamOut = 0, bool allowStreamOutRasterization = 0);
-	~SimpleGeometryShader();
 	ID3D11GeometryShader* GetDirectXShader() { return shader; }
 
 	bool SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv);
@@ -250,7 +255,7 @@ public:
 protected:
 	// Shader itself
 	ID3D11GeometryShader* shader;
-
+	~SimpleGeometryShader();
 	// Stream out related
 	bool useStreamOut;
 	bool allowStreamOutRasterization;
@@ -273,7 +278,7 @@ class SimpleComputeShader : public ISimpleShader
 {
 public:
 	SimpleComputeShader(ID3D11Device* device, ID3D11DeviceContext* context);
-	~SimpleComputeShader();
+	
 	ID3D11ComputeShader* GetDirectXShader() { return shader; }
 
 	void DispatchByGroups(unsigned int groupsX, unsigned int groupsY, unsigned int groupsZ);
@@ -288,7 +293,7 @@ public:
 protected:
 	ID3D11ComputeShader* shader;
 	std::unordered_map<std::string, unsigned int> uavTable;
-
+	~SimpleComputeShader();
 	unsigned int threadsX;
 	unsigned int threadsY;
 	unsigned int threadsZ;

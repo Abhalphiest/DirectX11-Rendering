@@ -56,9 +56,9 @@ Game::~Game()
 	if (e3) delete e3;
 	if (e4) delete e4;
 	if (camera) delete camera;
-	if (pixelShader) delete pixelShader;
-	if (vertexShader) delete vertexShader;
-	if (NpixelShader) delete NpixelShader;
+	NpixelShader->RemoveInstance();
+	pixelShader->RemoveInstance();
+	vertexShader->RemoveInstance();
 	
 }
 

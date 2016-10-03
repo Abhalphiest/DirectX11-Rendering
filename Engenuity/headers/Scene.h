@@ -6,34 +6,39 @@
 #include "Entity.h"
 #include "Lights.h"
 #include "DataStructs.h"
+#include "FirstPersonController.h"
 
 
 class Scene
 {
 public:
-	Scene();
+	Scene(FirstPersonController* p_fpc);
 	~Scene();
-	void Render();
+	void Render(std::vector<uint> p_indices);
 
 
-	//object constructors and destructors
-	uint CreateObject();
-	//overloads
-	void RemoveObject(uint p_index);
+	//object "constructor"
+	uint CreateObject(Mesh* p_mesh, Material* p_material, SimplePixelShader* p_pixelShader,
+		SimpleVertexShader* p_vertexShader);
 
 	//accessors
-	void SetEntityMaterial(uint p_entityIndex, uint p_materialIndex);
-	void SetEntityMesh(uint p_entityIndex, uint p_meshIndex);
+	void SetEntityMaterial(uint p_entityIndex, Material* p_material);
+	void SetEntityMesh(uint p_entityIndex, Mesh* p_mesh);
+	void SetEntityPosition(uint p_entityIndex, DirectX::XMFLOAT3 p_position){}
+	void SetEntityOrientation(uint p_entityIndex, DirectX::XMFLOAT3 p_orientation){}
+	void SetEntityScale(uint p_entityIndex, float p_scale){}
+	void SetEntityPixelShader(uint p_entityIndex, SimplePixelShader* p_pixel);
+	void SetEntityVertexShader(uint p_entityIndex, SimpleVertexShader* p_vertex);
+	//need getters
 
 
 	//Light functions, this could be rearchitectured at a later date to be
 	//cleaner
 	uint AddDirectionalLight(DirectionalLight* p_dlight);
-	uint AddSpotLight(DirectionalLight* p_slight);
-	uint AddPointLight(DirectionalLight* p_plight);
-	void RemoveDirectionalLight(uint p_dindex);
-	void RemoveSpotLight(uint p_sindex);
-	void RemovePointLight(uint p_pindex);
+	uint AddSpotLight(SpotLight* p_slight);
+	uint AddPointLight(PointLight* p_plight);
+
+	//need getters and setters for lights still
 
 	
 private:
@@ -48,10 +53,7 @@ private:
 	std::vector<SpotLight*> m_slightList;
 	std::vector<PointLight*> m_plightList;
 
-	std::vector<Camera*> m_cameraList;
+	FirstPersonController* m_fpc;
 
-	//FirstPersonController m_fpc;
-
-	uint m_currentCamera;
 
 };

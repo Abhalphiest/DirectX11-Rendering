@@ -124,6 +124,7 @@
     <ClInclude Include="headers\Scene.h" />
     <ClInclude Include="headers\SimpleShader.h" />
     <ClInclude Include="headers\Vertex.h" />
+    <ClInclude Include="headers\FirstPersonController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sourcefiles\Camera.cpp" />
