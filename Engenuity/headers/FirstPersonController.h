@@ -5,6 +5,7 @@
 
 class FirstPersonController
 {
+public:
 	WorldData wdata;
 	Camera* camera;
 	SpotLight flashlight;
