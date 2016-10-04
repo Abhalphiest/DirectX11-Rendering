@@ -32,9 +32,9 @@ public:
 
 	//Light functions, this could be rearchitectured at a later date to be
 	//cleaner
-	uint AddDirectionalLight(DirectionalLight* p_dlight);
-	uint AddSpotLight(SpotLight* p_slight);
-	uint AddPointLight(PointLight* p_plight);
+	uint AddDirectionalLight(DirectionalLight p_dlight);
+	uint AddSpotLight(SpotLight p_slight);
+	uint AddPointLight(PointLight p_plight);
 
 	//need getters and setters for lights still
 
@@ -45,9 +45,9 @@ private:
 	std::vector<Collider> m_colliders;  //hold bounding boxes, etc
 	std::vector<WorldData> m_worldDatas; //to hold position, orientation, scale, velocity, etc..
 
-	std::vector<DirectionalLight*> m_dlightList; //three separate lists for lights.. for now
-	std::vector<SpotLight*> m_slightList;
-	std::vector<PointLight*> m_plightList;
+	std::vector<DirectionalLight> m_dlightList; //three separate lists for lights.. for now
+	std::vector<SpotLight> m_slightList;
+	std::vector<PointLight> m_plightList;
 
 	FirstPersonController* m_fpc;
 

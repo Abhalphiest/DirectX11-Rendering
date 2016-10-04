@@ -8,9 +8,9 @@ Scene::Scene(FirstPersonController* p_fpc)
 	m_colliders = std::vector<Collider>();
 	m_worldDatas = std::vector<WorldData>();
 
-	m_dlightList = std::vector<DirectionalLight*>();
-	m_slightList = std::vector<SpotLight*>();
-	m_plightList = std::vector<PointLight*>();
+	m_dlightList = std::vector<DirectionalLight>();
+	m_slightList = std::vector<SpotLight>();
+	m_plightList = std::vector<PointLight>();
 
 }
 Scene::~Scene()
@@ -19,44 +19,34 @@ Scene::~Scene()
 		m_meshList[i]->RemoveInstance();
 		m_materialList[i]->RemoveInstance();
 	}
-	for (std::vector<DirectionalLight*>::size_type i = 0; i != m_dlightList.size(); i++)
-	{
-		delete m_dlightList[i];
-	}
-	for (std::vector<PointLight*>::size_type i = 0; i != m_plightList.size(); i++)
-	{
-		delete m_plightList[i];
-	}
-	for (std::vector<SpotLight*>::size_type i = 0; i != m_slightList.size(); i++)
-	{
-		delete m_slightList[i];
-	}
+	
 }
 void Scene::Render(ID3D11DeviceContext* context, std::vector<uint> p_indices, 
 					std::vector<uint> p_dlights, std::vector<uint> p_plights, std::vector<uint> p_slights)
 {
+	bool result;
 	for (std::vector<uint>::size_type i = 0; i != p_indices.size(); i++)
 	{
 
-		for (std::vector<uint>::size_type i = 0; i != p_dlights.size(); i++)
+		for (std::vector<uint>::size_type j = 0; j != p_dlights.size(); j++)
 		{
-			m_materialList[p_indices[i]]->GetPixelShader()->SetData(
-				"dlight"+i, // The name of the variable in the shader
-				&m_dlightList[i], // The address of the data to copy
+			result = m_materialList[p_indices[i]]->GetPixelShader()->SetData(
+				"dlight"+std::to_string(j), // The name of the variable in the shader
+				&m_dlightList[j], // The address of the data to copy
 				sizeof(DirectionalLight)); // The size of the data to copy
 		}
-		for (std::vector<uint>::size_type i = 0; i != p_plights.size(); i++)
+		for (std::vector<uint>::size_type j = 0; j != p_plights.size(); j++)
 		{
 			m_materialList[p_indices[i]]->GetPixelShader()->SetData(
-				"plight" + i, // The name of the variable in the shader
-				&m_plightList[i], // The address of the data to copy
+				"plight" + std::to_string(j), // The name of the variable in the shader
+				&m_plightList[j], // The address of the data to copy
 				sizeof(PointLight)); // The size of the data to copy
 		}
-		for (std::vector<uint>::size_type i = 0; i != p_slights.size(); i++)
+		for (std::vector<uint>::size_type j = 0; j != p_slights.size(); j++)
 		{
 			m_materialList[p_indices[i]]->GetPixelShader()->SetData(
-				"slight" + i, // The name of the variable in the shader
-				&m_slightList[i], // The address of the data to copy
+				"slight" + std::to_string(j), // The name of the variable in the shader
+				&m_slightList[j], // The address of the data to copy
 				sizeof(SpotLight)); // The size of the data to copy
 		}
 
@@ -147,17 +137,17 @@ void Scene::SetObjectMesh(uint p_index, Mesh* p_mesh)
 
 //Light functions, this could be rearchitectured at a later date to be
 //cleaner
-uint Scene::AddDirectionalLight(DirectionalLight* p_dlight)
+uint Scene::AddDirectionalLight(DirectionalLight p_dlight)
 {
 	m_dlightList.push_back(p_dlight);
 	return m_dlightList.size() - 1;
 }
-uint Scene::AddSpotLight(SpotLight* p_slight)
+uint Scene::AddSpotLight(SpotLight p_slight)
 {
 	m_slightList.push_back(p_slight);
 	return m_slightList.size() - 1;
 }
-uint Scene::AddPointLight(PointLight* p_plight)
+uint Scene::AddPointLight(PointLight p_plight)
 {
 	m_plightList.push_back(p_plight);
 	return m_plightList.size() - 1;

@@ -64,7 +64,6 @@ SamplerState sampleState	: register(s0);
 // --------------------------------------------------------
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	//return float4(input.uv,0, 1);
 
 	//normalize our normal (heh)
 	input.normal = normalize(input.normal);

@@ -57,6 +57,7 @@ Game::~Game()
 	//if (e4) delete e4;
 	//if (camera) delete camera;
 	if (scene) delete scene;
+	if (fpc) delete fpc;
 }
 
 // --------------------------------------------------------
@@ -69,9 +70,9 @@ void Game::Init()
 	// geometry to draw and some simple camera matrices.
 	//  - You'll be expanding and/or replacing these later
 	fpc = new FirstPersonController(1280 / (float)720);
-	dlight = new DirectionalLight {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
-	dlight2 = new DirectionalLight { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
-	plight = new PointLight { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
+	dlight = DirectionalLight {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
+	dlight2 = DirectionalLight { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
+	plight = PointLight { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
 	scene = new Scene(fpc);
 	light1 = scene->AddDirectionalLight(dlight);
 	light2 = scene->AddDirectionalLight(dlight2);
