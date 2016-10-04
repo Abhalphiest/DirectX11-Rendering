@@ -130,16 +130,16 @@ uint Scene::CreateObject(Mesh* p_mesh, Material* p_material)
 
 
 //accessors
-void Scene::SetEntityMaterial(uint p_entityIndex, Material* p_material)
+void Scene::SetObjectMaterial(uint p_index, Material* p_material)
 {
-	m_materialList[p_entityIndex]->RemoveInstance();
-	m_materialList[p_entityIndex] = p_material;
+	m_materialList[p_index]->RemoveInstance();
+	m_materialList[p_index] = p_material;
 	p_material->GetInstance();
 }
-void Scene::SetEntityMesh(uint p_entityIndex, Mesh* p_mesh)
+void Scene::SetObjectMesh(uint p_index, Mesh* p_mesh)
 {
-	m_meshList[p_entityIndex]->RemoveInstance();
-	m_meshList[p_entityIndex] = p_mesh;
+	m_meshList[p_index]->RemoveInstance();
+	m_meshList[p_index] = p_mesh;
 	p_mesh->GetInstance();
 }
 

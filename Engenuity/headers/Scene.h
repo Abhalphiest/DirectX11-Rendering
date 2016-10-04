@@ -22,11 +22,11 @@ public:
 	uint CreateObject(Mesh* p_mesh, Material* p_material);
 
 	//accessors
-	void SetEntityMaterial(uint p_entityIndex, Material* p_material);
-	void SetEntityMesh(uint p_entityIndex, Mesh* p_mesh);
-	void SetEntityPosition(uint p_entityIndex, DirectX::XMFLOAT3 p_position) { m_worldDatas[p_entityIndex].m_position = p_position; }
-	void SetEntityOrientation(uint p_entityIndex, DirectX::XMFLOAT3 p_orientation) { m_worldDatas[p_entityIndex].m_orientation = p_orientation; }
-	void SetEntityScale(uint p_entityIndex, float p_scale) { m_worldDatas[p_entityIndex].m_scale = p_scale; }
+	void SetObjectMaterial(uint p_index, Material* p_material);
+	void SetObjectMesh(uint p_index, Mesh* p_mesh);
+	void SetObjectPosition(uint p_index, DirectX::XMFLOAT3 p_position) { m_worldDatas[p_index].m_position = p_position; }
+	void SetObjectOrientation(uint p_index, DirectX::XMFLOAT3 p_orientation) { m_worldDatas[p_index].m_orientation = p_orientation; }
+	void SetObjectScale(uint p_index, float p_scale) { m_worldDatas[p_index].m_scale = p_scale; }
 	//need getters
 
 

@@ -60,8 +60,8 @@ private:
 	SimplePixelShader* NpixelShader; //for normals
 
 	//light for assignment 4
-	DirectionalLight dlight, dlight2;
-	PointLight plight;
+	DirectionalLight *dlight, *dlight2;
+	PointLight *plight;
 
 	//textures for assignment 5
 	ID3D11ShaderResourceView* metalTextureSRV, *circuitNormalSRV;

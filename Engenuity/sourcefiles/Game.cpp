@@ -69,13 +69,13 @@ void Game::Init()
 	// geometry to draw and some simple camera matrices.
 	//  - You'll be expanding and/or replacing these later
 	fpc = new FirstPersonController(1280 / (float)720);
-	dlight = {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
-	dlight2 = { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
-	plight = { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
+	dlight = new DirectionalLight {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
+	dlight2 = new DirectionalLight { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
+	plight = new PointLight { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
 	scene = new Scene(fpc);
-	light1 = scene->AddDirectionalLight(&dlight);
-	light2 = scene->AddDirectionalLight(&dlight2);
-	light3 = scene->AddPointLight(&plight);
+	light1 = scene->AddDirectionalLight(dlight);
+	light2 = scene->AddDirectionalLight(dlight2);
+	light3 = scene->AddPointLight(plight);
 	CreateBasicGeometry();
 
 	// Tell the input assembler stage of the pipeline what kind of
@@ -203,14 +203,14 @@ void Game::CreateBasicGeometry()
 		defaultSRV, crystalNormalSRV, sampler);
 
 	object1 = scene->CreateObject(mesh1, material3);
-	scene->SetEntityPosition(object1,XMFLOAT3(-2.5, 1.5, 0));
+	scene->SetObjectPosition(object1,XMFLOAT3(-2.5, 1.5, 0));
 	object2 = scene->CreateObject(mesh2, material2);
-	scene->SetEntityPosition(object2,XMFLOAT3(0, 0, 2));
+	scene->SetObjectPosition(object2,XMFLOAT3(0, 0, 2));
 
 	object3 = scene->CreateObject(mesh3, material1);
-	scene->SetEntityPosition(object3,XMFLOAT3(0, -1.0, 0));
+	scene->SetObjectPosition(object3,XMFLOAT3(0, -1.0, 0));
 	object4 = scene->CreateObject(mesh4, material4);
-	scene->SetEntityPosition(object4, XMFLOAT3(-5.0, 0, -2));
+	scene->SetObjectPosition(object4, XMFLOAT3(-5.0, 0, -2));
 	// You'll notice that the code above attempts to load each
 	// compiled shader file (.cso) from two different relative paths.
 

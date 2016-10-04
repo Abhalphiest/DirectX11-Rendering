@@ -99,6 +99,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 multColor = multiplyTexture.Sample(sampleState, input.uv);
 	float specColor = specularTexture.Sample(sampleState, input.uv).r; //all channels should be equal
 
+	
 	//return textureColor;
 	return (lightCompute1
 		+ lightCompute2
