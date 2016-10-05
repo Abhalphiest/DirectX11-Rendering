@@ -31,17 +31,9 @@ public:
 	void GetInstance() { m_references++; }
 	void RemoveInstance() { m_references--; if (m_references == 0) delete this; }
 
-	static Mesh* Cube(float p_size, ID3D11Device* p_device);
-	static Mesh* Sphere(float p_radius, unsigned int p_subdivisions, ID3D11Device* p_device);
-	static Mesh* Torus(float p_innerRad, float p_outerRad, unsigned int p_subdivisions, ID3D11Device* p_device);
-
-
-	static void AddTri(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3,
-		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices);
-	static void AddQuad(DirectX::XMFLOAT3 p1, DirectX::XMFLOAT3 p2, DirectX::XMFLOAT3 p3, DirectX::XMFLOAT3 p4,
-		std::vector<Vertex> &p_verts, std::vector<unsigned int> & p_indices);
+private:
 	static void IndexVertices(std::vector<Vertex> &p_vertices, std::vector<unsigned int> &p_indices);
-	static DirectX::XMFLOAT3 TruncateVector(const DirectX::XMFLOAT3 v);
+	DirectX::XMFLOAT3 Mesh::TruncateVector(const DirectX::XMFLOAT3 v);
 
 
 };
