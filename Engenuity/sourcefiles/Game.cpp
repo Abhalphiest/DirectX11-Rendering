@@ -99,7 +99,7 @@ void Game::CreateBasicGeometry()
 	mesh1 = Mesh::LoadObj("Assets/Models/cube.obj", device);
 	mesh2 = Mesh::LoadObj("Assets/Models/sphere.obj", device);
 	mesh3 = Mesh::LoadObj("Assets/Models/helix.obj", device);
-	mesh4 = Mesh::LoadObj("Assets/Models/keyblade.obj", device);
+	mesh4 = Mesh::LoadObj("Assets/Models/fireplace.obj", device);
 
 	vertexShader = new SimpleVertexShader(device, context);
 	if (!vertexShader->LoadShaderFile(L"../Debug/VertexShader.cso"))
