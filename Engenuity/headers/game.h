@@ -5,7 +5,6 @@
 #include <DirectXMath.h>
 #include "Lights.h"
 #include "Mesh.h"
-#include "Entity.h"
 #include "Camera.h"
 #include "Material.h"
 #include"FirstPersonController.h"
@@ -36,8 +35,6 @@ public:
 private:
 
 	// Initialization helper methods - feel free to customize, combine, etc.
-	void LoadShaders(); 
-	void CreateMatrices();
 	void CreateBasicGeometry();
 
 
@@ -46,8 +43,6 @@ private:
 	// determining how far the mouse moved in a single frame.
 	POINT prevMousePos;
 
-	//Entities for assignment 3
-	Entity* e1, *e2, *e3, *e4;
 	Mesh* mesh1, *mesh2, *mesh3, *mesh4;
 	
 	FirstPersonController* fpc;
@@ -57,7 +52,7 @@ private:
 	//stuff for our material, assignment 4
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
-	SimplePixelShader* NpixelShader; //for normals
+	
 
 	//light for assignment 4
 	DirectionalLight dlight, dlight2;

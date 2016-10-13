@@ -88,14 +88,9 @@ void Game::Init()
 
 
 
-// --------------------------------------------------------
-// Creates the geometry we're going to draw - a single triangle for now
-// --------------------------------------------------------
+//will eventually be phased out by scene manager
 void Game::CreateBasicGeometry()
 {
-	//generate our three meshes
-	//the mesh constructor will also work, but it's easier to just
-	// let the computer generate our vertices and indices for us
 	mesh1 = Mesh::LoadObj("Assets/Models/cube.obj", device);
 	mesh2 = Mesh::LoadObj("Assets/Models/sphere.obj", device);
 	mesh3 = Mesh::LoadObj("Assets/Models/helix.obj", device);
@@ -108,9 +103,6 @@ void Game::CreateBasicGeometry()
 	if (!pixelShader->LoadShaderFile(L"../Debug/PixelShader.cso"))
 		pixelShader->LoadShaderFile(L"../PixelShader.cso");
 
-	NpixelShader = new SimplePixelShader(device, context);
-	if (!NpixelShader->LoadShaderFile(L"../Debug/nPixelShader.cso"))
-		NpixelShader->LoadShaderFile(L"../nPixelShader.cso");
 
 	//texture loading
 	CreateWICTextureFromFile(
@@ -196,11 +188,11 @@ void Game::CreateBasicGeometry()
 
 	Material* material1 = new Material(vertexShader, pixelShader,metalTextureSRV,defaultSRV,
 		specTextureSRV,defaultNSRV,sampler);
-	Material* material2 = new Material(vertexShader, NpixelShader, earthTextureSRV,defaultSRV,
+	Material* material2 = new Material(vertexShader, pixelShader, earthTextureSRV,defaultSRV,
 		earthspecTextureSRV,nTextureSRV,sampler);
-	Material* material3 = new Material(vertexShader, NpixelShader, metalTextureSRV, defaultSRV,
+	Material* material3 = new Material(vertexShader, pixelShader, metalTextureSRV, defaultSRV,
 		specTextureSRV, circuitNormalSRV, sampler);
-	Material* material4 = new Material(vertexShader, NpixelShader, crystalSRV, defaultSRV,
+	Material* material4 = new Material(vertexShader, pixelShader, crystalSRV, defaultSRV,
 		defaultSRV, crystalNormalSRV, sampler);
 
 	object1 = scene->CreateObject(mesh1, material3);
@@ -212,24 +204,7 @@ void Game::CreateBasicGeometry()
 	scene->SetObjectPosition(object3,XMFLOAT3(0, -1.0, 0));
 	object4 = scene->CreateObject(mesh4, material4);
 	scene->SetObjectPosition(object4, XMFLOAT3(-5.0, 0, -2));
-	// You'll notice that the code above attempts to load each
-	// compiled shader file (.cso) from two different relative paths.
-
-	// This is because the "working directory" (where relative paths begin)
-	// will be different during the following two scenarios:
-	//  - Debugging in VS: The "Project Directory" (where your .cpp files are) 
-	//  - Run .exe directly: The "Output Directory" (where the .exe & .cso files are)
-
-	// Checking both paths is the easiest way to ensure both 
-	// scenarios work correctly, although others exist
-	//e1 = new Entity(mesh1, material3);
-	//e1->SetPosition(XMFLOAT3(-2.5, 1.5, 0));
-	//e2 = new Entity(mesh2, material2);
-	//e2->SetPosition(XMFLOAT3(0, 0, 2));
-	//e3 = new Entity(mesh3, material1);
-	//e3->SetPosition(XMFLOAT3(0, -1.0, 0));
-	//e4 = new Entity(mesh4, material4);
-	//e4->SetPosition(XMFLOAT3(-5.0, 0, -2));
+	
 }
 
 
@@ -251,9 +226,6 @@ void Game::OnResize()
 // --------------------------------------------------------
 void Game::Update(float deltaTime, float totalTime)
 {
-	//e1->Rotate(XMFLOAT3(0, 1, 0), 2 * deltaTime);
-	//e2->Rotate(XMFLOAT3(0, 1, 0), deltaTime);
-	//e3->Move(XMFLOAT3(-deltaTime*XMScalarCos( totalTime), 0, 0));
 
 	//handle camera movement here until I can move this logic to an input manager
 	if (GetAsyncKeyState('W') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
@@ -286,54 +258,13 @@ void Game::Draw(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-/*	
-	XMFLOAT4X4 world;
-	//mesh1 
-	
-	pixelShader->SetData(
-	"light", // The name of the variable in the shader
-	&dlight, // The address of the data to copy
-	sizeof(DirectionalLight)); // The size of the data to copy
-	pixelShader->SetData(
-	"light2", // The name of the variable in the shader
-	&dlight2, // The address of the data to copy
-	sizeof(DirectionalLight)); // The size of the data to copy
-	pixelShader->SetData(
-		"light3", // The name of the variable in the shader
-		&plight, // The address of the data to copy
-		sizeof(PointLight)); // The size of the data to copy
-	pixelShader->SetData(
-		"cameraPos", // The name of the variable in the shader
-		&camera->GetPosition(), // The address of the data to copy
-		sizeof(XMFLOAT3)); // The size of the data to copy
-
-
-	NpixelShader->SetData(
-		"light", // The name of the variable in the shader
-		&dlight, // The address of the data to copy
-		sizeof(DirectionalLight)); // The size of the data to copy
-	NpixelShader->SetData(
-		"light2", // The name of the variable in the shader
-		&dlight2, // The address of the data to copy
-		sizeof(DirectionalLight)); // The size of the data to copy
-	NpixelShader->SetData(
-		"light3", // The name of the variable in the shader
-		&plight, // The address of the data to copy
-		sizeof(PointLight)); // The size of the data to copy
-	NpixelShader->SetData(
-		"cameraPos", // The name of the variable in the shader
-		&camera->GetPosition(), // The address of the data to copy
-		sizeof(XMFLOAT3)); // The size of the data to copy
-	e1->Draw(context, camera->GetView(), camera->GetProjection());
-	e2->Draw(context, camera->GetView(), camera->GetProjection());
-	e3->Draw(context, camera->GetView(), camera->GetProjection());
-	e4->Draw(context, camera->GetView(), camera->GetProjection());
-*/
 	std::vector<uint> objects = { object1,object2,object3,object4 };
 	std::vector<uint> dlights = { light1,light2};
 	std::vector<uint> plights = { light3 };
 	std::vector<uint> slights = {};
 	scene->Render(context, objects, dlights, plights, slights);
+
+
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
 	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)

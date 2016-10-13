@@ -115,9 +115,7 @@
     <ClInclude Include="headers\Camera.h" />
     <ClInclude Include="headers\DataStructs.h" />
     <ClInclude Include="headers\DXCore.h" />
-    <ClInclude Include="headers\Entity.h" />
     <ClInclude Include="headers\Game.h" />
-    <ClInclude Include="headers\InputMaster.h" />
     <ClInclude Include="headers\Lights.h" />
     <ClInclude Include="headers\Material.h" />
     <ClInclude Include="headers\Mesh.h" />
@@ -129,9 +127,7 @@
   <ItemGroup>
     <ClCompile Include="sourcefiles\Camera.cpp" />
     <ClCompile Include="sourcefiles\DXCore.cpp" />
-    <ClCompile Include="sourcefiles\Entity.cpp" />
     <ClCompile Include="sourcefiles\Game.cpp" />
-    <ClCompile Include="sourcefiles\InputMaster.cpp" />
     <ClCompile Include="sourcefiles\Main.cpp" />
     <ClCompile Include="sourcefiles\Material.cpp" />
     <ClCompile Include="sourcefiles\Mesh.cpp" />
@@ -139,10 +135,6 @@
     <ClCompile Include="sourcefiles\SimpleShader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\nPixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-    </FxCompile>
     <FxCompile Include="Shaders\PixelShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>

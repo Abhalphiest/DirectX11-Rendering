@@ -3,9 +3,8 @@
 #include"Vertex.h"
 #include <DirectXMath.h>
 #include <vector>
-#define _USE_MATH_DEFINES
+#define _USE_MATH_DEFINES //for pi
 #include <math.h>
-#include <map>
 #include <fstream>
 #include "DXCore.h"
 

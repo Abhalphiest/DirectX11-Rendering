@@ -3,7 +3,6 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
-#include "Entity.h"
 #include "Lights.h"
 #include "DataStructs.h"
 #include "FirstPersonController.h"
@@ -27,7 +26,15 @@ public:
 	void SetObjectPosition(uint p_index, DirectX::XMFLOAT3 p_position) { m_worldDatas[p_index].m_position = p_position; }
 	void SetObjectOrientation(uint p_index, DirectX::XMFLOAT3 p_orientation) { m_worldDatas[p_index].m_orientation = p_orientation; }
 	void SetObjectScale(uint p_index, float p_scale) { m_worldDatas[p_index].m_scale = p_scale; }
-	//need getters
+	//getters
+	DirectX::XMFLOAT3 GetObjectPosition(uint p_index) { return m_worldDatas[p_index].m_position; }
+	DirectX::XMFLOAT3 GetObjectOrientation(uint p_index) { return m_worldDatas[p_index].m_orientation; }
+	float GetObjectScale(uint p_index) { return m_worldDatas[p_index].m_scale; }
+	DirectX::XMFLOAT4X4 GetObjectWorld(uint p_index) { return m_worldDatas[p_index].GetWorld(); }
+	//movement
+	void MoveObject(uint p_index, DirectX::XMFLOAT3 p_moveVector);
+	void RotateObject(uint p_index, DirectX::XMFLOAT3 p_axis, float p_rad);
+	void Scale(uint p_index, float p_scale);
 
 
 	//Light functions, this could be rearchitectured at a later date to be

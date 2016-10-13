@@ -30,13 +30,7 @@
     <ClInclude Include="headers\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\InputMaster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="headers\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="headers\DXCore.h">
@@ -59,13 +53,7 @@
     <ClCompile Include="sourcefiles\DXCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sourcefiles\Entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sourcefiles\Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sourcefiles\InputMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sourcefiles\Main.cpp">
@@ -88,9 +76,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\nPixelShader.hlsl">
-      <Filter>Resource Files</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\PixelShader.hlsl">
       <Filter>Resource Files</Filter>
     </FxCompile>

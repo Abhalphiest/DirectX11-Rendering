@@ -152,3 +152,26 @@ uint Scene::AddPointLight(PointLight p_plight)
 	m_plightList.push_back(p_plight);
 	return m_plightList.size() - 1;
 }
+
+
+//object relative change functions
+void Scene::MoveObject(uint p_index, DirectX::XMFLOAT3 p_moveVector)
+{
+	DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&m_worldDatas[p_index].m_position);
+	DirectX::XMVECTOR moveVector = DirectX::XMLoadFloat3(&p_moveVector);
+	DirectX::XMStoreFloat3(&m_worldDatas[p_index].m_position,
+						DirectX::XMVectorAdd(position, moveVector));
+}
+
+void Scene::RotateObject(uint p_index, DirectX::XMFLOAT3 p_axis, float p_rad)
+{
+	DirectX::XMVECTOR rotation = DirectX::XMQuaternionRotationAxis(XMLoadFloat3(&p_axis), p_rad);
+	DirectX::XMVECTOR orientation = DirectX::XMLoadFloat3(&m_worldDatas[p_index].m_orientation);
+	DirectX::XMStoreFloat3(&m_worldDatas[p_index].m_orientation, 
+							DirectX::XMVectorAdd(rotation, orientation));
+
+}
+void Scene::Scale(uint p_index,float p_scale)
+{
+	m_worldDatas[p_index].m_scale += p_scale;
+}
