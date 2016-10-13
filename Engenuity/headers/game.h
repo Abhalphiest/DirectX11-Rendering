@@ -43,7 +43,7 @@ private:
 	// determining how far the mouse moved in a single frame.
 	POINT prevMousePos;
 
-	Mesh* mesh1, *mesh2, *mesh3, *mesh4;
+	Mesh* mesh1;
 	
 	FirstPersonController* fpc;
 	//Camera for assignment 4
@@ -59,9 +59,8 @@ private:
 	PointLight plight;
 
 	//textures for assignment 5
-	ID3D11ShaderResourceView* metalTextureSRV, *circuitNormalSRV;
-	ID3D11ShaderResourceView* woodTextureSRV, *crystalSRV, *crystalNormalSRV;
-	ID3D11ShaderResourceView* mTextureSRV, *nTextureSRV, *specTextureSRV, *earthspecTextureSRV, *earthTextureSRV;
+	ID3D11ShaderResourceView* armchairTextureSRV, *armchairNormalSRV, *armchairSpecSRV;
+	
 	ID3D11ShaderResourceView* defaultSRV,*defaultNSRV; //for the materials with no particular specs, normals, or mults
 	ID3D11SamplerState* sampler;
 

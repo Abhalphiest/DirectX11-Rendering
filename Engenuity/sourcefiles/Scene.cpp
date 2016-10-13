@@ -25,6 +25,9 @@ void Scene::Render(ID3D11DeviceContext* context, std::vector<uint> p_indices,
 					std::vector<uint> p_dlights, std::vector<uint> p_plights, std::vector<uint> p_slights)
 {
 	bool result;
+
+	//we make a LOT of redundant calls here, but it will have to be fixed towards 
+	//the end of the project.
 	for (std::vector<uint>::size_type i = 0; i != p_indices.size(); i++)
 	{
 

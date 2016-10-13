@@ -38,26 +38,16 @@ Game::~Game()
 {
 	
 	sampler->Release();
-	woodTextureSRV->Release();
-	metalTextureSRV->Release();
-	mTextureSRV->Release();
-	specTextureSRV->Release();
-	defaultSRV->Release();
-	nTextureSRV->Release();
-	defaultNSRV->Release();
-	earthTextureSRV->Release();
-	earthspecTextureSRV->Release();
-	circuitNormalSRV->Release();
-	crystalNormalSRV->Release();
-	crystalSRV->Release();
+	
+	
 	//delete all the stuff we allocated
-	//if (e1) delete e1;
-	//if (e2) delete e2;
-	//if (e3) delete e3;
-	//if (e4) delete e4;
-	//if (camera) delete camera;
+	
 	if (scene) delete scene;
 	if (fpc) delete fpc;
+
+	armchairTextureSRV->Release();
+	armchairNormalSRV->Release();
+	armchairSpecSRV->Release();
 }
 
 // --------------------------------------------------------
@@ -91,10 +81,7 @@ void Game::Init()
 //will eventually be phased out by scene manager
 void Game::CreateBasicGeometry()
 {
-	mesh1 = Mesh::LoadObj("Assets/Models/cube.obj", device);
-	mesh2 = Mesh::LoadObj("Assets/Models/sphere.obj", device);
-	mesh3 = Mesh::LoadObj("Assets/Models/helix.obj", device);
-	mesh4 = Mesh::LoadObj("Assets/Models/fireplace.obj", device);
+	mesh1 = Mesh::LoadObj("Assets/Models/armchair.obj", device);
 
 	vertexShader = new SimpleVertexShader(device, context);
 	if (!vertexShader->LoadShaderFile(L"../Debug/VertexShader.cso"))
@@ -108,75 +95,22 @@ void Game::CreateBasicGeometry()
 	CreateWICTextureFromFile(
 		device,
 		context, // If I provide the context, it will auto-generate Mipmaps
-		L"Assets/Textures/metal.jpg",
+		L"Assets/Textures/armchair.dds",
 		0, // We don't actually need the texture reference
-		&metalTextureSRV);
+		&armchairTextureSRV);
 	CreateWICTextureFromFile(
 		device,
 		context, 
-		L"Assets/Textures/wood.jpg",
+		L"Assets/Textures/armchair_n.dds",
 		0, 
-		&woodTextureSRV);
+		&armchairNormalSRV);
 	CreateWICTextureFromFile(
 		device,
 		context,
-		L"Assets/Textures/earthdiffuse.jpg",
+		L"Assets/Textures/armchair_s.dds",
 		0,
-		&earthTextureSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/metalspec.jpg",
-		0,
-		&specTextureSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/earthspec.png",
-		0,
-		&earthspecTextureSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/multiply.jpg",
-		0,
-		&mTextureSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/default.jpg",
-		0,
-		&defaultSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/flatnormal.jpg",
-		0,
-		&defaultNSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/earthnormal.jpg",
-		0,
-		&nTextureSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/circuitnormal.jpg",
-		0,
-		&circuitNormalSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/crystalnormal.jpg",
-		0,
-		&crystalNormalSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/crystaldiffuse.jpg",
-		0,
-		&crystalSRV);
+		&armchairSpecSRV);
+	
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -186,24 +120,13 @@ void Game::CreateBasicGeometry()
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &sampler);
 
-	Material* material1 = new Material(vertexShader, pixelShader,metalTextureSRV,defaultSRV,
-		specTextureSRV,defaultNSRV,sampler);
-	Material* material2 = new Material(vertexShader, pixelShader, earthTextureSRV,defaultSRV,
-		earthspecTextureSRV,nTextureSRV,sampler);
-	Material* material3 = new Material(vertexShader, pixelShader, metalTextureSRV, defaultSRV,
-		specTextureSRV, circuitNormalSRV, sampler);
-	Material* material4 = new Material(vertexShader, pixelShader, crystalSRV, defaultSRV,
-		defaultSRV, crystalNormalSRV, sampler);
+	Material* material1 = new Material(vertexShader, pixelShader,armchairTextureSRV,armchairTextureSRV,
+		armchairNormalSRV,armchairNormalSRV,sampler);
+	
 
-	object1 = scene->CreateObject(mesh1, material3);
+	object1 = scene->CreateObject(mesh1, material1);
 	scene->SetObjectPosition(object1,XMFLOAT3(-2.5, 1.5, 0));
-	object2 = scene->CreateObject(mesh2, material2);
-	scene->SetObjectPosition(object2,XMFLOAT3(0, 0, 2));
-
-	object3 = scene->CreateObject(mesh3, material1);
-	scene->SetObjectPosition(object3,XMFLOAT3(0, -1.0, 0));
-	object4 = scene->CreateObject(mesh4, material4);
-	scene->SetObjectPosition(object4, XMFLOAT3(-5.0, 0, -2));
+	
 	
 }
 

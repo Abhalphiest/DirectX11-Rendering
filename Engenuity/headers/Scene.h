@@ -6,6 +6,7 @@
 #include "Lights.h"
 #include "DataStructs.h"
 #include "FirstPersonController.h"
+#include <map>
 
 
 class Scene
