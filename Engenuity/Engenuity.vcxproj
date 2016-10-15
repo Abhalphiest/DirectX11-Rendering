@@ -123,6 +123,7 @@
     <ClInclude Include="headers\SimpleShader.h" />
     <ClInclude Include="headers\Vertex.h" />
     <ClInclude Include="headers\FirstPersonController.h" />
+    <ClInclude Include="headers\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sourcefiles\Camera.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="sourcefiles\Material.cpp" />
     <ClCompile Include="sourcefiles\Mesh.cpp" />
     <ClCompile Include="sourcefiles\Scene.cpp" />
+    <ClCompile Include="sourcefiles\SceneManager.cpp" />
     <ClCompile Include="sourcefiles\SimpleShader.cpp" />
   </ItemGroup>
   <ItemGroup>

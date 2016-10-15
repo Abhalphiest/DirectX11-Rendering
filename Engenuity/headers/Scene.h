@@ -18,6 +18,7 @@ public:
 		std::vector<uint> p_dlights, std::vector<uint> p_plights, std::vector<uint> p_slights);
 
 
+
 	//object "constructor"
 	uint CreateObject(Mesh* p_mesh, Material* p_material);
 
@@ -44,8 +45,13 @@ public:
 	uint AddSpotLight(SpotLight p_slight);
 	uint AddPointLight(PointLight p_plight);
 
-	//need getters and setters for lights still
-
+	//getters and setters for lights
+	DirectionalLight GetDirectionalLight(uint p_index) { return m_dlightList[p_index]; }
+	void SetDirectionalLight(uint p_index, DirectionalLight p_dlight) { m_dlightList[p_index] = p_dlight;}
+	PointLight GetPointLight(uint p_index) { return m_plightList[p_index]; }
+	void SetPointLight(uint p_index,PointLight p_plight) { m_plightList[p_index] = p_plight; }
+	SpotLight GetSpotLight(uint p_index) { return m_slightList[p_index]; }
+	void SetSpotLight(uint p_index, SpotLight p_slight) { m_slightList[p_index] = p_slight; }
 	
 private:
 	std::vector<Mesh*> m_meshList;  //holds meshes
