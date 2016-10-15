@@ -101,7 +101,7 @@ void Game::CreateBasicGeometry()
 	CreateWICTextureFromFile(
 		device,
 		context, 
-		L"Assets/Textures/armchair_n.dds",
+		L"Assets/Textures/armchair_n.png",
 		0, 
 		&armchairNormalSRV);
 	CreateWICTextureFromFile(
