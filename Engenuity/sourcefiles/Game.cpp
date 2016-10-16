@@ -36,7 +36,7 @@ Game::Game(HINSTANCE hInstance)
 // --------------------------------------------------------
 Game::~Game()
 {
-	
+	/*
 	sampler->Release();
 	
 	
@@ -48,6 +48,8 @@ Game::~Game()
 	armchairTextureSRV->Release();
 	armchairNormalSRV->Release();
 	armchairSpecSRV->Release();
+	*/
+	delete scenemanager;
 }
 
 // --------------------------------------------------------
@@ -59,8 +61,8 @@ void Game::Init()
 	// Helper methods for loading shaders, creating some basic
 	// geometry to draw and some simple camera matrices.
 	//  - You'll be expanding and/or replacing these later
-	fpc = new FirstPersonController(1280 / (float)720);
-	dlight = DirectionalLight {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
+	//fpc = new FirstPersonController(1280 / (float)720);
+	/*dlight = DirectionalLight {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
 	dlight2 = DirectionalLight { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
 	plight = PointLight { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
 	scene = new Scene(fpc);
@@ -68,7 +70,11 @@ void Game::Init()
 	light2 = scene->AddDirectionalLight(dlight2);
 	light3 = scene->AddPointLight(plight);
 	CreateBasicGeometry();
-
+	*/
+	scenemanager = SceneManager::getInstance();
+	scenemanager->SetContext(context);
+	scenemanager->SetDevice(device);
+	scenemanager->SetSamplerState();
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
 	// Essentially: "What kind of shape should the GPU draw with our data?"
@@ -81,6 +87,7 @@ void Game::Init()
 //will eventually be phased out by scene manager
 void Game::CreateBasicGeometry()
 {
+	/*
 	mesh1 = Mesh::LoadObj("Assets/Models/armchair.obj", device);
 
 	vertexShader = new SimpleVertexShader(device, context);
@@ -126,7 +133,7 @@ void Game::CreateBasicGeometry()
 
 	object1 = scene->CreateObject(mesh1, material1);
 	scene->SetObjectPosition(object1,XMFLOAT3(-2.5, 1.5, 0));
-	
+	*/
 	
 }
 
@@ -141,7 +148,7 @@ void Game::OnResize()
 	DXCore::OnResize();
 
 	// Update our projection matrix since the window size changed
-	camera->SetProjection((float)width / height);
+	//camera->SetProjection((float)width / height);
 }
 
 // --------------------------------------------------------
@@ -149,7 +156,7 @@ void Game::OnResize()
 // --------------------------------------------------------
 void Game::Update(float deltaTime, float totalTime)
 {
-
+	/*
 	//handle camera movement here until I can move this logic to an input manager
 	if (GetAsyncKeyState('W') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
 	if (GetAsyncKeyState('S') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
@@ -157,7 +164,7 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->camera->Move(XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->camera->Move(XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
 	if (GetAsyncKeyState('X') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
-
+	*/
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
@@ -180,13 +187,13 @@ void Game::Draw(float deltaTime, float totalTime)
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f,
 		0);
-
+	/*
 	std::vector<uint> objects = { object1,object2,object3,object4 };
 	std::vector<uint> dlights = { light1,light2};
 	std::vector<uint> plights = { light3 };
 	std::vector<uint> slights = {};
 	scene->Render(context, objects, dlights, plights, slights);
-
+	*/
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
@@ -236,7 +243,7 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
 	if(buttonState&0x0001) //left button down
-		fpc->camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
+		//fpc->camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;

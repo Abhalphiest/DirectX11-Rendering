@@ -9,6 +9,7 @@
 #include "Material.h"
 #include"FirstPersonController.h"
 #include"Scene.h"
+#include "SceneManager.h"
 #define CAMERA_DELTA .005
 #define MOVE_SCALE 10
 
@@ -43,6 +44,8 @@ private:
 	// determining how far the mouse moved in a single frame.
 	POINT prevMousePos;
 
+	SceneManager* scenemanager;
+	/*
 	Mesh* mesh1;
 	
 	FirstPersonController* fpc;
@@ -67,5 +70,6 @@ private:
 	Scene* scene;
 	uint light1, light2, light3;
 	uint object1, object2, object3, object4;
+	*/
 };
 

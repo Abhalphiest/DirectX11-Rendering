@@ -46,6 +46,8 @@ public:
 	
 	void SetDevice(ID3D11Device* device) { m_device = device; }
 	void SetContext(ID3D11DeviceContext* context) { m_context = context; }
+	void SetSamplerState(D3D11_SAMPLER_DESC samplerDesc);
+	void SetSamplerState();
 	//toggle lights and such will come later, right now we just always draw all the lights
 	//and all the meshes until I come up with an intelligent way to architect this
 

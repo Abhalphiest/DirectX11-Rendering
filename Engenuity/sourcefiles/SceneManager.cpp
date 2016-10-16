@@ -1,5 +1,6 @@
 #include"../headers/SceneManager.h"
 
+SceneManager* SceneManager::m_instance = nullptr;
 
 SceneManager::~SceneManager()
 {
@@ -7,8 +8,10 @@ SceneManager::~SceneManager()
 	{
 		if (m_sceneList[i])
 			ReleaseScene(i);
-		delete m_FPC;
 	}
+	delete m_FPC;
+	if (m_samplerState)
+		m_samplerState->Release();
 }
 unsigned int SceneManager::LoadScene(char* p_filename)
 {
@@ -451,8 +454,19 @@ void SceneManager::ReleaseScene(unsigned int p_index)
 SceneManager::SceneManager()
 {
 	//make first person controller
+	m_FPC = new FirstPersonController(1280 / (float)720);
 	
-	//set up sampler state
+}
+void SceneManager::SetSamplerState(D3D11_SAMPLER_DESC samplerDesc)
+{
+	if (m_samplerState)
+		m_samplerState->Release();
+	m_device->CreateSamplerState(&samplerDesc, &m_samplerState);
+}
+void SceneManager::SetSamplerState()
+{
+	if(m_samplerState)
+		m_samplerState->Release();
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -462,7 +476,6 @@ SceneManager::SceneManager()
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	m_device->CreateSamplerState(&samplerDesc, &m_samplerState);
 }
-
 int SceneManager::skipWSandComments(char* chars, std::ifstream* file)
 {
 	int i = 0;
