@@ -24,60 +24,62 @@ Scene::~Scene()
 void Scene::Render(ID3D11DeviceContext* context, std::vector<uint> p_indices, 
 					std::vector<uint> p_dlights, std::vector<uint> p_plights, std::vector<uint> p_slights)
 {
-	bool result;
-
-	//we make a LOT of redundant calls here, but it will have to be fixed towards 
-	//the end of the project.
+	std::vector<SimplePixelShader*> ps_list; //to avoid pixel buffer data passing redundancy
 	for (std::vector<uint>::size_type i = 0; i != p_indices.size(); i++)
 	{
-
-		for (std::vector<uint>::size_type j = 0; j != p_dlights.size(); j++)
+		SimplePixelShader* ps = m_materialList[p_indices[i]]->GetPixelShader();
+		if (std::find(ps_list.begin(), ps_list.end(), ps) == ps_list.end()) //not in our list yet
 		{
-			result = m_materialList[p_indices[i]]->GetPixelShader()->SetData(
-				"dlight"+std::to_string(j), // The name of the variable in the shader
-				&m_dlightList[j], // The address of the data to copy
-				sizeof(DirectionalLight)); // The size of the data to copy
+			for (std::vector<uint>::size_type j = 0; j != p_dlights.size(); j++)
+			{
+				ps->SetData(
+					"dlight" + std::to_string(j), // The name of the variable in the shader
+					&m_dlightList[j], // The address of the data to copy
+					sizeof(DirectionalLight)); // The size of the data to copy
+			}
+			for (std::vector<uint>::size_type j = 0; j != p_plights.size(); j++)
+			{
+				ps->SetData(
+					"plight" + std::to_string(j), // The name of the variable in the shader
+					&m_plightList[j], // The address of the data to copy
+					sizeof(PointLight)); // The size of the data to copy
+			}
+			for (std::vector<uint>::size_type j = 0; j != p_slights.size(); j++)
+			{
+				ps->SetData(
+					"slight" + std::to_string(j), // The name of the variable in the shader
+					&m_slightList[j], // The address of the data to copy
+					sizeof(SpotLight)); // The size of the data to copy
+			}
+
+			ps->SetData(
+				"cameraPos", // The name of the variable in the shader
+				&m_fpc->camera->GetPosition(), // The address of the data to copy
+				sizeof(DirectX::XMFLOAT3)); // The size of the data to copy
+
+
+
+
+			ps->CopyAllBufferData();
+			ps_list.push_back(ps); //add it to the list
 		}
-		for (std::vector<uint>::size_type j = 0; j != p_plights.size(); j++)
-		{
-			m_materialList[p_indices[i]]->GetPixelShader()->SetData(
-				"plight" + std::to_string(j), // The name of the variable in the shader
-				&m_plightList[j], // The address of the data to copy
-				sizeof(PointLight)); // The size of the data to copy
-		}
-		for (std::vector<uint>::size_type j = 0; j != p_slights.size(); j++)
-		{
-			m_materialList[p_indices[i]]->GetPixelShader()->SetData(
-				"slight" + std::to_string(j), // The name of the variable in the shader
-				&m_slightList[j], // The address of the data to copy
-				sizeof(SpotLight)); // The size of the data to copy
-		}
-
-		m_materialList[p_indices[i]]->GetPixelShader()->SetData(
-			"cameraPos", // The name of the variable in the shader
-			&m_fpc->camera->GetPosition(), // The address of the data to copy
-			sizeof(DirectX::XMFLOAT3)); // The size of the data to copy
-
-
-		DirectX::XMFLOAT4X4 world;
-		XMStoreFloat4x4(&world, XMMatrixTranspose(							// transpose for hlsl
-									XMLoadFloat4x4(&m_worldDatas[p_indices[i]].GetWorld()))); 
-		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("world", world);
-		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("view", m_fpc->camera->GetView());
-		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("projection", m_fpc->camera->GetProjection());
-
-		// Once you've set all of the data you care to change for
-		// the next draw call, you need to actually send it to the GPU
-		//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
-		m_materialList[p_indices[i]]->GetVertexShader()->CopyAllBufferData();
-		m_materialList[p_indices[i]]->GetPixelShader()->CopyAllBufferData();
-
+		
 		//simple shader should handle our nullptrs if we happen to pass them
 		m_materialList[p_indices[i]]->GetPixelShader()->SetSamplerState("sampleState", m_materialList[p_indices[i]]->GetSampleState());
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShaderResourceView("diffuseTexture", m_materialList[p_indices[i]]->GetSRV());
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShaderResourceView("multiplyTexture", m_materialList[p_indices[i]]->GetMSRV());
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShaderResourceView("specularTexture", m_materialList[p_indices[i]]->GetSpecSRV());
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShaderResourceView("normalTexture", m_materialList[p_indices[i]]->GetNSRV());
+
+		//vertex shader
+
+		DirectX::XMFLOAT4X4 world;
+		XMStoreFloat4x4(&world, XMMatrixTranspose(							// transpose for hlsl
+			XMLoadFloat4x4(&m_worldDatas[p_indices[i]].GetWorld())));
+		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("world", world);
+		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("view", m_fpc->camera->GetView());
+		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("projection", m_fpc->camera->GetProjection());
+		m_materialList[p_indices[i]]->GetVertexShader()->CopyAllBufferData();
 		// Set our vertex and pixel shaders to use for the next draw
 		m_materialList[p_indices[i]]->GetVertexShader()->SetShader();
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShader();
