@@ -29,7 +29,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	std::vector<ID3D11ShaderResourceView*> msrvList; //multiply srvs
 
 	// File input object
-	std::ifstream file("../scenes/"+std::string(p_filename));
+	std::ifstream file(p_filename);
 
 	// Check for successful open
 	if (!file.is_open())

@@ -75,6 +75,8 @@ void Game::Init()
 	scenemanager->SetContext(context);
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
+	uint scene =scenemanager->LoadScene("scenes/testscene.txt");
+	
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
 	// Essentially: "What kind of shape should the GPU draw with our data?"

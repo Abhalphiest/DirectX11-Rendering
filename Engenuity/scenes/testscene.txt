@@ -1,16 +1,16 @@
 #one mesh, one of each texture just for testing
 
-o ../Assets/Models/armchair.obj
+o Assets/Models/armchair.obj
 
-t ../Assets/Textures/armchair.dds
+t Assets/Textures/armchair.dds
 
-n ../Assets/Textures/armchair_n.png
+n Assets/Textures/armchair_n.png
 
-s ../Assets/Textures/armchair_s.dds
+s Assets/Textures/armchair_s.dds
 
-ps ../shaders/PixelShader.hlsl
+ps shaders/PixelShader.hlsl
 
-vs ../shaders/VertexShader.hlsl
+vs shaders/VertexShader.hlsl
 
 %
 
