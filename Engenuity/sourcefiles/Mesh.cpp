@@ -4,32 +4,31 @@ Mesh::Mesh(Vertex* p_verts, int p_numVertices, unsigned int* p_indices,
 	int p_numIndices, ID3D11Device* p_device)
 {
 	m_numIndices = p_numIndices;
-	//create the vertex buffer
-	D3D11_BUFFER_DESC vertBufferData = {}; //initialize to 0 to save some assignments
-	vertBufferData.Usage = D3D11_USAGE_IMMUTABLE; //we'll never change this
-	vertBufferData.ByteWidth = sizeof(Vertex) * p_numVertices;  
+	// Create the vertex buffer
+	D3D11_BUFFER_DESC vertBufferData = {};          // Initialize to 0 to save some assignments
+	vertBufferData.Usage = D3D11_USAGE_IMMUTABLE;   // We'll never change this
+	vertBufferData.ByteWidth = sizeof(Vertex) * p_numVertices;
 	vertBufferData.BindFlags = D3D11_BIND_VERTEX_BUFFER; // Tells DirectX this is a vertex buffer
 
-	//get our vertex data ready to pass into a buffer
+														 // Get our vertex data ready to pass into a buffer
 	D3D11_SUBRESOURCE_DATA vertexData;
 	vertexData.pSysMem = p_verts;
 
-	//actually construct the vertex buffer
+	// Actually construct the vertex buffer
 	p_device->CreateBuffer(&vertBufferData, &vertexData, &m_Vbuffer);
 
 
-
-	//create the index buffer
+	// Create the index buffer
 	D3D11_BUFFER_DESC indexBufferData = {};
-	indexBufferData.Usage = D3D11_USAGE_IMMUTABLE; //we'll never change this
+	indexBufferData.Usage = D3D11_USAGE_IMMUTABLE;      // We'll never change this
 	indexBufferData.ByteWidth = sizeof(int) * p_numIndices;
 	indexBufferData.BindFlags = D3D11_BIND_INDEX_BUFFER; // Tells DirectX this is an index buffer
 
-	//get the data ready to be passed to the buffer
+														 // Get the data ready to be passed to the buffer
 	D3D11_SUBRESOURCE_DATA indexData;
 	indexData.pSysMem = p_indices;
 
-	//construct the index buffer in DX11
+	// Construct the index buffer in DX11
 	p_device->CreateBuffer(&indexBufferData, &indexData, &m_Ibuffer);
 }
 
@@ -163,33 +162,33 @@ Mesh* Mesh::LoadObj(char* filepath, ID3D11Device* p_device)
 				indices.push_back(vertCounter); vertCounter += 1;
 			}
 		}
-		
+
 	}
 
 	// Close the file and create the actual buffers
 	obj.close();
-	CalcTBN(verts, indices); //for normal mapping
+	CalcTBN(verts, indices); // For normal mapping
 
-	// - At this point, "verts" is a vector of Vertex structs, and can be used
-	//    directly to create a vertex buffer:  &verts[0] is the address of the first vert
-	//
-	// - The vector "indices" is similar. It's a vector of unsigned ints and
-	//    can be used directly for the index buffer: &indices[0] is the address of the first int
-	//
-	// - "vertCounter" is BOTH the number of vertices and the number of indices
-	// - Yes, the indices are a bit redundant here (one per vertex)
+							 // - At this point, "verts" is a vector of Vertex structs, and can be used
+							 //    directly to create a vertex buffer:  &verts[0] is the address of the first vert
+							 //
+							 // - The vector "indices" is similar. It's a vector of unsigned ints and
+							 //    can be used directly for the index buffer: &indices[0] is the address of the first int
+							 //
+							 // - "vertCounter" is BOTH the number of vertices and the number of indices
+							 // - Yes, the indices are a bit redundant here (one per vertex)
 
 	return new Mesh(&verts[0], vertCounter, &indices[0], vertCounter, p_device);
 }
 void Mesh::CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices)
 {
 	Vertex v0, v1, v2;
-	DirectX::XMVECTOR dpos1, dpos2; //dpos is triangle edge, duv is uv edge
+	DirectX::XMVECTOR dpos1, dpos2;             // dpos is triangle edge, duv is uv edge
 	DirectX::XMVECTOR p0, p1, p2;
 	DirectX::XMFLOAT2 u0, u1, u2, duv1, duv2;
 	DirectX::XMFLOAT3 tangent, binormal;
 	std::vector<Vertex> vertices;
-	for (int i = 0; i < indices.size(); i += 3) //assumes triangulated
+	for (int i = 0; i < indices.size(); i += 3) // Assumes triangulated
 	{
 		//get our data
 		v0 = p_verts[indices[i]];
@@ -205,20 +204,32 @@ void Mesh::CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices)
 		//get deltas
 		dpos1 = DirectX::XMVectorSubtract(p1, p0);
 		dpos2 = DirectX::XMVectorSubtract(p2, p0);
-		DirectX::XMStoreFloat2(&duv1,DirectX::XMVectorSubtract(DirectX::XMLoadFloat2(&u1), DirectX::XMLoadFloat2(&u0)));
-		DirectX::XMStoreFloat2(&duv2, DirectX::XMVectorSubtract(DirectX::XMLoadFloat2(&u2), DirectX::XMLoadFloat2(&u0)));
+		DirectX::XMStoreFloat2(&duv1,
+			DirectX::XMVectorSubtract(
+				DirectX::XMLoadFloat2(&u1),
+				DirectX::XMLoadFloat2(&u0)));
 
-		float r = 1.0f / (duv1.x*duv2.y - duv1.y*duv2.x);
-		DirectX::XMStoreFloat3(&binormal, DirectX::XMVectorScale(
-								DirectX::XMVectorSubtract(DirectX::XMVectorScale(dpos1,duv2.y), 
-								DirectX::XMVectorScale(dpos2, duv1.y))
-								,r));
-		DirectX::XMStoreFloat3(&tangent, DirectX::XMVectorScale(
-			DirectX::XMVectorSubtract(DirectX::XMVectorScale(dpos2, duv1.x),
-				DirectX::XMVectorScale(dpos1, duv2.x))
-			, r));
+		DirectX::XMStoreFloat2(&duv2,
+			DirectX::XMVectorSubtract(
+				DirectX::XMLoadFloat2(&u2),
+				DirectX::XMLoadFloat2(&u0)));
 
-		//set up our vertices and go
+		float r = 1.0f / (duv1.x * duv2.y - duv1.y * duv2.x);
+		DirectX::XMStoreFloat3(&binormal,
+			DirectX::XMVectorScale(
+				DirectX::XMVectorSubtract(
+					DirectX::XMVectorScale(dpos1, duv2.y),
+					DirectX::XMVectorScale(dpos2, duv1.y)),
+				r));
+
+		DirectX::XMStoreFloat3(&tangent,
+			DirectX::XMVectorScale(
+				DirectX::XMVectorSubtract(
+					DirectX::XMVectorScale(dpos2, duv1.x),
+					DirectX::XMVectorScale(dpos1, duv2.x)),
+				r));
+
+		// Set up our vertices and go
 		v0.Binormal = binormal;
 		v1.Binormal = binormal;
 		v2.Binormal = binormal;
@@ -230,8 +241,8 @@ void Mesh::CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices)
 		vertices.push_back(v2);
 	}
 	p_verts = vertices;
-	IndexVertices(p_verts, indices); //we'll need to reindex since we differentiated vertices from
-									 //each other.
+	IndexVertices(p_verts, indices);    // We'll need to reindex since we differentiated 
+										// vertices from each other.
 }
 Mesh::~Mesh()
 {
@@ -240,18 +251,15 @@ Mesh::~Mesh()
 
 }
 
-
-
-
-
-void Mesh::IndexVertices(std::vector<Vertex> &p_vertices, std::vector<unsigned int> &p_indices)
+void Mesh::IndexVertices(std::vector<Vertex> &p_vertices,
+	std::vector<unsigned int> &p_indices)
 {
-	p_indices.clear(); //to be safe
+	p_indices.clear(); // To be safe
 
 	for (UINT i = 0; i < p_vertices.size(); i++)
 	{
 
-		p_indices.push_back(i); //laziness for now.. will actually implement later.
+		p_indices.push_back(i); // Laziness for now.. will actually implement later.
 	}
 }
 
