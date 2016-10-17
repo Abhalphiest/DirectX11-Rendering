@@ -76,6 +76,7 @@ void Game::Init()
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
 	uint scene =scenemanager->LoadScene("scenes/testscene.txt");
+	scenemanager->SetScene(scene);
 	
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
@@ -158,7 +159,7 @@ void Game::OnResize()
 // --------------------------------------------------------
 void Game::Update(float deltaTime, float totalTime)
 {
-	/*
+	FirstPersonController* fpc = scenemanager->GetFPC();
 	//handle camera movement here until I can move this logic to an input manager
 	if (GetAsyncKeyState('W') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
 	if (GetAsyncKeyState('S') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
@@ -166,7 +167,7 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->camera->Move(XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->camera->Move(XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
 	if (GetAsyncKeyState('X') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
-	*/
+	
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
@@ -196,7 +197,7 @@ void Game::Draw(float deltaTime, float totalTime)
 	std::vector<uint> slights = {};
 	scene->Render(context, objects, dlights, plights, slights);
 	*/
-
+	scenemanager->RenderCurrentScene();
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
 	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
@@ -245,7 +246,7 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
 	if(buttonState&0x0001) //left button down
-		//fpc->camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
+		scenemanager->GetFPC()->camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;

@@ -43,7 +43,7 @@ public:
 	FirstPersonController* GetFPC() { return m_FPC; }
 
     /**
-     * LoadScene takes the provided filepath and loads the scene file at that
+     * LoadScene takes the provided filename and loads the scene file at that
      * path.
      * 
      * @param p_filename    - the filename (not path) of the scene file
@@ -60,7 +60,8 @@ public:
     */
 	void ReleaseScene(unsigned int p_index);
 	Scene* GetScene(unsigned int p_index) { return m_sceneList[p_index]; }
-	
+	void SetScene(unsigned int p_index) { m_currScene = p_index; }
+	void RenderCurrentScene();
 	void SetDevice(ID3D11Device* device) { m_device = device; }
 	void SetContext(ID3D11DeviceContext* context) { m_context = context; }
 	void SetSamplerState(D3D11_SAMPLER_DESC samplerDesc);
@@ -68,14 +69,22 @@ public:
 	//toggle lights and such will come later, right now we just always draw all the lights
 	//and all the meshes until I come up with an intelligent way to architect this
 
-
+	struct SceneData
+	{
+		std::vector<uint> m_indices;
+		std::vector<uint> m_dlights;
+		std::vector<uint> m_plights;
+		std::vector<uint> m_slights;
+	};
 private:
 	
+
 	static SceneManager* m_instance;
 	FirstPersonController* m_FPC;
 	std::vector<Scene*> m_sceneList;
+	std::vector<SceneData> m_dataList;
 	std::vector<std::vector<ID3D11ShaderResourceView*>> m_srvList;  // We're responsible for releasing these
-	
+	uint m_currScene;
 	// Allows us to recycle indices after the scenes get freed without resizing the vector and ruining indexing
 	std::queue<unsigned int> m_freedIndices;
 

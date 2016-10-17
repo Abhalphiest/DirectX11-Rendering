@@ -31,6 +31,8 @@ public:
 				std::vector<uint> p_plights,
 				std::vector<uint> p_slights);
 
+
+
 	/**
 	* CreateObject takes in a mesh and material, creates the appropriate world
 	* & collider data, and creates an "object" with them (pushes them to the

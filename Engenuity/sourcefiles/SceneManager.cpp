@@ -17,7 +17,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 {
 	//create new scene
 	Scene* newScene = new Scene(m_FPC);
-	
+	SceneData newData = SceneData();
 	//for loading all textures, meshes, etc and making our materials
 	std::vector<Mesh*> meshes;
 	std::vector<Material*> materials;
@@ -191,6 +191,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		Mesh* mesh = meshes[std::stoul(s.substr(0, pos), NULL, 10)];
 		Material* material = materials[std::stoul(s.substr(pos+1, s.length()), NULL, 10)];
 		uint object = newScene->CreateObject(mesh, material);
+		newData.m_indices.push_back(object);
 		if (!file.getline(chars, 100))
 		{
 			//if we want to do error handling in the future
@@ -292,7 +293,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			z = std::stof(s.substr(pos2, s.length()), NULL);
 			DirectX::XMFLOAT3 direction(x, y, z);
 
-			newScene->AddDirectionalLight({ ambient,diffuse,direction });
+			uint index = newScene->AddDirectionalLight({ ambient,diffuse,direction });
+			newData.m_dlights.push_back(index);
 			break;
 		}
 		case 'p': //point light
@@ -339,7 +341,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			z = std::stof(s.substr(pos2, s.length()), NULL);
 			DirectX::XMFLOAT3 position(x, y, z);
 
-			newScene->AddPointLight({ ambient,diffuse,position});
+			uint index = newScene->AddPointLight({ ambient,diffuse,position});
+			newData.m_plights.push_back(index);
 			break;
 		}
 		case 's': //spot light
@@ -401,7 +404,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			z = std::stof(s.substr(pos2, s.length()), NULL);
 			DirectX::XMFLOAT3 position(x, y, z);
 
-			newScene->AddSpotLight({ ambient,diffuse,dirangle,position});
+			uint index = newScene->AddSpotLight({ ambient,diffuse,dirangle,position});
+			newData.m_slights.push_back(index);
 			break;
 		}
 		}
@@ -423,12 +427,14 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	{
 		index = m_sceneList.size();
 		m_sceneList.push_back(newScene);
+		m_dataList.push_back(newData);
 		m_srvList.push_back(srv);
 	}
 	else
 	{
 		index = m_freedIndices.front();
 		m_sceneList[index] = newScene;
+		m_dataList[index] = newData;
 		m_srvList[index]=srv;
 		m_freedIndices.pop();
 	}
@@ -486,4 +492,14 @@ int SceneManager::skipWSandComments(char* chars, std::ifstream* file)
 		while (chars[i] != '\n' && iswspace(chars[i])) i++;
 	}
 	return i;
+}
+
+void SceneManager::RenderCurrentScene()
+{
+	m_sceneList[m_currScene]->Render(m_context,
+		m_dataList[m_currScene].m_indices,
+		m_dataList[m_currScene].m_dlights,
+		m_dataList[m_currScene].m_plights,
+		m_dataList[m_currScene].m_slights);
+//	int i = 0; //just here to set a breakpoint
 }
