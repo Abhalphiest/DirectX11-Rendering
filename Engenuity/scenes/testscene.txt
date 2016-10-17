@@ -12,7 +12,7 @@ m Assets/Textures/default_m.png
 
 ps PixelShader.cso
 
-vs PixelShader.cso
+vs VertexShader.cso
 
 %
 

@@ -135,7 +135,12 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			SimpleVertexShader* vertexShader = new SimpleVertexShader(m_device, m_context);
 			s = std::string(chars + i + 3);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
-			vertexShader->LoadShaderFile(wstr.c_str());
+			std::wstring fwstr = L"../Debug/";
+			if (!vertexShader->LoadShaderFile(fwstr.append(wstr).c_str()))
+			{
+				fwstr = L"../";
+				vertexShader->LoadShaderFile(fwstr.append(wstr).c_str());
+			}
 			vertexShaders.push_back(vertexShader);
 			break;
 		}
@@ -500,5 +505,5 @@ void SceneManager::RenderCurrentScene()
 		m_dataList[m_currScene].m_dlights,
 		m_dataList[m_currScene].m_plights,
 		m_dataList[m_currScene].m_slights);
-//	int i = 0; //just here to set a breakpoint
+	int i = 0; //just here to set a breakpoint
 }
