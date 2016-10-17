@@ -11,7 +11,8 @@
 class Mesh
 {
 	ID3D11Buffer* m_Vbuffer, *m_Ibuffer;
-	int m_numIndices;
+    std::vector<Vertex> m_vertices;
+    int m_numIndices;
 	int m_references;
 	~Mesh();
 	
@@ -39,8 +40,11 @@ public:
     */
 	static void CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices);
 
+    void SetVertices(std::vector<Vertex> p_vertices) { m_vertices = p_vertices; }
+
 	ID3D11Buffer** GetVertexBuffer() { return &m_Vbuffer; }
 	ID3D11Buffer* GetIndexBuffer() { return m_Ibuffer; }
+    std::vector<Vertex> GetVertices() { return m_vertices; }
 	int GetIndexCount() { return m_numIndices; }
 
 	void GetInstance() { m_references++; }

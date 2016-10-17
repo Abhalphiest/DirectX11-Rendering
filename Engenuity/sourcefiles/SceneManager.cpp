@@ -403,7 +403,6 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			y = std::stof(s.substr(pos, pos2), NULL);
 			z = std::stof(s.substr(pos2, s.length()), NULL);
 			DirectX::XMFLOAT3 position(x, y, z);
-
 			uint index = newScene->AddSpotLight({ ambient,diffuse,dirangle,position});
 			newData.m_slights.push_back(index);
 			break;

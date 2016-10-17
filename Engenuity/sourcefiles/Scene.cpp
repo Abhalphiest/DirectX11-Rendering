@@ -21,8 +21,11 @@ Scene::~Scene()
 	}
 	
 }
-void Scene::Render(ID3D11DeviceContext* context, std::vector<uint> p_indices, 
-					std::vector<uint> p_dlights, std::vector<uint> p_plights, std::vector<uint> p_slights)
+void Scene::Render(ID3D11DeviceContext* context,
+                    std::vector<uint> p_indices,
+                    std::vector<uint> p_dlights,
+                    std::vector<uint> p_plights,
+                    std::vector<uint> p_slights)
 {
 	std::vector<SimplePixelShader*> ps_list; //to avoid pixel buffer data passing redundancy
 	for (std::vector<uint>::size_type i = 0; i != p_indices.size(); i++)
@@ -33,29 +36,29 @@ void Scene::Render(ID3D11DeviceContext* context, std::vector<uint> p_indices,
 			for (std::vector<uint>::size_type j = 0; j != p_dlights.size(); j++)
 			{
 				ps->SetData(
-					"dlight" + std::to_string(j), // The name of the variable in the shader
-					&m_dlightList[j], // The address of the data to copy
-					sizeof(DirectionalLight)); // The size of the data to copy
+					"dlight" + std::to_string(j),   // The name of the variable in the shader
+					&m_dlightList[j],               // The address of the data to copy
+					sizeof(DirectionalLight));      // The size of the data to copy
 			}
 			for (std::vector<uint>::size_type j = 0; j != p_plights.size(); j++)
 			{
 				ps->SetData(
-					"plight" + std::to_string(j), // The name of the variable in the shader
-					&m_plightList[j], // The address of the data to copy
-					sizeof(PointLight)); // The size of the data to copy
+					"plight" + std::to_string(j),   // The name of the variable in the shader
+					&m_plightList[j],               // The address of the data to copy
+					sizeof(PointLight));            // The size of the data to copy
 			}
 			for (std::vector<uint>::size_type j = 0; j != p_slights.size(); j++)
 			{
 				ps->SetData(
-					"slight" + std::to_string(j), // The name of the variable in the shader
-					&m_slightList[j], // The address of the data to copy
-					sizeof(SpotLight)); // The size of the data to copy
+					"slight" + std::to_string(j),   // The name of the variable in the shader
+					&m_slightList[j],               // The address of the data to copy
+					sizeof(SpotLight));             // The size of the data to copy
 			}
 
 			ps->SetData(
-				"cameraPos", // The name of the variable in the shader
-				&m_fpc->camera->GetPosition(), // The address of the data to copy
-				sizeof(DirectX::XMFLOAT3)); // The size of the data to copy
+				"cameraPos",                    // The name of the variable in the shader
+				&m_fpc->camera->GetPosition(),  // The address of the data to copy
+				sizeof(DirectX::XMFLOAT3));     // The size of the data to copy
 
 
 
@@ -74,12 +77,13 @@ void Scene::Render(ID3D11DeviceContext* context, std::vector<uint> p_indices,
 		//vertex shader
 
 		DirectX::XMFLOAT4X4 world;
-		XMStoreFloat4x4(&world, XMMatrixTranspose(							// transpose for hlsl
-			XMLoadFloat4x4(&m_worldDatas[p_indices[i]].GetWorld())));
+		XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&m_worldDatas[p_indices[i]].GetWorld())));
+
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("world", world);
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("view", m_fpc->camera->GetView());
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("projection", m_fpc->camera->GetProjection());
 		m_materialList[p_indices[i]]->GetVertexShader()->CopyAllBufferData();
+
 		// Set our vertex and pixel shaders to use for the next draw
 		m_materialList[p_indices[i]]->GetVertexShader()->SetShader();
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShader();
@@ -112,9 +116,7 @@ uint Scene::CreateObject(Mesh* p_mesh, Material* p_material)
 	p_material->GetInstance();
 	m_materialList.push_back(p_material);
 
-	
-
-	Collider collider = Collider(); //need to change later
+    Collider collider = Collider(p_mesh->GetVertices());
 	m_colliders.push_back(collider);
 	
 	WorldData worlddata = WorldData();
@@ -160,12 +162,13 @@ uint Scene::AddPointLight(PointLight p_plight)
 
 
 //object relative change functions
+// TODO: update m_colliders[p_index] in these as well (or just give it world data. . .?)
 void Scene::MoveObject(uint p_index, DirectX::XMFLOAT3 p_moveVector)
 {
 	DirectX::XMVECTOR position = DirectX::XMLoadFloat3(&m_worldDatas[p_index].m_position);
 	DirectX::XMVECTOR moveVector = DirectX::XMLoadFloat3(&p_moveVector);
 	DirectX::XMStoreFloat3(&m_worldDatas[p_index].m_position,
-						DirectX::XMVectorAdd(position, moveVector));
+						    DirectX::XMVectorAdd(position, moveVector));
 }
 
 void Scene::RotateObject(uint p_index, DirectX::XMFLOAT3 p_axis, float p_rad)
@@ -176,6 +179,7 @@ void Scene::RotateObject(uint p_index, DirectX::XMFLOAT3 p_axis, float p_rad)
 							DirectX::XMVectorAdd(rotation, orientation));
 
 }
+
 void Scene::Scale(uint p_index,float p_scale)
 {
 	m_worldDatas[p_index].m_scale += p_scale;

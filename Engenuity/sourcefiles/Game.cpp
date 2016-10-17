@@ -65,10 +65,12 @@ void Game::Init()
 	/*dlight = DirectionalLight {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
 	dlight2 = DirectionalLight { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
 	plight = PointLight { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
+    slight = SpotLight{ DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT4(0,-1,-1, 70.0f), DirectX::XMFLOAT3(0, 1, 1) };
 	scene = new Scene(fpc);
 	light1 = scene->AddDirectionalLight(dlight);
 	light2 = scene->AddDirectionalLight(dlight2);
 	light3 = scene->AddPointLight(plight);
+	light4 = scene->AddPointLight(slight);
 	CreateBasicGeometry();
 	*/
 	scenemanager = SceneManager::getInstance();
