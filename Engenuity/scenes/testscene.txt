@@ -8,15 +8,17 @@ n Assets/Textures/armchair_n.png
 
 s Assets/Textures/armchair_s.dds
 
-ps shaders/PixelShader.hlsl
+m Assets/Textures/default_m.png
 
-vs shaders/VertexShader.hlsl
+ps PixelShader.cso
+
+vs PixelShader.cso
 
 %
 
 0/0/0/0/0/0
 
-%
+$
 
 0/0
 pos 0.0 0.0 0.0

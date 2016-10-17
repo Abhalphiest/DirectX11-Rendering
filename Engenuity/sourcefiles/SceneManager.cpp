@@ -44,25 +44,25 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	size_t pos, pos2;
 	float x, y, z, w;
 										
-	while (file.getline(chars, 100) && chars[0]!='$') //while in resources section of file
+	while (file.getline(chars, 100) && chars[0]!='%') //while in resources section of file
 	{
 		i = 0;
 		while (chars[i] != '\n' && iswspace(chars[i])) i++;
-		if (chars[i] == '\n' || chars[i] == '%')
+		if (chars[i] == '\n' || chars[i] == '\0' || chars[i] == '#')
 			continue; //go to next line if this one is over or a comment
 
 		switch (chars[i]) //first not whitespace character tells us how to interpret
 		{
 		case 'o': //object file
 		{
-			Mesh* mesh = Mesh::LoadObj(chars + i + 1, m_device); //add on the number of characters
+			Mesh* mesh = Mesh::LoadObj(chars + i + 2, m_device); //add on the number of characters
 															 //of the data label
 			meshes.push_back(mesh);
 			break;
 		}
 		case 't': //diffuse texture
 		{
-			s = std::string(chars + i + 1);
+			s = std::string(chars + i + 2);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
 
 			DirectX::CreateWICTextureFromFile(
@@ -76,7 +76,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		}
 		case 'n': //normal map
 		{
-			s = std::string(chars +i+ 1);
+			s = std::string(chars +i+ 2);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
 
 			DirectX::CreateWICTextureFromFile(
@@ -90,7 +90,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		}
 		case 's': //spec map
 		{
-			s = std::string(chars + i+ 2); //two character tag
+			s = std::string(chars + i+ 2); 
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
 
 			DirectX::CreateWICTextureFromFile(
@@ -104,7 +104,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		}
 		case 'm': //multiply map
 		{
-			s = std::string(chars +i+ 1);
+			s = std::string(chars +i+ 2);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
 
 			DirectX::CreateWICTextureFromFile(
@@ -114,20 +114,26 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				0, // We don't actually need the texture reference
 				&m_srv);
 			msrvList.push_back(m_srv);
+			break;
 		}
 		case 'p': //pixel shader
 		{
 			SimplePixelShader* pixelShader = new SimplePixelShader(m_device, m_context);
-			s = std::string(chars +i+ 2);
+			s = std::string(chars +i+ 3);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
-			pixelShader->LoadShaderFile(wstr.c_str());
+			std::wstring fwstr = L"../Debug/";
+			if (!pixelShader->LoadShaderFile(fwstr.append(wstr).c_str()))
+			{
+				fwstr = L"../";
+				pixelShader->LoadShaderFile(fwstr.append(wstr).c_str());
+			}
 			pixelShaders.push_back(pixelShader);
 			break;
 		}
 		case 'v': //vertex shader
 		{
 			SimpleVertexShader* vertexShader = new SimpleVertexShader(m_device, m_context);
-			s = std::string(chars + i + 2);
+			s = std::string(chars + i + 3);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
 			vertexShader->LoadShaderFile(wstr.c_str());
 			vertexShaders.push_back(vertexShader);
@@ -143,7 +149,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	{
 		i = 0;
 		while (chars[i] != '\n' && iswspace(chars[i])) i++;
-		if (chars[i] == '\n' || chars[i] == '#')
+		if (chars[i] == '\n' || chars[i] == '\0' || chars[i] == '#')
 			continue; //go to next line if this one is over or a comment
 
 		s = std::string(chars+i);
@@ -154,12 +160,11 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		while (pos != std::string::npos)
 		{
 			indices[i] = s.substr(pos2, pos - pos2);
-			pos2 = pos;
-			pos = ++pos;
-			pos = s.find('/', pos);
+			pos2 = ++pos;
+			pos = s.find('/', pos2);
 			i++;
 			if (pos == std::string::npos)
-				indices[i] = (s.substr(i, s.length())); //get the last one too
+				indices[i] = (s.substr(pos2, s.length())); //get the last one too
 		}
 		//create material
 		d_srv = dsrvList[(uint)std::stoul(indices[0], NULL, 10)];
@@ -177,7 +182,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	{
 		i = 0;
 		while (chars[i] != '\n' && iswspace(chars[i])) i++;
-		if (chars[i] == '\n' || chars[i] == '#')
+		if (chars[i] == '\n' || chars[i] == '\0' || chars[i] == '#')
 			continue; //go to next line if this one is over or a comment
 
 		s = std::string(chars+i);
@@ -442,6 +447,7 @@ void SceneManager::ReleaseScene(unsigned int p_index)
 	//release all the SRV's first
 	for (int i = 0; i < m_srvList[p_index].size(); i++)
 	{
+		if(m_srvList[p_index][i])
 			m_srvList[p_index][i]->Release();
 	}
 	m_srvList[p_index].clear();
@@ -480,7 +486,7 @@ int SceneManager::skipWSandComments(char* chars, std::ifstream* file)
 {
 	int i = 0;
 	while (chars[i] != '\n' && iswspace(chars[i])) i++;
-	while ((chars[i] == '\n' || chars[i] == '#') && ((*file).getline(chars, 100)))
+	while ((chars[i] == '\n' || chars[i] == '\0' || chars[i] == '#') && ((*file).getline(chars, 100)))
 	{
 		i = 0;
 		while (chars[i] != '\n' && iswspace(chars[i])) i++;
