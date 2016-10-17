@@ -22,7 +22,7 @@ public:
         camera = new Camera(p_aspratio);
     }
 
-    ~FirstPersonController() { if (camera) delete camera; }
+	~FirstPersonController() { if (camera) delete camera; if (fpcCollider) delete fpcCollider; }
 
     /**
      * Move
