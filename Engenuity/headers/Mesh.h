@@ -7,6 +7,7 @@
 #include <math.h>
 #include <fstream>
 #include "DXCore.h"
+#include<algorithm>
 
 class Mesh
 {
@@ -68,6 +69,6 @@ private:
     * @param v - vector to be truncated
     * @return - XMFLOAT3 truncated to 5 digits of precision
     */
-	DirectX::XMFLOAT3 Mesh::TruncateVector(const DirectX::XMFLOAT3 v);
+	static Vertex Mesh::TruncateVertex(Vertex v);
 
 };

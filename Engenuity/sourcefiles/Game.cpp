@@ -162,13 +162,15 @@ void Game::OnResize()
 void Game::Update(float deltaTime, float totalTime)
 {
 	FirstPersonController* fpc = scenemanager->GetFPC();
+	
+	std::vector<Collider> sceneColliders = scenemanager->GetCurrentScene()->GetColliders();
 	//handle camera movement here until I can move this logic to an input manager
-	if (GetAsyncKeyState('W') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
-	if (GetAsyncKeyState('S') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
-	if (GetAsyncKeyState('A') & 0x8000) { fpc->camera->Move(XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
-	if (GetAsyncKeyState('D') & 0x8000) { fpc->camera->Move(XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->camera->Move(XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
-	if (GetAsyncKeyState('X') & 0x8000) { fpc->camera->Move(XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
+	if (GetAsyncKeyState('W') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, 0, MOVE_SCALE*deltaTime)); }
+	if (GetAsyncKeyState('S') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
+	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
+	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
+	if (GetAsyncKeyState('X') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
 	
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))

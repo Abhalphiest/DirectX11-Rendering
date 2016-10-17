@@ -2,6 +2,7 @@
 #include"../headers/Camera.h"
 #include"../headers/DataStructs.h"
 #include"../headers/Lights.h"
+#include <DirectXMath.h>
 #define uint unsigned int
 
 class FirstPersonController
@@ -12,9 +13,9 @@ public:
     FirstPersonController(float p_aspratio)
     {
         camera = new Camera(p_aspratio);
-        fpcCollider = new Collider(camera->GetPosition());
-        fpcLight = new SpotLight();
-        fpcLight->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
+        fpcCollider = Collider(camera->GetPosition());
+        fpcLight = SpotLight();
+		fpcLight.Position = DirectX::XMFLOAT3(0.0, 0.0, 0.0);
     }
 
     FirstPersonController(float p_aspratio, Collider* p_collider)
@@ -22,7 +23,7 @@ public:
         camera = new Camera(p_aspratio);
     }
 
-	~FirstPersonController() { if (camera) delete camera; if (fpcCollider) delete fpcCollider; }
+	~FirstPersonController() { if (camera) delete camera; }
 
     /**
      * Move
@@ -32,6 +33,7 @@ public:
      */
     void Move(std::vector<Collider> sceneColliders, DirectX::XMFLOAT3 p_movevector)
     {
+	
         // First adjust our movement vector to account for rotation
         DirectX::XMFLOAT3 camRot = camera->GetRotation();
         DirectX::XMVECTOR rot_quaternion = DirectX::XMQuaternionRotationRollPitchYaw(camRot.x, camRot.y, camRot.z);
@@ -46,8 +48,8 @@ public:
         pos_vec = DirectX::XMVectorAdd(pos_vec, move_vec);
 
         DirectX::XMFLOAT3 cldr_pos;
-        DirectX::XMStoreFloat3(&cldr_pos, pos_vec);
-        fpcCollider->SetPosition(cldr_pos);
+        DirectX::XMStoreFloat3(&fpcCollider.m_position, pos_vec);
+        fpcCollider.m_position =cldr_pos;
 
         // Check for collisions
         // TODO: Add culling algorithm of some sort to reduce number of collision checks
@@ -55,7 +57,7 @@ public:
         bool canMove = true;
         for (std::vector<uint>::size_type i = 0; i != sceneColliders.size() && canMove; ++i)
         {
-            if (fpcCollider->IsColliding(&(sceneColliders[i])))
+            if (fpcCollider.IsColliding((sceneColliders[i])))
             {
                 canMove = false;
             }
@@ -65,12 +67,12 @@ public:
         if (canMove)
         {
             camera->SetPosition(cldr_pos);
-            fpcLight->SetPosition(cldr_pos);
+            fpcLight.Position = cldr_pos;
         }
         else
         {
             // Revert collider position to former (valid) location
-            fpcCollider->SetPosition(camera->GetPosition());
+            fpcCollider.m_position = camera->GetPosition();
         }
     }
 
@@ -88,7 +90,7 @@ public:
 
 private:
     FirstPersonController();
-    SpotLight* fpcLight;
-    Collider* fpcCollider;
+    SpotLight fpcLight;
+    Collider fpcCollider;
     bool lightOn;
 };

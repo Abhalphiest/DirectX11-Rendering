@@ -41,7 +41,7 @@ struct Collider
     // Constructor used only by FPC
     Collider(DirectX::XMFLOAT3 p_position)
     {
-        SetPosition(p_position);
+		m_position = p_position;
 
         // For testing purposes, give FPC basic cube collider
         m_minX = -1;
@@ -82,21 +82,18 @@ struct Collider
         }
     }
 
-    void SetPosition(DirectX::XMFLOAT3 p_pos) { m_position = p_pos; }
-    DirectX::XMFLOAT3 GetPosition() { return m_position; }
-
-    bool IsColliding(Collider* otherObj)
+    bool IsColliding(Collider otherObj)
     {
         bool colliding = false;
 
-        DirectX::XMFLOAT3 p_position = otherObj->GetPosition();
+		DirectX::XMFLOAT3 p_position = otherObj.m_position;
         // Basic 3D AABB, to start
-        if (m_position.x + m_minX < p_position.x + otherObj->m_maxX
-            && m_position.x + m_maxX > p_position.x + otherObj->m_minX
-            && m_position.y + m_minY < p_position.y + otherObj->m_maxY
-            && m_position.y + m_maxY > p_position.y + otherObj->m_minY
-            && m_position.z + m_minZ < p_position.z + otherObj->m_maxZ
-            && m_position.z + m_maxZ > p_position.z + otherObj->m_minZ)
+        if (m_position.x + m_minX < p_position.x + otherObj.m_maxX
+            && m_position.x + m_maxX > p_position.x + otherObj.m_minX
+            && m_position.y + m_minY < p_position.y + otherObj.m_maxY
+            && m_position.y + m_maxY > p_position.y + otherObj.m_minY
+            && m_position.z + m_minZ < p_position.z + otherObj.m_maxZ
+            && m_position.z + m_maxZ > p_position.z + otherObj.m_minZ)
         {
             colliding = true;
         }

@@ -75,7 +75,7 @@ public:
 	void SetObjectPosition(uint p_index, DirectX::XMFLOAT3 p_position)
     {
         m_worldDatas[p_index].m_position = p_position;
-        m_colliders[p_index].SetPosition(p_position);
+        m_colliders[p_index].m_position = p_position;
     }
 
 	/**

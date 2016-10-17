@@ -60,6 +60,8 @@ public:
     */
 	void ReleaseScene(unsigned int p_index);
 	Scene* GetScene(unsigned int p_index) { return m_sceneList[p_index]; }
+	unsigned int GetCurrentSceneIndex() { return m_currScene; }
+	Scene* GetCurrentScene() { return m_sceneList[m_currScene]; }
 	void SetScene(unsigned int p_index) { m_currScene = p_index; }
 	void RenderCurrentScene();
 	void SetDevice(ID3D11Device* device) { m_device = device; }

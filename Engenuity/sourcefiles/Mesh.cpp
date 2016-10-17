@@ -258,19 +258,50 @@ void Mesh::IndexVertices(std::vector<Vertex> &p_vertices,
 	std::vector<unsigned int> &p_indices)
 {
 	p_indices.clear(); // To be safe
+	std::vector<Vertex> processedverts;
+	bool found;
 
 	for (UINT i = 0; i < p_vertices.size(); i++)
 	{
-
-		p_indices.push_back(i); // Laziness for now.. will actually implement later.
+		found = false;
+		p_vertices[i] = TruncateVertex(p_vertices[i]);
+		for (uint j = 0; j < processedverts.size(); j++)
+		{
+			if (processedverts[j] == p_vertices[i]) //already seen this vertex
+			{
+				p_indices.push_back(j);
+				found = true;
+				break;
+			}
+			
+		}
+		if(!found)
+			p_indices.push_back(i);
+		processedverts.push_back(p_vertices[i]);
 	}
 }
 
-DirectX::XMFLOAT3 Mesh::TruncateVector(const DirectX::XMFLOAT3 v)
+Vertex Mesh::TruncateVertex(Vertex v)
 {
-	DirectX::XMFLOAT3 returnV = DirectX::XMFLOAT3();
-	returnV.x = std::trunc(100000 * v.x) / 100000;
-	returnV.y = std::trunc(100000 * v.y) / 100000;
-	returnV.z = std::trunc(100000 * v.z) / 100000;
-	return returnV;
+	
+	v.Position.x = std::trunc(100000 * v.Position.x) / 100000;
+	v.Position.y = std::trunc(100000 * v.Position.y) / 100000;
+	v.Position.z = std::trunc(100000 * v.Position.z) / 100000;
+
+	v.Normal.x = std::trunc(100000 * v.Normal.x) / 100000;
+	v.Normal.y = std::trunc(100000 * v.Normal.y) / 100000;
+	v.Normal.z = std::trunc(100000 * v.Normal.z) / 100000;
+
+	v.Binormal.x = std::trunc(100000 * v.Binormal.x) / 100000;
+	v.Binormal.y = std::trunc(100000 * v.Binormal.y) / 100000;
+	v.Binormal.z = std::trunc(100000 * v.Binormal.z) / 100000;
+
+	v.Tangent.x = std::trunc(100000 * v.Tangent.x) / 100000;
+	v.Tangent.y = std::trunc(100000 * v.Tangent.y) / 100000;
+	v.Tangent.z = std::trunc(100000 * v.Tangent.z) / 100000;
+
+	v.UV.x = std::trunc(100000 * v.UV.x) / 100000;
+	v.UV.y = std::trunc(100000 * v.UV.y) / 100000;
+	return v;
 }
+
