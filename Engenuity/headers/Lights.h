@@ -19,4 +19,6 @@ struct SpotLight {
 	DirectX::XMFLOAT4 DiffuseColor;
 	DirectX::XMFLOAT4 Direction_Angle; //w coordinate is angle of light
 	DirectX::XMFLOAT3 Position;
+
+    void SetPosition(DirectX::XMFLOAT3 p_pos) { Position = p_pos; }
 };

@@ -7,8 +7,8 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "Material.h"
-#include"FirstPersonController.h"
-#include"Scene.h"
+#include "FirstPersonController.h"
+#include "Scene.h"
 #include "SceneManager.h"
 #define CAMERA_DELTA .005
 #define MOVE_SCALE 10

@@ -169,16 +169,19 @@ Mesh* Mesh::LoadObj(char* filepath, ID3D11Device* p_device)
 	obj.close();
 	CalcTBN(verts, indices); // For normal mapping
 
-							 // - At this point, "verts" is a vector of Vertex structs, and can be used
-							 //    directly to create a vertex buffer:  &verts[0] is the address of the first vert
-							 //
-							 // - The vector "indices" is similar. It's a vector of unsigned ints and
-							 //    can be used directly for the index buffer: &indices[0] is the address of the first int
-							 //
-							 // - "vertCounter" is BOTH the number of vertices and the number of indices
-							 // - Yes, the indices are a bit redundant here (one per vertex)
+	// - At this point, "verts" is a vector of Vertex structs, and can be used
+	//    directly to create a vertex buffer:  &verts[0] is the address of the first vert
+	//
+	// - The vector "indices" is similar. It's a vector of unsigned ints and
+	//    can be used directly for the index buffer: &indices[0] is the address of the first int
+	//
+	// - "vertCounter" is BOTH the number of vertices and the number of indices
+	// - Yes, the indices are a bit redundant here (one per vertex)
 
-	return new Mesh(&verts[0], vertCounter, &indices[0], vertCounter, p_device);
+    Mesh* resultMesh = new Mesh(&verts[0], vertCounter, &indices[0], vertCounter, p_device);
+    resultMesh->SetVertices(verts);
+
+    return resultMesh;
 }
 void Mesh::CalcTBN(std::vector<Vertex> &p_verts, std::vector<UINT> &indices)
 {

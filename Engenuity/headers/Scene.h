@@ -70,7 +70,11 @@ public:
 	* @param p_index    - index of object world data
 	* @param p_position - new object position
 	*/
-	void SetObjectPosition(uint p_index, DirectX::XMFLOAT3 p_position) { m_worldDatas[p_index].m_position = p_position; }
+	void SetObjectPosition(uint p_index, DirectX::XMFLOAT3 p_position)
+    {
+        m_worldDatas[p_index].m_position = p_position;
+        m_colliders[p_index].SetPosition(p_position);
+    }
 
 	/**
 	* SetObjectOrientation updates the object at the given index with the
@@ -96,6 +100,8 @@ public:
 	DirectX::XMFLOAT3 GetObjectOrientation(uint p_index)	{ return m_worldDatas[p_index].m_orientation; }
 	DirectX::XMFLOAT4X4 GetObjectWorld(uint p_index)		{ return m_worldDatas[p_index].GetWorld(); }
 	float GetObjectScale(uint p_index)						{ return m_worldDatas[p_index].m_scale; }
+    Collider GetObjectCollider(uint p_index)                { return m_colliders[p_index]; }
+    std::vector<Collider> GetColliders()                    { return m_colliders; }
 
 
 	// Movement
