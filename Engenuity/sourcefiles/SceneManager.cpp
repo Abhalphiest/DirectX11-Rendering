@@ -249,7 +249,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	{
 		i = 0;
 		while (chars[i] != '\n' && iswspace(chars[i])) i++;
-		if (chars[i] == '\n' || chars[i] == '#')
+		if (chars[i] == '\n' || chars[i] == '\0' ||chars[i] == '#')
 			continue; //go to next line if this one is over or a comment
 
 		switch (chars[i])
@@ -260,9 +260,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
 			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
+			x = std::stof(s.substr(0, pos), NULL);
 			pos2 = s.find(' ', ++pos);
 			y = std::stof(s.substr(pos, pos2), NULL);
 			pos = pos2;
@@ -275,9 +273,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
 			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
+			x = std::stof(s.substr(0, pos), NULL);
 			pos2 = s.find(' ', ++pos);
 			y = std::stof(s.substr(pos, pos2), NULL);
 			pos = pos2;
@@ -290,11 +286,9 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
 			pos = s.find(' ');
+			x = std::stof(s.substr(0, pos), NULL);
 			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
+			y = std::stof(s.substr(pos, pos2), NULL);			
 			z = std::stof(s.substr(pos2, s.length()), NULL);
 			DirectX::XMFLOAT3 direction(x, y, z);
 
