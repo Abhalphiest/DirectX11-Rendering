@@ -57,6 +57,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		{
 			Mesh* mesh = Mesh::LoadObj(chars + i + 2, m_device); //add on the number of characters
 															 //of the data label
+			if (!mesh)
+				printf("Failed to load mesh %s",chars+i+2);
 			meshes.push_back(mesh);
 			break;
 		}
@@ -71,6 +73,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				wstr.c_str(),
 				0, // We don't actually need the texture reference
 				&d_srv);
+			if (!d_srv)
+				printf("Failed to load diffuse texture %s", wstr.c_str());
 			dsrvList.push_back(d_srv);
 			break;
 		}
@@ -85,6 +89,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				wstr.c_str(),
 				0, // We don't actually need the texture reference
 				&n_srv);
+			if (!n_srv)
+				printf("Failed to load normal texture %s", wstr.c_str());
 			nsrvList.push_back(n_srv);
 			break;
 		}
@@ -99,6 +105,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				wstr.c_str(),
 				0, // We don't actually need the texture reference
 				&s_srv);
+			if (!s_srv)
+				printf("Failed to load specular texture %s", wstr.c_str());
 			ssrvList.push_back(s_srv);
 			break;
 		}
@@ -113,6 +121,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				wstr.c_str(),
 				0, // We don't actually need the texture reference
 				&m_srv);
+			if (!m_srv)
+				printf("Failed to load multiply texture %s", wstr.c_str());
 			msrvList.push_back(m_srv);
 			break;
 		}
@@ -125,7 +135,8 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			if (!pixelShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 			{
 				fwstr = L"../";
-				pixelShader->LoadShaderFile(fwstr.append(wstr).c_str());
+				if(!pixelShader->LoadShaderFile(fwstr.append(wstr).c_str()))
+					printf("Failed to load pixel shader %s", wstr.c_str());
 			}
 			pixelShaders.push_back(pixelShader);
 			break;
@@ -139,7 +150,9 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			if (!vertexShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 			{
 				fwstr = L"../";
-				vertexShader->LoadShaderFile(fwstr.append(wstr).c_str());
+
+				if(!vertexShader->LoadShaderFile(fwstr.append(wstr).c_str()))
+					printf("Failed to load vertex shader %s", wstr.c_str());
 			}
 			vertexShaders.push_back(vertexShader);
 			break;
@@ -172,10 +185,17 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				indices[i] = (s.substr(pos2, s.length())); //get the last one too
 		}
 		//create material
-		d_srv = dsrvList[(uint)std::stoul(indices[0], NULL, 10)];
-		m_srv = msrvList[(uint)std::stoul(indices[3], NULL, 10)];
-		s_srv = ssrvList[(uint)std::stoul(indices[2], NULL, 10)];
-		n_srv = nsrvList[(uint)std::stoul(indices[1], NULL, 10)];
+		try
+		{
+			d_srv = dsrvList[(uint)std::stoul(indices[0], NULL, 10)];
+			m_srv = msrvList[(uint)std::stoul(indices[3], NULL, 10)];
+			s_srv = ssrvList[(uint)std::stoul(indices[2], NULL, 10)];
+			n_srv = nsrvList[(uint)std::stoul(indices[1], NULL, 10)];
+		}
+		catch (...)
+		{
+			printf("Could not parse material %u", materials.end());
+		}
 		Material* material = new Material(vertexShaders[(uint)std::stoul(indices[4], NULL, 10)],
 			pixelShaders[(uint)std::stoul(indices[5], NULL, 10)],
 			d_srv, m_srv, s_srv, n_srv,m_samplerState);
