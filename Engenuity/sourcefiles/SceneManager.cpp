@@ -185,17 +185,13 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				indices[i] = (s.substr(pos2, s.length())); //get the last one too
 		}
 		//create material
-		try
-		{
+		
 			d_srv = dsrvList[(uint)std::stoul(indices[0], NULL, 10)];
 			m_srv = msrvList[(uint)std::stoul(indices[3], NULL, 10)];
 			s_srv = ssrvList[(uint)std::stoul(indices[2], NULL, 10)];
 			n_srv = nsrvList[(uint)std::stoul(indices[1], NULL, 10)];
-		}
-		catch (...)
-		{
-			printf("Could not parse material %u", materials.end());
-		}
+		
+		
 		Material* material = new Material(vertexShaders[(uint)std::stoul(indices[4], NULL, 10)],
 			pixelShaders[(uint)std::stoul(indices[5], NULL, 10)],
 			d_srv, m_srv, s_srv, n_srv,m_samplerState);
