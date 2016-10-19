@@ -71,7 +71,10 @@ effects available within the engine, and to build an atmospheric environment for
 \subsubsection{Related Titles}
 The project is very similar to the Konami demo \textit{PT}, the indie title \textit{Gone Home}, and other similar titles, where the game is exploration based in a closed, highly scripted environment.
 \subsubsection{Reference Material}
-
+\includegraphics[scale=.2]{Media/flashlight.jpg} \\ \\
+\includegraphics[scale=.3]{Media/gonehome1.jpg} \\ \\
+\includegraphics[scale=.2]{Media/insomniamod.jpg} \\ \\
+\includegraphics[scale=.2]{Media/pt2.jpg} \\
 \subsection{Scope, Behavior and Technical Requirements}
 The scope of the project is relatively small, given the relatively small time frame given by the class and our relative lack of development experience. The primary functionality will be simple collision detection and resolution, navigation of a 3d environment through a first person perspective, and dynamic changing of scenes and lighting (flashlight toggle) based on player behavior.
 
@@ -125,7 +128,25 @@ The scene file format, .scene, contains all the meshes, textures, shaders, light
 \end{itemize}
 \subsubsection*{Implementation Dependency}
 The external tools must be done before we can meaningfully build scenes, as writing scene files by hand is neither efficient nor intuitive. The house layout must also be at least roughed out before we can build the scenes. After the basic framework of the environment, as well as the FPC and the collision system are all implemented in engine, we actually have tremendous freedom to modularly add functionality as we desire, which will make division of work significantly simpler.
+\renewcommand{\arraystretch}{1.4}
 \subsection{Working Timetable}
+\begin{tabular}{|l || l |}
+\hline
+\textbf{Week 3} & FPC, Collisions, Scene Loading Debugged\\
+& Textures and Maps for Meshes \\
+& External Tools \\
+\hline
+\textbf{Week 4} & House Design \& Build\\
+		& Finish Base Game \\
+		& Implement Real Time Shadows\\
+		& Start on Particle System\\
+\hline
+\textbf{Week 5} & Seamless Scene Switching \\
+ & Culling and Optimization \\
+ \hline
+\textbf{Following Weeks} & TBD\\
+\hline
+\end{tabular}
 
 \subsection{Communication and Code Sharing}
 Because we have a small team size, there is not much structure neccessary to facilitate communication and code sharing. The project source control through git doubles as 
