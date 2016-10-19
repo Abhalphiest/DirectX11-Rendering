@@ -35,14 +35,22 @@ public:
 	void OnMouseWheel(float wheelDelta,   int x, int y);
 private:
 
+    // This can be moved to a more appropriate place later
+    enum Game_State
+    {
+        BEGIN,
+        PLAYING,
+        OVER
+    };
+
 	// Initialization helper methods - feel free to customize, combine, etc.
 	void CreateBasicGeometry();
-
-
 
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.
 	POINT prevMousePos;
+
+    Game_State gs;
 
 	SceneManager* scenemanager;
 	/*

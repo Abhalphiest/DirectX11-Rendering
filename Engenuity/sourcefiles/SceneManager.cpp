@@ -58,7 +58,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			Mesh* mesh = Mesh::LoadObj(chars + i + 2, m_device); //add on the number of characters
 															 //of the data label
 			if (!mesh)
-				printf("Failed to load mesh %s",chars+i+2);
+				printf("Failed to load mesh %s\n",chars+i+2);
 			meshes.push_back(mesh);
 			break;
 		}
@@ -74,7 +74,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				0, // We don't actually need the texture reference
 				&d_srv);
 			if (!d_srv)
-				printf("Failed to load diffuse texture %s", wstr.c_str());
+				printf("Failed to load diffuse texture %s\n", wstr.c_str());
 			dsrvList.push_back(d_srv);
 			break;
 		}
@@ -90,7 +90,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				0, // We don't actually need the texture reference
 				&n_srv);
 			if (!n_srv)
-				printf("Failed to load normal texture %s", wstr.c_str());
+				printf("Failed to load normal texture %s\n", wstr.c_str());
 			nsrvList.push_back(n_srv);
 			break;
 		}
@@ -106,7 +106,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 				0, // We don't actually need the texture reference
 				&s_srv);
 			if (!s_srv)
-				printf("Failed to load specular texture %s", wstr.c_str());
+				printf("Failed to load specular texture %s\n", wstr.c_str());
 			ssrvList.push_back(s_srv);
 			break;
 		}
@@ -131,12 +131,12 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			SimplePixelShader* pixelShader = new SimplePixelShader(m_device, m_context);
 			s = std::string(chars +i+ 3);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
-			std::wstring fwstr = L"../Debug/";
+			std::wstring fwstr = L"../x64/Debug/";
 			if (!pixelShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 			{
-				fwstr = L"../";
+				fwstr = L"../x64/";
 				if(!pixelShader->LoadShaderFile(fwstr.append(wstr).c_str()))
-					printf("Failed to load pixel shader %s", wstr.c_str());
+					printf("Failed to load pixel shader %s\n", wstr.c_str());
 			}
 			pixelShaders.push_back(pixelShader);
 			break;
@@ -146,13 +146,13 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			SimpleVertexShader* vertexShader = new SimpleVertexShader(m_device, m_context);
 			s = std::string(chars + i + 3);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
-			std::wstring fwstr = L"../Debug/";
+			std::wstring fwstr = L"../x64/Debug/";
 			if (!vertexShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 			{
-				fwstr = L"../";
+				fwstr = L"../x64/";
 
 				if(!vertexShader->LoadShaderFile(fwstr.append(wstr).c_str()))
-					printf("Failed to load vertex shader %s", wstr.c_str());
+					printf("Failed to load vertex shader %s\n", wstr.c_str());
 			}
 			vertexShaders.push_back(vertexShader);
 			break;

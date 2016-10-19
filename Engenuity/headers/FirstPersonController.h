@@ -44,12 +44,13 @@ public:
         // Rotate our movement vector to match our rotation
         move_vec = DirectX::XMVector3Transform(move_vec, DirectX::XMMatrixRotationQuaternion(rot_quaternion));
 
-        move_vec = DirectX::XMVectorSetIntY(move_vec, 0);   // Prevent FPC from floating
+        // Prevent FPC from floating - kind of a draconian implementation at the moment
+        move_vec = DirectX::XMVectorSetIntY(move_vec, 0);
         pos_vec = DirectX::XMVectorAdd(pos_vec, move_vec);
 
         DirectX::XMFLOAT3 cldr_pos;
-        DirectX::XMStoreFloat3(&fpcCollider.m_position, pos_vec);
-        fpcCollider.m_position =cldr_pos;
+        DirectX::XMStoreFloat3(&cldr_pos, pos_vec);
+        fpcCollider.m_position = cldr_pos;
 
         // Check for collisions
         // TODO: Add culling algorithm of some sort to reduce number of collision checks

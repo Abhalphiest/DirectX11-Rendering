@@ -73,6 +73,9 @@ void Game::Init()
 	light4 = scene->AddPointLight(slight);
 	CreateBasicGeometry();
 	*/
+
+    gs = BEGIN;
+
 	scenemanager = SceneManager::getInstance();
 	scenemanager->SetContext(context);
 	scenemanager->SetDevice(device);
@@ -169,8 +172,10 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('S') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
 	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
+	// if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
 	if (GetAsyncKeyState('X') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
+
+    if (GetAsyncKeyState(VK_SPACE) & 0x8000) { gs = PLAYING; }
 	
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
@@ -201,7 +206,9 @@ void Game::Draw(float deltaTime, float totalTime)
 	std::vector<uint> slights = {};
 	scene->Render(context, objects, dlights, plights, slights);
 	*/
-	scenemanager->RenderCurrentScene();
+    if (gs == PLAYING) {
+        scenemanager->RenderCurrentScene();
+    }
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
 	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
