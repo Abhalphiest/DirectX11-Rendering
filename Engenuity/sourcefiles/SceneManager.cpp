@@ -187,9 +187,9 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		//create material
 		
 			d_srv = dsrvList[(uint)std::stoul(indices[0], NULL, 10)];
-			m_srv = msrvList[(uint)std::stoul(indices[3], NULL, 10)];
-			s_srv = ssrvList[(uint)std::stoul(indices[2], NULL, 10)];
 			n_srv = nsrvList[(uint)std::stoul(indices[1], NULL, 10)];
+			s_srv = ssrvList[(uint)std::stoul(indices[2], NULL, 10)];
+			m_srv = msrvList[(uint)std::stoul(indices[3], NULL, 10)];
 		
 		
 		Material* material = new Material(vertexShaders[(uint)std::stoul(indices[4], NULL, 10)],
@@ -227,7 +227,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		pos = pos2;
 		pos2 = s.find(' ', ++pos);
 		y = std::stof(s.substr(pos, pos2), NULL);
-		z = std::stof(s.substr(pos, s.length()), NULL);
+		z = std::stof(s.substr(pos2, s.length()), NULL);
 		//set up position, orientation, scale vectors
 		newScene->SetObjectPosition(object,DirectX::XMFLOAT3(x, y, z));
 

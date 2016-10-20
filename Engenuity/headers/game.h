@@ -11,7 +11,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #define CAMERA_DELTA .005
-#define MOVE_SCALE 10
+#define MOVE_SCALE 9
 
 class Game 
 	: public DXCore
