@@ -1,0 +1,179 @@
+# If comments > 100 chars in length, exception occurs.
+# Digging into the code, this is pretty obvious, but should probably be properly documented
+
+o Assets/Models/armchair.obj
+
+o Assets/Models/endtable.obj
+o Assets/Models/vase.obj
+o Assets/Models/quad.obj
+
+t Assets/Textures/armchair.dds
+
+# For some reason my home machine can't load the .dds's, though the lab machines can just fine
+t Assets/Textures/wood.jpg
+t Assets/Textures/metal.jpg
+
+n Assets/Textures/armchair_n.png
+# Fake bump map
+n Assets/Textures/wood_n.jpg
+
+s Assets/Textures/armchair_s.dds
+
+m Assets/Textures/default_m.png
+
+ps PixelShader.cso
+
+vs VertexShader.cso
+
+%
+# '%' char denotes materials
+
+# Material's diffuse/normal/specular/multiply/pixel shader/vertex shader indices
+0/0/0/0/0/0
+1/1/0/0/0/0
+2/0/0/0/0/0
+
+$
+# '$' denotes objects
+
+# Objects's mesh/material indices
+0/0
+pos -2.5 0.0 0.0
+orn 0.0 0.0 0.0
+sc 1.0
+
+1/2
+pos 0.0 -2.3 -0.5
+orn 0.0 0.0 0.0
+# End table is very small & needs to be scaled up
+# This displaces the object strangely, however. Needs looking into.
+sc 10.0
+
+2/2
+pos 0.0 -2.3 -0.5
+orn 0.0 0.0 0.0
+sc 10.0
+
+# Left wall
+3/1
+pos -5.4 1.0 0.0
+orn 0.0 1.57 3.14
+sc 1.0
+
+3/1
+pos -5.4 1.0 -1.90
+orn 0.0 1.57 3.14
+sc 1.0
+
+3/1
+pos -5.4 1.0 1.9
+orn 0.0 1.57 3.14
+sc 1.0
+
+# Right wall
+3/1
+pos 0.4 1.0 0.0
+orn 0.0 -1.57 3.14
+sc 1.0
+
+3/1
+pos 0.4 1.0 -1.9
+orn 0.0 -1.57 3.14
+sc 1.0
+
+3/1
+pos 0.4 1.0 1.9
+orn 0.0 -1.57 3.14
+sc 1.0
+
+# Back wall
+3/1
+pos -0.5 1.0 2.5
+orn 0.0 3.14 3.14
+sc 1.0
+
+3/1
+pos -2.5 1.0 2.5
+orn 0.0 3.14 3.14
+sc 1.0
+
+3/1
+pos -4.5 1.0 2.5
+orn 0.0 3.14 3.14
+sc 1.0
+
+# Front wall
+3/1
+pos -0.5 1.0 -2.7
+orn 0.0 0.0 3.14
+sc 1.0
+
+3/1
+pos -2.5 1.0 -2.7
+orn 0.0 0.0 3.14
+sc 1.0
+
+3/1
+pos -4.5 1.0 -2.7
+orn 0.0 0.0 3.14
+sc 1.0
+
+
+# Floor
+# Center row
+3/1
+pos -2.5 0.0 0.0
+orn -1.57 0.0 3.14
+sc 1.0
+
+3/1
+pos -2.5 0.0 -1.9
+orn -1.57 0.0 3.14
+sc 1.0
+
+3/1
+pos -2.5 0.0 1.9
+orn -1.57 0.0 3.14
+sc 1.0
+
+# Left row
+3/1
+pos -4.5 0.0 0.0
+orn -1.57 0.0 3.14
+sc 1.0
+
+3/1
+pos -4.5 0.0 -1.9
+orn -1.57 0.0 3.14
+sc 1.0
+
+3/1
+pos -4.5 0.0 1.9
+orn -1.57 0.0 3.14
+sc 1.0
+
+# Right row
+3/1
+pos -0.5 0.0 0.0
+orn -1.57 0.0 3.14
+sc 1.0
+
+3/1
+pos -0.5 0.0 -1.9
+orn -1.57 0.0 3.14
+sc 1.0
+
+3/1
+pos -0.5 0.0 1.9
+orn -1.57 0.0 3.14
+sc 1.0
+
+
+
+&
+# '&' denotes lights
+
+d
+0.2 0.2 0.2 1.0
+0.7 0.3 .3 1
+1 -1 0

@@ -246,7 +246,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		pos = pos2;
 		pos2 = s.find(' ', ++pos);
 		y = std::stof(s.substr(pos, pos2), NULL);
-		z = std::stof(s.substr(pos, s.length()), NULL);
+		z = std::stof(s.substr(pos2, s.length()), NULL);
 		newScene->SetObjectOrientation(object, DirectX::XMFLOAT3(x, y, z));
 
 		//scale
