@@ -43,13 +43,13 @@ struct Collider
     {
 		m_position = p_position;
 
-        // For testing purposes, give FPC basic cube collider
-        m_minX = -1;
-        m_maxX = 1;
-        m_minY = -1;
-        m_maxY = 1;
-        m_minZ = -1;
-        m_maxZ = 1;
+        // For testing purposes, give FPC basic cube(-ish) collider
+        m_minX = -0.1;
+        m_maxX = 0.1;
+        m_minY = 0;
+        m_maxY = 0.1;
+        m_minZ = -0.1;
+        m_maxZ = 0.1;
     }
 
     Collider(std::vector<Vertex> p_vertices)
@@ -61,7 +61,10 @@ struct Collider
         m_minZ = 0;
         m_maxZ = 0;
 
+        // TODO: NEED to rework this to take an object's rotation/scale into account
+        //  Would necessitate finding a way to pass worlddata to this function
         Vertex currVert;
+
         for (std::vector<uint>::size_type i = 0; i != p_vertices.size(); ++i)
         {
             currVert = p_vertices[i];

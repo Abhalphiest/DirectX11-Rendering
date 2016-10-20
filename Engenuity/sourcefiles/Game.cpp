@@ -14,11 +14,11 @@ using namespace DirectX;
 // --------------------------------------------------------
 Game::Game(HINSTANCE hInstance)
 	: DXCore( 
-		hInstance,		   // The application's handle
-		"Margaret Dorsey GGP",	   // Text for the window's title bar
-		1280,			   // Width of the window's client area
-		720,			   // Height of the window's client area
-		true)			   // Show extra stats (fps) in title bar?
+		hInstance,		    // The application's handle
+		"Engenuity GGP",    // Text for the window's title bar
+		1280,			    // Width of the window's client area
+		720,			    // Height of the window's client area
+		true)			    // Show extra stats (fps) in title bar?
 {
 
 
@@ -36,20 +36,7 @@ Game::Game(HINSTANCE hInstance)
 // --------------------------------------------------------
 Game::~Game()
 {
-	/*
-	sampler->Release();
-	
-	
-	//delete all the stuff we allocated
-	
-	if (scene) delete scene;
-	if (fpc) delete fpc;
-
-	armchairTextureSRV->Release();
-	armchairNormalSRV->Release();
-	armchairSpecSRV->Release();
-	*/
-	delete scenemanager;
+	delete scenemanager;    // Handles its own memory
 }
 
 // --------------------------------------------------------
@@ -58,29 +45,14 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-	// Helper methods for loading shaders, creating some basic
-	// geometry to draw and some simple camera matrices.
-	//  - You'll be expanding and/or replacing these later
-	//fpc = new FirstPersonController(1280 / (float)720);
-	/*dlight = DirectionalLight {DirectX::XMFLOAT4(0.1,0.1,0.1,1.0),DirectX::XMFLOAT4(0,0,.5,1), DirectX::XMFLOAT3(1,-1,0)};
-	dlight2 = DirectionalLight { DirectX::XMFLOAT4(0.0,0.0,0.0,1.0),DirectX::XMFLOAT4(.3,0,0,1), DirectX::XMFLOAT3(-1,1,0) };
-	plight = PointLight { DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT3(0,-1,0) };
-    slight = SpotLight{ DirectX::XMFLOAT4(.1,.1,.1,1),DirectX::XMFLOAT4(1,1,1,1), DirectX::XMFLOAT4(0,-1,-1, 70.0f), DirectX::XMFLOAT3(0, 1, 1) };
-	scene = new Scene(fpc);
-	light1 = scene->AddDirectionalLight(dlight);
-	light2 = scene->AddDirectionalLight(dlight2);
-	light3 = scene->AddPointLight(plight);
-	light4 = scene->AddPointLight(slight);
-	CreateBasicGeometry();
-	*/
-
     gs = BEGIN;
 
 	scenemanager = SceneManager::getInstance();
 	scenemanager->SetContext(context);
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
-	uint scene =scenemanager->LoadScene("scenes/testscene.txt");
+	// uint scene =scenemanager->LoadScene("scenes/testscene.txt");
+    uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
 	scenemanager->SetScene(scene);
 	
 	// Tell the input assembler stage of the pipeline what kind of
@@ -88,63 +60,6 @@ void Game::Init()
 	// Essentially: "What kind of shape should the GPU draw with our data?"
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
-
-
-
-
-//will eventually be phased out by scene manager
-void Game::CreateBasicGeometry()
-{
-	/*
-	mesh1 = Mesh::LoadObj("Assets/Models/armchair.obj", device);
-
-	vertexShader = new SimpleVertexShader(device, context);
-	if (!vertexShader->LoadShaderFile(L"../Debug/VertexShader.cso"))
-		vertexShader->LoadShaderFile(L"../VertexShader.cso");
-	pixelShader = new SimplePixelShader(device, context);
-	if (!pixelShader->LoadShaderFile(L"../Debug/PixelShader.cso"))
-		pixelShader->LoadShaderFile(L"../PixelShader.cso");
-
-
-	//texture loading
-	CreateWICTextureFromFile(
-		device,
-		context, // If I provide the context, it will auto-generate Mipmaps
-		L"Assets/Textures/armchair.dds",
-		0, // We don't actually need the texture reference
-		&armchairTextureSRV);
-	CreateWICTextureFromFile(
-		device,
-		context, 
-		L"Assets/Textures/armchair_n.png",
-		0, 
-		&armchairNormalSRV);
-	CreateWICTextureFromFile(
-		device,
-		context,
-		L"Assets/Textures/armchair_s.dds",
-		0,
-		&armchairSpecSRV);
-	
-	D3D11_SAMPLER_DESC samplerDesc = {};
-	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;
-	samplerDesc.MaxAnisotropy = 16;
-	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	device->CreateSamplerState(&samplerDesc, &sampler);
-
-	Material* material1 = new Material(vertexShader, pixelShader,armchairTextureSRV,armchairTextureSRV,
-		armchairNormalSRV,armchairNormalSRV,sampler);
-	
-
-	object1 = scene->CreateObject(mesh1, material1);
-	scene->SetObjectPosition(object1,XMFLOAT3(-2.5, 1.5, 0));
-	*/
-	
-}
-
 
 // --------------------------------------------------------
 // Handle resizing DirectX "stuff" to match the new window size.
@@ -154,9 +69,6 @@ void Game::OnResize()
 {
 	// Handle base-level DX resize stuff
 	DXCore::OnResize();
-
-	// Update our projection matrix since the window size changed
-	//camera->SetProjection((float)width / height);
 }
 
 // --------------------------------------------------------
@@ -189,23 +101,22 @@ void Game::Draw(float deltaTime, float totalTime)
 {
 	// Background color (Cornflower Blue in this case) for clearing
 	const float color[4] = {0.4f, 0.6f, 0.75f, 0.0f};
+    // TODO: Added for demo, consider removing
+    const float blackBG[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 	// Clear the render target and depth buffer (erases what's on the screen)
 	//  - Do this ONCE PER FRAME
 	//  - At the beginning of Draw (before drawing *anything*)
-	context->ClearRenderTargetView(backBufferRTV, color);
+    if (gs == BEGIN)
+	    context->ClearRenderTargetView(backBufferRTV, color);
+    else if (gs == PLAYING)         // TODO: Added for demo, consider removing
+        context->ClearRenderTargetView(backBufferRTV, blackBG);
 	context->ClearDepthStencilView(
 		depthStencilView, 
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f,
 		0);
-	/*
-	std::vector<uint> objects = { object1,object2,object3,object4 };
-	std::vector<uint> dlights = { light1,light2};
-	std::vector<uint> plights = { light3 };
-	std::vector<uint> slights = {};
-	scene->Render(context, objects, dlights, plights, slights);
-	*/
+	
     if (gs == PLAYING) {
         scenemanager->RenderCurrentScene();
     }
@@ -256,6 +167,7 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 // --------------------------------------------------------
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
+    // TODO: Add check to rot val either here or in the camera to prevent over-rotation
 	if(buttonState&0x0001) //left button down
 		scenemanager->GetFPC()->camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
 	// Save the previous mouse position, so we have it for the future

@@ -4,7 +4,8 @@
 Camera::Camera(float p_aspratio)
 {
 	//initialize everything to default values
-	m_pos = DirectX::XMFLOAT3(0, 1.3, -10);
+    // TODO: Hacky fixed values for demo. Should really have these be set in scene file, no?
+	m_pos = DirectX::XMFLOAT3(-0.5, 1.3, -1);
 	m_rot = DirectX::XMFLOAT3(0, 0, 0);
 	DirectX::XMStoreFloat4x4(&m_view, DirectX::XMMatrixIdentity());
 	SetProjection(p_aspratio);
