@@ -40,5 +40,22 @@ namespace SceneTool
             scenewindow.Visible = true;
             mainpanel.Visible = true;
         }
+
+        private void loadmeshbutton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void meshbackbutton_Click(object sender, EventArgs e)
+        {
+            meshpanel.Visible = false;
+            mainpanel.Visible = true;
+        }
+
+        private void addmesh_Click(object sender, EventArgs e)
+        {
+            mainpanel.Visible = false;
+            meshpanel.Visible = true;
+        }
     }
 }
