@@ -38,30 +38,11 @@ namespace SceneTool
         {
             startpanel.Visible = false;
             scenewindow.Visible = true;
-            mainpanel.Visible = true;
+            tabControl.Visible = true;
+            clearbutton.Visible = true;
+            loadbutton.Visible = true;
+            savescenebutton.Visible = true;
         }
 
-        private void loadmeshbutton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void meshbackbutton_Click(object sender, EventArgs e)
-        {
-            meshpanel.Visible = false;
-            mainpanel.Visible = true;
-        }
-
-        private void addmesh_Click(object sender, EventArgs e)
-        {
-            mainpanel.Visible = false;
-            meshpanel.Visible = true;
-        }
-
-        private void texturebackbutton_Click(object sender, EventArgs e)
-        {
-            texturepanel.Visible = false;
-            mainpanel.Visible = true;
-        }
     }
 }
