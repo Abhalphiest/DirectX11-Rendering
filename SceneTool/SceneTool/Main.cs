@@ -57,5 +57,11 @@ namespace SceneTool
             mainpanel.Visible = false;
             meshpanel.Visible = true;
         }
+
+        private void texturebackbutton_Click(object sender, EventArgs e)
+        {
+            texturepanel.Visible = false;
+            mainpanel.Visible = true;
+        }
     }
 }
