@@ -10,11 +10,35 @@ using System.Windows.Forms;
 
 namespace SceneTool
 {
-    public partial class Main : Form
+    
+    public partial class mainscreen : Form
     {
-        public Main()
+        const int NUM_CELLS = 80;
+        const int CELL_SIZE = 5;
+        public mainscreen()
         {
             InitializeComponent();
+        }
+
+        private void scenewindow_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Pen p = new Pen(Color.Gray);
+
+            for(int i = 0; i <= NUM_CELLS; i++)
+            {
+                // Vertical
+                g.DrawLine(p, i * CELL_SIZE, 0, i * CELL_SIZE, NUM_CELLS * CELL_SIZE);
+                // Horizontal
+                g.DrawLine(p, 0, i * CELL_SIZE, NUM_CELLS * CELL_SIZE, i * CELL_SIZE);
+            }
+        }
+
+        private void newscene_Click(object sender, EventArgs e)
+        {
+            startpanel.Visible = false;
+            scenewindow.Visible = true;
+            mainpanel.Visible = true;
         }
     }
 }
