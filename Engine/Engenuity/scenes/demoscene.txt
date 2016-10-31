@@ -42,17 +42,17 @@ pos -2.5 0.0 0.0
 orn 0.0 0.0 0.0
 sc 1.0
 
-1/2
-pos 0.0 -2.3 -0.5
-orn 0.0 0.0 0.0
-# End table is very small & needs to be scaled up
-# This displaces the object strangely, however. Needs looking into.
-sc 10.0
-
-2/2
-pos 0.0 -2.3 -0.5
-orn 0.0 0.0 0.0
-sc 10.0
+#1/2
+#pos 0.0 -2.3 -0.5
+#orn 0.0 0.0 0.0
+## End table is very small & needs to be scaled up
+## This displaces the object strangely, however. Needs looking into.
+#sc 10.0
+#
+#2/2
+#pos 0.0 -2.3 -0.5
+#orn 0.0 0.0 0.0
+#sc 10.0
 
 # Left wall
 3/1
@@ -177,3 +177,9 @@ d
 0.2 0.2 0.2 1.0
 0.7 0.3 .3 1
 1 -1 0
+
+s
+0.1 0.1 0.1 0.1
+0.7 0.7 0.7 0.7
+0.0 -1.0 0.0 0.5
+-1.0 0.0 1.0

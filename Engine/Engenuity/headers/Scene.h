@@ -72,11 +72,7 @@ public:
 	* @param p_index    - index of object world data
 	* @param p_position - new object position
 	*/
-	void SetObjectPosition(uint p_index, DirectX::XMFLOAT3 p_position)
-    {
-        m_worldDatas[p_index].m_position = p_position;
-        m_colliders[p_index].m_position = p_position;
-    }
+	void SetObjectPosition(uint p_index, DirectX::XMFLOAT3 p_position) { m_worldDatas[p_index].m_position = p_position; }
 
 	/**
 	* SetObjectOrientation updates the object at the given index with the
@@ -96,6 +92,7 @@ public:
 	*/
 	void SetObjectScale(uint p_index, float p_scale) { m_worldDatas[p_index].m_scale = p_scale; }
 
+    void SetObjectCollider(uint p_index);
 
 	//  --  Getters --
 	DirectX::XMFLOAT3 GetObjectPosition(uint p_index)		{ return m_worldDatas[p_index].m_position; }

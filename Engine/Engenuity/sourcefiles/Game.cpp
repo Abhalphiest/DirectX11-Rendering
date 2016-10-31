@@ -45,7 +45,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    gs = BEGIN;
+    // gs = BEGIN;     // Remember to press SPACE to change state to playing. Commented out b/c it's annoying while testing
+    gs = PLAYING;
 
 	scenemanager = SceneManager::getInstance();
 	scenemanager->SetContext(context);
@@ -53,6 +54,7 @@ void Game::Init()
 	scenemanager->SetSamplerState();
 	// uint scene =scenemanager->LoadScene("scenes/testscene.txt");
     uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
+    // uint scene = scenemanager->LoadScene("scenes/walltestscene.txt");
 	scenemanager->SetScene(scene);
 	
 	// Tell the input assembler stage of the pipeline what kind of
@@ -85,7 +87,7 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
 	// if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
-	if (GetAsyncKeyState('X') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
+	// if (GetAsyncKeyState('X') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
 
     if (GetAsyncKeyState(VK_SPACE) & 0x8000) { gs = PLAYING; }
 	
@@ -107,10 +109,11 @@ void Game::Draw(float deltaTime, float totalTime)
 	// Clear the render target and depth buffer (erases what's on the screen)
 	//  - Do this ONCE PER FRAME
 	//  - At the beginning of Draw (before drawing *anything*)
-    if (gs == BEGIN)
-	    context->ClearRenderTargetView(backBufferRTV, color);
-    else if (gs == PLAYING)         // TODO: Added for demo, consider removing
-        context->ClearRenderTargetView(backBufferRTV, blackBG);
+    context->ClearRenderTargetView(backBufferRTV, color);
+    //if (gs == BEGIN)
+	   // context->ClearRenderTargetView(backBufferRTV, color);
+    //else if (gs == PLAYING)         // TODO: Added for demo, consider removing
+    //    context->ClearRenderTargetView(backBufferRTV, blackBG);
 	context->ClearDepthStencilView(
 		depthStencilView, 
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,

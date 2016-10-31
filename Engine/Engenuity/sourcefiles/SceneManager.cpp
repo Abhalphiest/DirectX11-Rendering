@@ -213,6 +213,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		Material* material = materials[std::stoul(s.substr(pos+1, s.length()), NULL, 10)];
 		uint object = newScene->CreateObject(mesh, material);
 		newData.m_indices.push_back(object);
+
 		if (!file.getline(chars, 100))
 		{
 			//if we want to do error handling in the future
@@ -228,6 +229,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		pos2 = s.find(' ', ++pos);
 		y = std::stof(s.substr(pos, pos2), NULL);
 		z = std::stof(s.substr(pos2, s.length()), NULL);
+
 		//set up position, orientation, scale vectors
 		newScene->SetObjectPosition(object,DirectX::XMFLOAT3(x, y, z));
 
@@ -263,6 +265,9 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		x = std::stof(s.substr(pos, pos2), NULL);
 		newScene->SetObjectScale(object, x);
 
+        // Now that world data in place, make collider
+        newScene->SetObjectCollider(object);
+
 		//done with this object
 	}
 
@@ -277,44 +282,23 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 		switch (chars[i])
 		{
 		case 'd': //directional light
-		{	
+		{
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			x = std::stof(s.substr(0, pos), NULL);
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			z = std::stof(s.substr(pos, pos2), NULL);
-			w = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT4 ambient(x, y, z, w);
+            DirectX::XMFLOAT4 ambient = ParseFloat4(s);
 
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			x = std::stof(s.substr(0, pos), NULL);
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			z = std::stof(s.substr(pos, pos2), NULL);
-			w = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT4 diffuse(x, y, z, w);
+            DirectX::XMFLOAT4 diffuse = ParseFloat4(s);
 
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			x = std::stof(s.substr(0, pos), NULL);
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);			
-			z = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT3 direction(x, y, z);
+            DirectX::XMFLOAT3 direction = ParseFloat3(s);
 
-			uint index = newScene->AddDirectionalLight({ ambient,diffuse,direction });
+			uint index = newScene->AddDirectionalLight({ ambient, diffuse, direction });
 			newData.m_dlights.push_back(index);
 			break;
 		}
@@ -323,46 +307,19 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			z = std::stof(s.substr(pos, pos2), NULL);
-			w = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT4 ambient(x, y, z, w);
+            DirectX::XMFLOAT4 ambient = ParseFloat4(s);
 
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			z = std::stof(s.substr(pos, pos2), NULL);
-			w = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT4 diffuse(x, y, z, w);
+            DirectX::XMFLOAT4 diffuse = ParseFloat4(s);
 
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			z = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT3 position(x, y, z);
+            DirectX::XMFLOAT3 position = ParseFloat3(s);
 
-			uint index = newScene->AddPointLight({ ambient,diffuse,position});
+			uint index = newScene->AddPointLight({ ambient, diffuse, position});
 			newData.m_plights.push_back(index);
 			break;
 		}
@@ -371,60 +328,24 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			z = std::stof(s.substr(pos, pos2), NULL);
-			w = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT4 ambient(x, y, z, w);
+            DirectX::XMFLOAT4 ambient = ParseFloat4(s);
 
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			z = std::stof(s.substr(pos, pos2), NULL);
-			w = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT4 diffuse(x, y, z, w);
+            DirectX::XMFLOAT4 diffuse = ParseFloat4(s);
+
+			file.getline(chars, 100);
+			i = skipWSandComments(chars, &file);
+            s = std::string(chars + i);
+            DirectX::XMFLOAT4 dirangle = ParseFloat4(s);
 
 			file.getline(chars, 100);
 			i = skipWSandComments(chars, &file);
 			s = std::string(chars + i);
-			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			z = std::stof(s.substr(pos, pos2), NULL);
-			w = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT4 dirangle (x, y, z, w);
+			DirectX::XMFLOAT3 position = ParseFloat3(s);
 
-			file.getline(chars, 100);
-			i = skipWSandComments(chars, &file);
-			s = std::string(chars + i);
-			pos = s.find(' ');
-			pos2 = s.find(' ', ++pos);
-			x = std::stof(s.substr(pos, pos2), NULL);
-			pos = pos2;
-			pos2 = s.find(' ', ++pos);
-			y = std::stof(s.substr(pos, pos2), NULL);
-			z = std::stof(s.substr(pos2, s.length()), NULL);
-			DirectX::XMFLOAT3 position(x, y, z);
-			uint index = newScene->AddSpotLight({ ambient,diffuse,dirangle,position});
+			uint index = newScene->AddSpotLight({ ambient, diffuse, dirangle, position});
 			newData.m_slights.push_back(index);
 			break;
 		}
@@ -462,6 +383,40 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	//return our index
 	return index;
 }
+
+DirectX::XMFLOAT3 SceneManager::ParseFloat3(std::string s)
+{
+    size_t pos, pos2;
+    float x, y, z, w;
+
+    pos = s.find(' ');
+    x = std::stof(s.substr(0, pos), NULL);
+    pos2 = s.find(' ', ++pos);
+    y = std::stof(s.substr(pos, pos2), NULL);
+    z = std::stof(s.substr(pos2, s.length()), NULL);
+    DirectX::XMFLOAT3 vec(x, y, z);
+
+    return vec;
+}
+
+DirectX::XMFLOAT4 SceneManager::ParseFloat4(std::string s)
+{
+    size_t pos, pos2;
+    float x, y, z, w;
+
+    pos = s.find(' ');
+    x = std::stof(s.substr(0, pos), NULL);
+    pos2 = s.find(' ', ++pos);
+    y = std::stof(s.substr(pos, pos2), NULL);
+    pos = pos2;
+    pos2 = s.find(' ', ++pos);
+    z = std::stof(s.substr(pos, pos2), NULL);
+    w = std::stof(s.substr(pos2, s.length()), NULL);
+    DirectX::XMFLOAT4 vec(x, y, z, w);
+
+    return vec;
+}
+
 void SceneManager::ReleaseScene(unsigned int p_index)
 {
 	//release all the SRV's first

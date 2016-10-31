@@ -116,9 +116,6 @@ uint Scene::CreateObject(Mesh* p_mesh, Material* p_material)
 	p_material->GetInstance();
 	m_materialList.push_back(p_material);
 
-    Collider collider = Collider(p_mesh->GetVertices());
-	m_colliders.push_back(collider);
-	
 	WorldData worlddata = WorldData();
 	m_worldDatas.push_back(worlddata);
 
@@ -141,6 +138,11 @@ void Scene::SetObjectMesh(uint p_index, Mesh* p_mesh)
 }
 
 
+void Scene::SetObjectCollider(uint p_index)
+{
+    Collider collider = Collider(m_meshList[p_index]->GetVertices(), m_worldDatas[p_index]);
+    m_colliders.push_back(collider);
+}
 
 //Light functions, this could be rearchitectured at a later date to be
 //cleaner

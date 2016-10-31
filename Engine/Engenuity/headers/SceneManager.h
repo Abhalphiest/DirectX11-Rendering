@@ -95,6 +95,7 @@ private:
 	ID3D11DeviceContext*    m_context;
 	SceneManager();
 
-	int skipWSandComments(char* chars, std::ifstream* file); // For file processing
-	
+	int skipWSandComments(char* chars, std::ifstream* file);    // For file processing
+    DirectX::XMFLOAT3 ParseFloat3(std::string s);               // For file processing
+    DirectX::XMFLOAT4 ParseFloat4(std::string s);               // For file processing
 };

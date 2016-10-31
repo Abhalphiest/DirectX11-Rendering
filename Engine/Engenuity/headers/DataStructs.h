@@ -52,8 +52,10 @@ struct Collider
         m_maxZ = 0.1;
     }
 
-    Collider(std::vector<Vertex> p_vertices)
+    Collider(std::vector<Vertex> p_vertices, WorldData p_worlddata)
     {
+        m_position = p_worlddata.m_position;
+
         m_minX = 0;
         m_maxX = 0;
         m_minY = 0;
@@ -61,27 +63,33 @@ struct Collider
         m_minZ = 0;
         m_maxZ = 0;
 
-        // TODO: NEED to rework this to take an object's rotation/scale into account
-        //  Would necessitate finding a way to pass worlddata to this function
-        Vertex currVert;
+        DirectX::XMFLOAT3 currPos;
+        DirectX::XMVECTOR transformedPos;
+        DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationRollPitchYaw(p_worlddata.m_orientation.x, p_worlddata.m_orientation.y, p_worlddata.m_orientation.z);
+        DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(p_worlddata.m_scale, p_worlddata.m_scale, p_worlddata.m_scale);
+        DirectX::XMMATRIX transformer = scale * rotation;
 
         for (std::vector<uint>::size_type i = 0; i != p_vertices.size(); ++i)
         {
-            currVert = p_vertices[i];
-            if (currVert.Position.x < m_minX)
-                m_minX = currVert.Position.x;
-            else if (currVert.Position.x > m_maxX)
-                m_maxX = currVert.Position.x;
+            currPos = p_vertices[i].Position;
+            transformedPos = DirectX::XMLoadFloat3(&currPos);
+            transformedPos = DirectX::XMVector3Transform(transformedPos, transformer);
+            DirectX::XMStoreFloat3(&currPos, transformedPos);
 
-            if (currVert.Position.y < m_minY)
-                m_minY = currVert.Position.y;
-            else if (currVert.Position.y > m_maxY)
-                m_maxY = currVert.Position.y;
+            if (currPos.x < m_minX)
+                m_minX = currPos.x;
+            else if (currPos.x > m_maxX)
+                m_maxX = currPos.x;
 
-            if (currVert.Position.z < m_minZ)
-                m_minZ = currVert.Position.z;
-            else if (currVert.Position.z > m_maxZ)
-                m_maxZ = currVert.Position.z;
+            if (currPos.y < m_minY)
+                m_minY = currPos.y;
+            else if (currPos.y > m_maxY)
+                m_maxY = currPos.y;
+
+            if (currPos.z < m_minZ)
+                m_minZ = currPos.z;
+            else if (currPos.z > m_maxZ)
+                m_maxZ = currPos.z;
         }
     }
 

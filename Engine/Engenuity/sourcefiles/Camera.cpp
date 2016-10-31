@@ -5,7 +5,7 @@ Camera::Camera(float p_aspratio)
 {
 	//initialize everything to default values
     // TODO: Hacky fixed values for demo. Should really have these be set in scene file, no?
-	m_pos = DirectX::XMFLOAT3(-0.5, 1.3, -1);
+	m_pos = DirectX::XMFLOAT3(-0.8, 1.5, -1);
 	m_rot = DirectX::XMFLOAT3(0, 0, 0);
 	DirectX::XMStoreFloat4x4(&m_view, DirectX::XMMatrixIdentity());
 	SetProjection(p_aspratio);
@@ -17,7 +17,7 @@ void Camera::Update()
 	DirectX::XMVECTOR rot_quaternion = DirectX::XMQuaternionRotationRollPitchYaw(m_rot.x, m_rot.y, m_rot.z);
 
 	//set up all our DirectX structures
-	DirectX::XMFLOAT3 forward = DirectX::XMFLOAT3(0,0,1);
+	DirectX::XMFLOAT3 forward = DirectX::XMFLOAT3(0, 0, 1);
 	DirectX::XMFLOAT3 up = DirectX::XMFLOAT3(0, 1, 0);
 	DirectX::XMVECTOR f_vec = DirectX::XMLoadFloat3(&forward);
 	DirectX::XMVECTOR u_vec = DirectX::XMLoadFloat3(&up);

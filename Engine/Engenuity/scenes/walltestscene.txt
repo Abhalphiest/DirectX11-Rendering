@@ -1,0 +1,35 @@
+o Assets/Models/quad.obj
+
+t Assets/Textures/wood.jpg
+
+n Assets/Textures/wood_n.jpg
+
+s Assets/Textures/armchair_s.dds
+
+m Assets/Textures/default_m.png
+
+ps PixelShader.cso
+
+vs VertexShader.cso
+
+%
+
+0/0/0/0/0/0
+
+$
+
+0/0
+pos -0.5 1.0 6.0
+orn 0.0 3.14 3.14
+sc 5.0
+
+&
+
+#spot light goes ambient (vec4) diffuse (vec4) direction/angle (vec4) 
+# position(vec3)
+
+s
+0.1 0.1 0.1 0.1
+1.0 1.0 1.0 1.0
+0.0 0.0 -1.0 0.89
+0.0 0.0 0.0
