@@ -193,6 +193,7 @@ namespace SceneTool
         {
             Mesh mesh = new SceneTool.Scene.Mesh();
             mesh.filepath = filepath;
+            meshes.Add(mesh);
         }
         public void deleteMesh(int index)
         {
