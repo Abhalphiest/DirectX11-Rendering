@@ -37,6 +37,8 @@ Game::Game(HINSTANCE hInstance)
 Game::~Game()
 {
 	delete scenemanager;    // Handles its own memory
+    delete spriteBatch;
+    delete spriteFont;
 }
 
 // --------------------------------------------------------
@@ -45,8 +47,7 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-    // gs = BEGIN;     // Remember to press SPACE to change state to playing. Commented out b/c it's annoying while testing
-    gs = PLAYING;
+    gs = BEGIN;     // Remember to press SPACE to change state to playing. Commented out b/c it's annoying while testing
 
 	scenemanager = SceneManager::getInstance();
 	scenemanager->SetContext(context);
@@ -56,7 +57,10 @@ void Game::Init()
     uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
     // uint scene = scenemanager->LoadScene("scenes/walltestscene.txt");
 	scenemanager->SetScene(scene);
-	
+
+    spriteBatch = new DirectX::SpriteBatch(context);
+    spriteFont = new DirectX::SpriteFont(device, L"Assets/Fonts/candara.spritefont");
+
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
 	// Essentially: "What kind of shape should the GPU draw with our data?"
@@ -109,11 +113,16 @@ void Game::Draw(float deltaTime, float totalTime)
 	// Clear the render target and depth buffer (erases what's on the screen)
 	//  - Do this ONCE PER FRAME
 	//  - At the beginning of Draw (before drawing *anything*)
-    context->ClearRenderTargetView(backBufferRTV, color);
-    //if (gs == BEGIN)
-	   // context->ClearRenderTargetView(backBufferRTV, color);
-    //else if (gs == PLAYING)         // TODO: Added for demo, consider removing
-    //    context->ClearRenderTargetView(backBufferRTV, blackBG);
+    //context->ClearRenderTargetView(backBufferRTV, color);
+    if (gs == BEGIN)
+    {
+        context->ClearRenderTargetView(backBufferRTV, blackBG);
+        spriteBatch->Begin();
+        spriteFont->DrawString(spriteBatch, L"Press [SPACE] to enter the survival horror. . .", XMFLOAT2(470, 360));
+        spriteBatch->End();
+    }
+    else if (gs == PLAYING)         // TODO: Added for demo, consider removing
+        context->ClearRenderTargetView(backBufferRTV, blackBG);
 	context->ClearDepthStencilView(
 		depthStencilView, 
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
