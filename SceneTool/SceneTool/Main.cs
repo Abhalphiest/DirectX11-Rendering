@@ -60,6 +60,7 @@ namespace SceneTool
 
         private void buildlightbutton_Click(object sender, EventArgs e)
         {
+            string name = lightname.Text;
             if(directionalradio.Checked)
             {
                 double[] direction = new double[3];
@@ -131,7 +132,7 @@ namespace SceneTool
                 }
 
                 //actually build the thing
-                scene.buildDirectionalLight(ambient,diffuse,direction);
+                scene.buildDirectionalLight(ambient,diffuse,direction,name);
             }
             else if(pointradio.Checked)
             {
@@ -202,7 +203,7 @@ namespace SceneTool
                 {
                     //error handling
                 }
-                scene.buildPointLight(ambient,diffuse,position);
+                scene.buildPointLight(ambient,diffuse,position,name);
             }
             else if(spotradio.Checked)
             {
@@ -291,19 +292,22 @@ namespace SceneTool
                 {
                     //error handling
                 }
-                scene.buildSpotLight(ambient,diffuse,position,direction);
+                scene.buildSpotLight(ambient,diffuse,position,direction,name);
             }
+            updateLightLists();
         }
 
         private void loadmeshbutton_Click(object sender, EventArgs e)
         {
             scene.loadMesh(meshfilepath.Text);
+            updateMeshLists();
         }
 
         private void deletemeshbutton_Click(object sender, EventArgs e)
         {
             
             scene.deleteMesh(currentmeshlist.SelectedIndex);
+            updateMeshLists();
         }
 
         private void loadtexturebutton_Click(object sender, EventArgs e)
@@ -316,11 +320,13 @@ namespace SceneTool
                 scene.loadSpecular(texturefilepath.Text);
             else if (multiplyradio.Checked)
                 scene.loadMultiply(texturefilepath.Text);
+            updateTextureLists();
         }
 
         private void deletetexturebutton_Click(object sender, EventArgs e)
         {
             scene.deleteTexture(currenttextureslist.SelectedIndex);
+            updateTextureLists();
         }
 
         private void loadshaderbutton_Click(object sender, EventArgs e)
@@ -329,18 +335,15 @@ namespace SceneTool
                 scene.loadPixelShader(shaderfilepath.Text);
             else if (vertexshaderradio.Checked)
                 scene.loadVertexShader(shaderfilepath.Text);
+            updateShaderLists();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             scene.deleteShader(currentshaderlist.SelectedIndex);
+            updateShaderLists();
         }
 
-        private void editwallsbutton_Click(object sender, EventArgs e)
-        {
-            propertiespanel.Visible = false;
-            walleditorpanel.Visible = true;
-        }
 
         private void mainscreen_Load(object sender, EventArgs e)
         {
@@ -411,6 +414,76 @@ namespace SceneTool
             }
         }
 
-      
+        private void materialbackbutton_Click(object sender, EventArgs e)
+        {
+            materialpanel.Visible = true;
+            creatematerialpanel.Visible = false;
+        }
+
+        private void updateMaterialLists()
+        {
+            materialslist.Items.Clear();
+            materialslist.Items.AddRange(scene.getMaterialNameArray());
+        }
+        private void updateObjectLists()
+        {
+            objectlist.Items.Clear();
+            objectlist.Items.AddRange(scene.getObjectNameArray());
+        }
+        private void updateShaderLists()
+        {
+            materialpshaderlist.Items.Clear();
+            materialpshaderlist.Items.AddRange(scene.getPixelShaderArray());
+
+            materialvshaderlist.Items.Clear();
+            materialvshaderlist.Items.AddRange(scene.getVertexShaderArray());
+
+            currentshaderlist.Items.Clear();
+            currentshaderlist.Items.AddRange(scene.getShaderArray());
+        }
+        private void updateTextureLists()
+        {
+            materialdiffuselist.Items.Clear();
+            materialspecularlist.Items.Clear();
+            materialnormallist.Items.Clear();
+            materialmultiplylist.Items.Clear();
+            materialmultiplylist.Items.AddRange(scene.getMultiplyTextureArray());
+            materialdiffuselist.Items.AddRange(scene.getDiffuseTextureArray());
+            materialspecularlist.Items.AddRange(scene.getSpecularTextureArray());
+            materialnormallist.Items.AddRange(scene.getSpecularTextureArray());
+
+            currenttextureslist.Items.Clear();
+            currenttextureslist.Items.AddRange(scene.getTextureArray());
+        }
+        private void updateMeshLists()
+        {
+            currentmeshlist.Items.Clear();
+            currentmeshlist.Items.AddRange(scene.getMeshArray());
+        }
+        private void updateLightLists()
+        {
+            currentlightslist.Items.Clear();
+            currentlightslist.Items.AddRange(scene.getLightArray());
+        }
+
+        private void buildmaterialbutton_Click(object sender, EventArgs e)
+        {
+            int diffuseindex, multindex, specindex, normalindex, vshaderindex, pshaderindex;
+            string name;
+            name = materialname.Text;
+            diffuseindex = materialdiffuselist.SelectedIndex;
+            multindex = materialmultiplylist.SelectedIndex;
+            specindex = materialspecularlist.SelectedIndex;
+            normalindex = materialnormallist.SelectedIndex;
+            vshaderindex = materialvshaderlist.SelectedIndex;
+            pshaderindex = materialpshaderlist.SelectedIndex;
+
+            scene.buildMaterial(diffuseindex, normalindex, specindex, multindex, pshaderindex, vshaderindex, name);
+        }
+
+        private void loadscenebutton_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

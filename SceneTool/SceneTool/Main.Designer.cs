@@ -115,18 +115,27 @@
             this.vertexshaderradio = new System.Windows.Forms.RadioButton();
             this.shaderfilepath = new System.Windows.Forms.TextBox();
             this.shaderfilepathlabel = new System.Windows.Forms.Label();
-            this.propertiestab = new System.Windows.Forms.TabPage();
-            this.propertiespanel = new System.Windows.Forms.Panel();
-            this.changepropertiesbutton = new System.Windows.Forms.Button();
-            this.sceneheight = new System.Windows.Forms.TextBox();
-            this.sceneheightlabel = new System.Windows.Forms.Label();
-            this.scenewidth = new System.Windows.Forms.TextBox();
-            this.scenewidthlabel = new System.Windows.Forms.Label();
-            this.editwallsbutton = new System.Windows.Forms.Button();
-            this.walleditorpanel = new System.Windows.Forms.Panel();
             this.savescenebutton = new System.Windows.Forms.Button();
             this.loadbutton = new System.Windows.Forms.Button();
             this.clearbutton = new System.Windows.Forms.Button();
+            this.materialdiffuselist = new System.Windows.Forms.ListBox();
+            this.materialdiffuselabel = new System.Windows.Forms.Label();
+            this.materialspecularlabel = new System.Windows.Forms.Label();
+            this.materialspecularlist = new System.Windows.Forms.ListBox();
+            this.materialmultiplylabel = new System.Windows.Forms.Label();
+            this.materialmultiplylist = new System.Windows.Forms.ListBox();
+            this.materialnormallabel = new System.Windows.Forms.Label();
+            this.materialnormallist = new System.Windows.Forms.ListBox();
+            this.materialvshaderlabel = new System.Windows.Forms.Label();
+            this.materialvshaderlist = new System.Windows.Forms.ListBox();
+            this.materialpshaderlabel = new System.Windows.Forms.Label();
+            this.materialpshaderlist = new System.Windows.Forms.ListBox();
+            this.buildmaterialbutton = new System.Windows.Forms.Button();
+            this.materialbackbutton = new System.Windows.Forms.Button();
+            this.materialname = new System.Windows.Forms.TextBox();
+            this.materialnamelabel = new System.Windows.Forms.Label();
+            this.lightnamelabel = new System.Windows.Forms.Label();
+            this.lightname = new System.Windows.Forms.TextBox();
             this.objectpanel.SuspendLayout();
             this.startpanel.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -135,12 +144,11 @@
             this.lightpanel.SuspendLayout();
             this.objecttab.SuspendLayout();
             this.materialstab.SuspendLayout();
+            this.creatematerialpanel.SuspendLayout();
             this.materialpanel.SuspendLayout();
             this.meshtab.SuspendLayout();
             this.texturetab.SuspendLayout();
             this.shadertab.SuspendLayout();
-            this.propertiestab.SuspendLayout();
-            this.propertiespanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // scenewindow
@@ -148,7 +156,7 @@
             this.scenewindow.Location = new System.Drawing.Point(33, 26);
             this.scenewindow.Margin = new System.Windows.Forms.Padding(4);
             this.scenewindow.Name = "scenewindow";
-            this.scenewindow.Size = new System.Drawing.Size(692, 412);
+            this.scenewindow.Size = new System.Drawing.Size(619, 412);
             this.scenewindow.TabIndex = 0;
             this.scenewindow.Visible = false;
             this.scenewindow.Paint += new System.Windows.Forms.PaintEventHandler(this.scenewindow_Paint);
@@ -258,6 +266,7 @@
             this.loadscenebutton.TabIndex = 1;
             this.loadscenebutton.Text = "Edit Existing Scene";
             this.loadscenebutton.UseVisualStyleBackColor = true;
+            this.loadscenebutton.Click += new System.EventHandler(this.loadscenebutton_Click);
             // 
             // newscene
             // 
@@ -325,13 +334,12 @@
             this.tabControl.Controls.Add(this.meshtab);
             this.tabControl.Controls.Add(this.texturetab);
             this.tabControl.Controls.Add(this.shadertab);
-            this.tabControl.Controls.Add(this.propertiestab);
-            this.tabControl.Location = new System.Drawing.Point(728, 15);
+            this.tabControl.Location = new System.Drawing.Point(660, 15);
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Multiline = true;
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(337, 439);
+            this.tabControl.Size = new System.Drawing.Size(405, 439);
             this.tabControl.TabIndex = 8;
             this.tabControl.Visible = false;
             // 
@@ -339,16 +347,18 @@
             // 
             this.lighttab.Controls.Add(this.buildlightpanel);
             this.lighttab.Controls.Add(this.lightpanel);
-            this.lighttab.Location = new System.Drawing.Point(4, 46);
+            this.lighttab.Location = new System.Drawing.Point(4, 25);
             this.lighttab.Margin = new System.Windows.Forms.Padding(4);
             this.lighttab.Name = "lighttab";
-            this.lighttab.Size = new System.Drawing.Size(329, 389);
+            this.lighttab.Size = new System.Drawing.Size(397, 410);
             this.lighttab.TabIndex = 4;
             this.lighttab.Text = "Lights";
             this.lighttab.UseVisualStyleBackColor = true;
             // 
             // buildlightpanel
             // 
+            this.buildlightpanel.Controls.Add(this.lightname);
+            this.buildlightpanel.Controls.Add(this.lightnamelabel);
             this.buildlightpanel.Controls.Add(this.buildlightbackbutton);
             this.buildlightpanel.Controls.Add(this.diffuseA);
             this.buildlightpanel.Controls.Add(this.ambientA);
@@ -376,13 +386,13 @@
             this.buildlightpanel.Location = new System.Drawing.Point(0, 0);
             this.buildlightpanel.Margin = new System.Windows.Forms.Padding(4);
             this.buildlightpanel.Name = "buildlightpanel";
-            this.buildlightpanel.Size = new System.Drawing.Size(312, 378);
+            this.buildlightpanel.Size = new System.Drawing.Size(312, 418);
             this.buildlightpanel.TabIndex = 5;
             this.buildlightpanel.Visible = false;
             // 
             // buildlightbackbutton
             // 
-            this.buildlightbackbutton.Location = new System.Drawing.Point(141, 316);
+            this.buildlightbackbutton.Location = new System.Drawing.Point(137, 370);
             this.buildlightbackbutton.Margin = new System.Windows.Forms.Padding(4);
             this.buildlightbackbutton.Name = "buildlightbackbutton";
             this.buildlightbackbutton.Size = new System.Drawing.Size(100, 28);
@@ -489,7 +499,6 @@
             this.spotradio.TabIndex = 11;
             this.spotradio.Text = "Spot Light";
             this.spotradio.UseVisualStyleBackColor = true;
-            
             // 
             // pointradio
             // 
@@ -545,7 +554,7 @@
             // 
             // buildlightbutton
             // 
-            this.buildlightbutton.Location = new System.Drawing.Point(33, 318);
+            this.buildlightbutton.Location = new System.Drawing.Point(29, 370);
             this.buildlightbutton.Margin = new System.Windows.Forms.Padding(4);
             this.buildlightbutton.Name = "buildlightbutton";
             this.buildlightbutton.Size = new System.Drawing.Size(100, 28);
@@ -699,21 +708,38 @@
             // 
             this.materialstab.Controls.Add(this.creatematerialpanel);
             this.materialstab.Controls.Add(this.materialpanel);
-            this.materialstab.Location = new System.Drawing.Point(4, 46);
+            this.materialstab.Location = new System.Drawing.Point(4, 25);
             this.materialstab.Margin = new System.Windows.Forms.Padding(4);
             this.materialstab.Name = "materialstab";
             this.materialstab.Padding = new System.Windows.Forms.Padding(4);
-            this.materialstab.Size = new System.Drawing.Size(329, 389);
+            this.materialstab.Size = new System.Drawing.Size(397, 410);
             this.materialstab.TabIndex = 6;
             this.materialstab.Text = "Materials";
             this.materialstab.UseVisualStyleBackColor = true;
             // 
             // creatematerialpanel
             // 
+            this.creatematerialpanel.AutoScroll = true;
+            this.creatematerialpanel.Controls.Add(this.materialnamelabel);
+            this.creatematerialpanel.Controls.Add(this.materialname);
+            this.creatematerialpanel.Controls.Add(this.materialbackbutton);
+            this.creatematerialpanel.Controls.Add(this.buildmaterialbutton);
+            this.creatematerialpanel.Controls.Add(this.materialpshaderlist);
+            this.creatematerialpanel.Controls.Add(this.materialpshaderlabel);
+            this.creatematerialpanel.Controls.Add(this.materialvshaderlist);
+            this.creatematerialpanel.Controls.Add(this.materialnormallist);
+            this.creatematerialpanel.Controls.Add(this.materialnormallabel);
+            this.creatematerialpanel.Controls.Add(this.materialmultiplylist);
+            this.creatematerialpanel.Controls.Add(this.materialmultiplylabel);
+            this.creatematerialpanel.Controls.Add(this.materialspecularlist);
+            this.creatematerialpanel.Controls.Add(this.materialspecularlabel);
+            this.creatematerialpanel.Controls.Add(this.materialdiffuselabel);
+            this.creatematerialpanel.Controls.Add(this.materialdiffuselist);
+            this.creatematerialpanel.Controls.Add(this.materialvshaderlabel);
             this.creatematerialpanel.Location = new System.Drawing.Point(0, 0);
             this.creatematerialpanel.Margin = new System.Windows.Forms.Padding(4);
             this.creatematerialpanel.Name = "creatematerialpanel";
-            this.creatematerialpanel.Size = new System.Drawing.Size(317, 377);
+            this.creatematerialpanel.Size = new System.Drawing.Size(336, 382);
             this.creatematerialpanel.TabIndex = 5;
             this.creatematerialpanel.Visible = false;
             // 
@@ -1076,99 +1102,6 @@
             this.shaderfilepathlabel.TabIndex = 0;
             this.shaderfilepathlabel.Text = "Shader Filepath";
             // 
-            // propertiestab
-            // 
-            this.propertiestab.Controls.Add(this.propertiespanel);
-            this.propertiestab.Controls.Add(this.walleditorpanel);
-            this.propertiestab.Location = new System.Drawing.Point(4, 46);
-            this.propertiestab.Margin = new System.Windows.Forms.Padding(4);
-            this.propertiestab.Name = "propertiestab";
-            this.propertiestab.Padding = new System.Windows.Forms.Padding(4);
-            this.propertiestab.Size = new System.Drawing.Size(329, 389);
-            this.propertiestab.TabIndex = 5;
-            this.propertiestab.Text = "Scene Properties";
-            this.propertiestab.UseVisualStyleBackColor = true;
-            // 
-            // propertiespanel
-            // 
-            this.propertiespanel.Controls.Add(this.changepropertiesbutton);
-            this.propertiespanel.Controls.Add(this.sceneheight);
-            this.propertiespanel.Controls.Add(this.sceneheightlabel);
-            this.propertiespanel.Controls.Add(this.scenewidth);
-            this.propertiespanel.Controls.Add(this.scenewidthlabel);
-            this.propertiespanel.Controls.Add(this.editwallsbutton);
-            this.propertiespanel.Location = new System.Drawing.Point(9, 9);
-            this.propertiespanel.Margin = new System.Windows.Forms.Padding(4);
-            this.propertiespanel.Name = "propertiespanel";
-            this.propertiespanel.Size = new System.Drawing.Size(309, 373);
-            this.propertiespanel.TabIndex = 0;
-            // 
-            // changepropertiesbutton
-            // 
-            this.changepropertiesbutton.Location = new System.Drawing.Point(25, 188);
-            this.changepropertiesbutton.Margin = new System.Windows.Forms.Padding(4);
-            this.changepropertiesbutton.Name = "changepropertiesbutton";
-            this.changepropertiesbutton.Size = new System.Drawing.Size(149, 28);
-            this.changepropertiesbutton.TabIndex = 5;
-            this.changepropertiesbutton.Text = "Save Changes";
-            this.changepropertiesbutton.UseVisualStyleBackColor = true;
-            // 
-            // sceneheight
-            // 
-            this.sceneheight.Location = new System.Drawing.Point(121, 140);
-            this.sceneheight.Margin = new System.Windows.Forms.Padding(4);
-            this.sceneheight.Name = "sceneheight";
-            this.sceneheight.Size = new System.Drawing.Size(91, 22);
-            this.sceneheight.TabIndex = 4;
-            // 
-            // sceneheightlabel
-            // 
-            this.sceneheightlabel.AutoSize = true;
-            this.sceneheightlabel.Location = new System.Drawing.Point(21, 140);
-            this.sceneheightlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.sceneheightlabel.Name = "sceneheightlabel";
-            this.sceneheightlabel.Size = new System.Drawing.Size(93, 17);
-            this.sceneheightlabel.TabIndex = 3;
-            this.sceneheightlabel.Text = "Scene Height";
-            // 
-            // scenewidth
-            // 
-            this.scenewidth.Location = new System.Drawing.Point(121, 92);
-            this.scenewidth.Margin = new System.Windows.Forms.Padding(4);
-            this.scenewidth.Name = "scenewidth";
-            this.scenewidth.Size = new System.Drawing.Size(80, 22);
-            this.scenewidth.TabIndex = 2;
-            // 
-            // scenewidthlabel
-            // 
-            this.scenewidthlabel.AutoSize = true;
-            this.scenewidthlabel.Location = new System.Drawing.Point(21, 92);
-            this.scenewidthlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.scenewidthlabel.Name = "scenewidthlabel";
-            this.scenewidthlabel.Size = new System.Drawing.Size(88, 17);
-            this.scenewidthlabel.TabIndex = 1;
-            this.scenewidthlabel.Text = "Scene Width";
-            // 
-            // editwallsbutton
-            // 
-            this.editwallsbutton.Location = new System.Drawing.Point(21, 30);
-            this.editwallsbutton.Margin = new System.Windows.Forms.Padding(4);
-            this.editwallsbutton.Name = "editwallsbutton";
-            this.editwallsbutton.Size = new System.Drawing.Size(100, 28);
-            this.editwallsbutton.TabIndex = 0;
-            this.editwallsbutton.Text = "Edit Walls";
-            this.editwallsbutton.UseVisualStyleBackColor = true;
-            this.editwallsbutton.Click += new System.EventHandler(this.editwallsbutton_Click);
-            // 
-            // walleditorpanel
-            // 
-            this.walleditorpanel.Location = new System.Drawing.Point(0, 0);
-            this.walleditorpanel.Margin = new System.Windows.Forms.Padding(4);
-            this.walleditorpanel.Name = "walleditorpanel";
-            this.walleditorpanel.Size = new System.Drawing.Size(300, 373);
-            this.walleditorpanel.TabIndex = 6;
-            this.walleditorpanel.Visible = false;
-            // 
             // savescenebutton
             // 
             this.savescenebutton.Location = new System.Drawing.Point(33, 466);
@@ -1202,6 +1135,166 @@
             this.clearbutton.UseVisualStyleBackColor = true;
             this.clearbutton.Visible = false;
             // 
+            // materialdiffuselist
+            // 
+            this.materialdiffuselist.FormattingEnabled = true;
+            this.materialdiffuselist.ItemHeight = 16;
+            this.materialdiffuselist.Location = new System.Drawing.Point(19, 31);
+            this.materialdiffuselist.Name = "materialdiffuselist";
+            this.materialdiffuselist.Size = new System.Drawing.Size(278, 68);
+            this.materialdiffuselist.TabIndex = 0;
+            // 
+            // materialdiffuselabel
+            // 
+            this.materialdiffuselabel.AutoSize = true;
+            this.materialdiffuselabel.Location = new System.Drawing.Point(16, 11);
+            this.materialdiffuselabel.Name = "materialdiffuselabel";
+            this.materialdiffuselabel.Size = new System.Drawing.Size(83, 17);
+            this.materialdiffuselabel.TabIndex = 1;
+            this.materialdiffuselabel.Text = "Diffuse Map";
+            // 
+            // materialspecularlabel
+            // 
+            this.materialspecularlabel.AutoSize = true;
+            this.materialspecularlabel.Location = new System.Drawing.Point(16, 107);
+            this.materialspecularlabel.Name = "materialspecularlabel";
+            this.materialspecularlabel.Size = new System.Drawing.Size(95, 17);
+            this.materialspecularlabel.TabIndex = 2;
+            this.materialspecularlabel.Text = "Specular Map";
+            // 
+            // materialspecularlist
+            // 
+            this.materialspecularlist.FormattingEnabled = true;
+            this.materialspecularlist.ItemHeight = 16;
+            this.materialspecularlist.Location = new System.Drawing.Point(19, 127);
+            this.materialspecularlist.Name = "materialspecularlist";
+            this.materialspecularlist.Size = new System.Drawing.Size(278, 84);
+            this.materialspecularlist.TabIndex = 3;
+            // 
+            // materialmultiplylabel
+            // 
+            this.materialmultiplylabel.AutoSize = true;
+            this.materialmultiplylabel.Location = new System.Drawing.Point(19, 218);
+            this.materialmultiplylabel.Name = "materialmultiplylabel";
+            this.materialmultiplylabel.Size = new System.Drawing.Size(86, 17);
+            this.materialmultiplylabel.TabIndex = 4;
+            this.materialmultiplylabel.Text = "Multiply Map";
+            // 
+            // materialmultiplylist
+            // 
+            this.materialmultiplylist.FormattingEnabled = true;
+            this.materialmultiplylist.ItemHeight = 16;
+            this.materialmultiplylist.Location = new System.Drawing.Point(19, 242);
+            this.materialmultiplylist.Name = "materialmultiplylist";
+            this.materialmultiplylist.Size = new System.Drawing.Size(278, 84);
+            this.materialmultiplylist.TabIndex = 5;
+            // 
+            // materialnormallabel
+            // 
+            this.materialnormallabel.AutoSize = true;
+            this.materialnormallabel.Location = new System.Drawing.Point(19, 337);
+            this.materialnormallabel.Name = "materialnormallabel";
+            this.materialnormallabel.Size = new System.Drawing.Size(84, 17);
+            this.materialnormallabel.TabIndex = 6;
+            this.materialnormallabel.Text = "Normal Map";
+            // 
+            // materialnormallist
+            // 
+            this.materialnormallist.FormattingEnabled = true;
+            this.materialnormallist.ItemHeight = 16;
+            this.materialnormallist.Location = new System.Drawing.Point(22, 363);
+            this.materialnormallist.Name = "materialnormallist";
+            this.materialnormallist.Size = new System.Drawing.Size(275, 84);
+            this.materialnormallist.TabIndex = 7;
+            // 
+            // materialvshaderlabel
+            // 
+            this.materialvshaderlabel.AutoSize = true;
+            this.materialvshaderlabel.Location = new System.Drawing.Point(19, 454);
+            this.materialvshaderlabel.Name = "materialvshaderlabel";
+            this.materialvshaderlabel.Size = new System.Drawing.Size(98, 17);
+            this.materialvshaderlabel.TabIndex = 12;
+            this.materialvshaderlabel.Text = "Vertex Shader";
+            // 
+            // materialvshaderlist
+            // 
+            this.materialvshaderlist.FormattingEnabled = true;
+            this.materialvshaderlist.ItemHeight = 16;
+            this.materialvshaderlist.Location = new System.Drawing.Point(22, 478);
+            this.materialvshaderlist.Name = "materialvshaderlist";
+            this.materialvshaderlist.Size = new System.Drawing.Size(275, 84);
+            this.materialvshaderlist.TabIndex = 13;
+            // 
+            // materialpshaderlabel
+            // 
+            this.materialpshaderlabel.AutoSize = true;
+            this.materialpshaderlabel.Location = new System.Drawing.Point(19, 573);
+            this.materialpshaderlabel.Name = "materialpshaderlabel";
+            this.materialpshaderlabel.Size = new System.Drawing.Size(87, 17);
+            this.materialpshaderlabel.TabIndex = 14;
+            this.materialpshaderlabel.Text = "Pixel Shader";
+            // 
+            // materialpshaderlist
+            // 
+            this.materialpshaderlist.FormattingEnabled = true;
+            this.materialpshaderlist.ItemHeight = 16;
+            this.materialpshaderlist.Location = new System.Drawing.Point(22, 598);
+            this.materialpshaderlist.Name = "materialpshaderlist";
+            this.materialpshaderlist.Size = new System.Drawing.Size(275, 68);
+            this.materialpshaderlist.TabIndex = 15;
+            // 
+            // buildmaterialbutton
+            // 
+            this.buildmaterialbutton.Location = new System.Drawing.Point(22, 731);
+            this.buildmaterialbutton.Name = "buildmaterialbutton";
+            this.buildmaterialbutton.Size = new System.Drawing.Size(106, 23);
+            this.buildmaterialbutton.TabIndex = 16;
+            this.buildmaterialbutton.Text = "Build Material";
+            this.buildmaterialbutton.UseVisualStyleBackColor = true;
+            this.buildmaterialbutton.Click += new System.EventHandler(this.buildmaterialbutton_Click);
+            // 
+            // materialbackbutton
+            // 
+            this.materialbackbutton.Location = new System.Drawing.Point(222, 731);
+            this.materialbackbutton.Name = "materialbackbutton";
+            this.materialbackbutton.Size = new System.Drawing.Size(75, 23);
+            this.materialbackbutton.TabIndex = 17;
+            this.materialbackbutton.Text = "Back";
+            this.materialbackbutton.UseVisualStyleBackColor = true;
+            this.materialbackbutton.Click += new System.EventHandler(this.materialbackbutton_Click);
+            // 
+            // materialname
+            // 
+            this.materialname.Location = new System.Drawing.Point(22, 699);
+            this.materialname.Name = "materialname";
+            this.materialname.Size = new System.Drawing.Size(265, 22);
+            this.materialname.TabIndex = 18;
+            // 
+            // materialnamelabel
+            // 
+            this.materialnamelabel.AutoSize = true;
+            this.materialnamelabel.Location = new System.Drawing.Point(26, 679);
+            this.materialnamelabel.Name = "materialnamelabel";
+            this.materialnamelabel.Size = new System.Drawing.Size(99, 17);
+            this.materialnamelabel.TabIndex = 19;
+            this.materialnamelabel.Text = "Material Name";
+            // 
+            // lightnamelabel
+            // 
+            this.lightnamelabel.AutoSize = true;
+            this.lightnamelabel.Location = new System.Drawing.Point(32, 316);
+            this.lightnamelabel.Name = "lightnamelabel";
+            this.lightnamelabel.Size = new System.Drawing.Size(80, 17);
+            this.lightnamelabel.TabIndex = 24;
+            this.lightnamelabel.Text = "Light Name";
+            // 
+            // lightname
+            // 
+            this.lightname.Location = new System.Drawing.Point(32, 341);
+            this.lightname.Name = "lightname";
+            this.lightname.Size = new System.Drawing.Size(188, 22);
+            this.lightname.TabIndex = 25;
+            // 
             // mainscreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1228,6 +1321,8 @@
             this.lightpanel.PerformLayout();
             this.objecttab.ResumeLayout(false);
             this.materialstab.ResumeLayout(false);
+            this.creatematerialpanel.ResumeLayout(false);
+            this.creatematerialpanel.PerformLayout();
             this.materialpanel.ResumeLayout(false);
             this.materialpanel.PerformLayout();
             this.meshtab.ResumeLayout(false);
@@ -1236,9 +1331,6 @@
             this.texturetab.PerformLayout();
             this.shadertab.ResumeLayout(false);
             this.shadertab.PerformLayout();
-            this.propertiestab.ResumeLayout(false);
-            this.propertiespanel.ResumeLayout(false);
-            this.propertiespanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1268,7 +1360,6 @@
         private System.Windows.Forms.Button editobjectbutton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button createobjectbutton;
-        private System.Windows.Forms.TabPage propertiestab;
         private System.Windows.Forms.TabPage materialstab;
         private System.Windows.Forms.Button deletematerialbutton;
         private System.Windows.Forms.Button editmaterialbutton;
@@ -1301,13 +1392,6 @@
         private System.Windows.Forms.TextBox diffuseR;
         private System.Windows.Forms.TextBox ambientR;
         private System.Windows.Forms.RadioButton directionalradio;
-        private System.Windows.Forms.Panel propertiespanel;
-        private System.Windows.Forms.Button changepropertiesbutton;
-        private System.Windows.Forms.TextBox sceneheight;
-        private System.Windows.Forms.Label sceneheightlabel;
-        private System.Windows.Forms.TextBox scenewidth;
-        private System.Windows.Forms.Label scenewidthlabel;
-        private System.Windows.Forms.Button editwallsbutton;
         private System.Windows.Forms.RadioButton pixelshaderradio;
         private System.Windows.Forms.RadioButton spotradio;
         private System.Windows.Forms.RadioButton pointradio;
@@ -1334,7 +1418,6 @@
         private System.Windows.Forms.Button deleteshaderbutton;
         private System.Windows.Forms.Label currentshaderlabel;
         private System.Windows.Forms.ListBox currentshaderlist;
-        private System.Windows.Forms.Panel walleditorpanel;
         private System.Windows.Forms.Button savescenebutton;
         private System.Windows.Forms.Button loadbutton;
         private System.Windows.Forms.Button clearbutton;
@@ -1344,5 +1427,23 @@
         private System.Windows.Forms.RadioButton specularradio;
         private System.Windows.Forms.RadioButton normalradio;
         private System.Windows.Forms.RadioButton diffuseradio;
+        private System.Windows.Forms.Label materialnamelabel;
+        private System.Windows.Forms.TextBox materialname;
+        private System.Windows.Forms.Button materialbackbutton;
+        private System.Windows.Forms.Button buildmaterialbutton;
+        private System.Windows.Forms.ListBox materialpshaderlist;
+        private System.Windows.Forms.Label materialpshaderlabel;
+        private System.Windows.Forms.ListBox materialvshaderlist;
+        private System.Windows.Forms.ListBox materialnormallist;
+        private System.Windows.Forms.Label materialnormallabel;
+        private System.Windows.Forms.ListBox materialmultiplylist;
+        private System.Windows.Forms.Label materialmultiplylabel;
+        private System.Windows.Forms.ListBox materialspecularlist;
+        private System.Windows.Forms.Label materialspecularlabel;
+        private System.Windows.Forms.Label materialdiffuselabel;
+        private System.Windows.Forms.ListBox materialdiffuselist;
+        private System.Windows.Forms.Label materialvshaderlabel;
+        private System.Windows.Forms.TextBox lightname;
+        private System.Windows.Forms.Label lightnamelabel;
     }
 }
