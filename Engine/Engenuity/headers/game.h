@@ -10,6 +10,8 @@
 #include "FirstPersonController.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
 #define CAMERA_DELTA .005
 #define MOVE_SCALE 3
 
@@ -48,6 +50,8 @@ private:
 	POINT prevMousePos;
 
     Game_State gs;
+    DirectX::SpriteBatch* spriteBatch;
+    DirectX::SpriteFont* spriteFont;
 
 	SceneManager* scenemanager;
 };
