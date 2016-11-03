@@ -345,8 +345,8 @@
             // 
             // lighttab
             // 
-            this.lighttab.Controls.Add(this.buildlightpanel);
             this.lighttab.Controls.Add(this.lightpanel);
+            this.lighttab.Controls.Add(this.buildlightpanel);
             this.lighttab.Location = new System.Drawing.Point(4, 25);
             this.lighttab.Margin = new System.Windows.Forms.Padding(4);
             this.lighttab.Name = "lighttab";
@@ -630,6 +630,7 @@
             this.lightdisplaytogglebutton.TabIndex = 5;
             this.lightdisplaytogglebutton.Text = "Toggle Light Display";
             this.lightdisplaytogglebutton.UseVisualStyleBackColor = true;
+            this.lightdisplaytogglebutton.Visible = false;
             // 
             // deletelightbutton
             // 
@@ -640,6 +641,7 @@
             this.deletelightbutton.TabIndex = 4;
             this.deletelightbutton.Text = "Delete Light";
             this.deletelightbutton.UseVisualStyleBackColor = true;
+            this.deletelightbutton.Click += new System.EventHandler(this.deletelightbutton_Click);
             // 
             // editlightbutton
             // 

@@ -189,6 +189,7 @@ namespace SceneTool
             mesh.filepath = filepath;
         }
         public void deleteMesh(int index) {
+            if (index < 0) return;
             meshes.RemoveAt(index);
         }
         public void loadDiffuse(string filepath) {
@@ -202,7 +203,7 @@ namespace SceneTool
             //need to calculate which list to go off of
             //based on size of index relative to lengths of lists
             //and order of display in the list box
-
+            if (index < 0) return;
             //diffuse,spec,multiply,normal
             if (index >= diffusetextures.Count)
             {
@@ -224,6 +225,7 @@ namespace SceneTool
         public void loadPixelShader(string filepath) { pixelshaders.Add(filepath); }
         public void loadVertexShader(string filepath) { vertexshaders.Add(filepath); }
         public void deleteShader(int index) { //see delete texture above for comments
+            if (index < 0) return;
             if (index >= vertexshaders.Count)//must be a pixel shader
             {
                 pixelshaders.RemoveAt(index - vertexshaders.Count);
@@ -235,6 +237,8 @@ namespace SceneTool
 
         public void deleteLight(int index)
         {
+            if (index < 0)
+                return;
             if (index >= dlights.Count)
             {
                 index -= dlights.Count;

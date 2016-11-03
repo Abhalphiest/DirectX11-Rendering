@@ -54,6 +54,23 @@ namespace SceneTool
 
         private void buildlightbackbutton_Click(object sender, EventArgs e)
         {
+            lightdirectionX.Clear();
+            lightdirectionY.Clear();
+            lightdirectionZ.Clear();
+            lightdirectionW.Clear();
+            lightpositionX.Clear();
+            lightpositionY.Clear();
+            lightpositionZ.Clear();
+            ambientR.Clear();
+            ambientG.Clear();
+            ambientB.Clear();
+            ambientA.Clear();
+            diffuseR.Clear();
+            diffuseG.Clear();
+            diffuseB.Clear();
+            diffuseA.Clear();
+            directionalradio.Checked = true;
+
             buildlightpanel.Visible = false;
             lightpanel.Visible = true;
         }
@@ -295,6 +312,7 @@ namespace SceneTool
                 scene.buildSpotLight(ambient,diffuse,position,direction,name);
             }
             updateLightLists();
+            buildlightbackbutton_Click(sender, e);
         }
 
         private void loadmeshbutton_Click(object sender, EventArgs e)
@@ -362,7 +380,7 @@ namespace SceneTool
                 lightpositionZ.ReadOnly = true;
                 lightdirectionW.Text = "";
                 lightdirectionW.ReadOnly = true;
-                lightdirectionW.BorderStyle = BorderStyle.None;
+                lightdirectionW.Visible = false;
                 lightpositionX.BackColor = Color.DarkGray;
                 lightpositionY.BackColor = Color.DarkGray;
                 lightpositionZ.BackColor = Color.DarkGray;
@@ -377,14 +395,14 @@ namespace SceneTool
                 lightpositionX.BackColor = Color.White;
                 lightpositionY.BackColor = Color.White;
                 lightpositionZ.BackColor = Color.White;
-                lightdirectionW.BorderStyle = BorderStyle.Fixed3D;
+                lightdirectionW.Visible = true;
 
             }
         }
 
         private void pointradio_CheckedChanged(object sender, EventArgs e)
         {
-            if (directionalradio.Checked) //prevent what we can't use right now
+            if (pointradio.Checked) //prevent what we can't use right now
             {
                 lightdirectionX.Text = "";
                 lightdirectionX.ReadOnly = true;
@@ -394,7 +412,7 @@ namespace SceneTool
                 lightdirectionZ.ReadOnly = true;
                 lightdirectionW.Text = "";
                 lightdirectionW.ReadOnly = true;
-                lightdirectionW.BorderStyle = BorderStyle.None;
+                lightdirectionW.Visible = false;
                 lightdirectionX.BackColor = Color.DarkGray;
                 lightdirectionY.BackColor = Color.DarkGray;
                 lightdirectionZ.BackColor = Color.DarkGray;
@@ -409,7 +427,7 @@ namespace SceneTool
                 lightdirectionX.BackColor = Color.White;
                 lightdirectionY.BackColor = Color.White;
                 lightdirectionZ.BackColor = Color.White;
-                lightdirectionW.BorderStyle = BorderStyle.Fixed3D;
+                lightdirectionW.Visible = true;
 
             }
         }
@@ -484,6 +502,12 @@ namespace SceneTool
         private void loadscenebutton_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void deletelightbutton_Click(object sender, EventArgs e)
+        {
+            scene.deleteLight(currentlightslist.SelectedIndex);
+            updateLightLists();
         }
     }
 }
