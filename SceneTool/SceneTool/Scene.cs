@@ -32,7 +32,7 @@ namespace SceneTool
         {
             string[] names = new string[materials.Count];
             int i = 0;
-            foreach(Material m in materials)
+            foreach (Material m in materials)
             {
                 names[i] = m.name;
                 i++;
@@ -82,7 +82,7 @@ namespace SceneTool
         {
             string[] lights = new string[dlights.Count + plights.Count + slights.Count];
             int i = 0;
-            foreach(DirectionalLight l in dlights)
+            foreach (DirectionalLight l in dlights)
             {
                 lights[i] = l.name + " (Directional)";
                 i++;
@@ -103,7 +103,7 @@ namespace SceneTool
         {
             string[] filepaths = new string[meshes.Count];
             int i = 0;
-            foreach(Mesh m in meshes)
+            foreach (Mesh m in meshes)
             {
                 filepaths[i] = m.filepath;
                 i++;
@@ -142,7 +142,8 @@ namespace SceneTool
             spectextures = new List<string>();
 
         }
-        public void buildDirectionalLight(double [] ambientColor, double[] diffuseColor,  double[] direction,string name) {
+        public void buildDirectionalLight(double[] ambientColor, double[] diffuseColor, double[] direction, string name)
+        {
             DirectionalLight dlight = new DirectionalLight();
             dlight.ambientColor = ambientColor;
             dlight.diffuseColor = diffuseColor;
@@ -150,7 +151,8 @@ namespace SceneTool
             dlight.name = name;
             dlights.Add(dlight);
         }
-        public void buildPointLight(double[]ambientColor, double[] diffuseColor, double[] position,string name) {
+        public void buildPointLight(double[] ambientColor, double[] diffuseColor, double[] position, string name)
+        {
             PointLight plight = new PointLight();
             plight.ambientColor = ambientColor;
             plight.diffuseColor = diffuseColor;
@@ -158,7 +160,8 @@ namespace SceneTool
             plight.name = name;
             plights.Add(plight);
         }
-        public void buildSpotLight(double[]ambientColor, double[] diffuseColor, double[] position, double[] direction, string name) {
+        public void buildSpotLight(double[] ambientColor, double[] diffuseColor, double[] position, double[] direction, string name)
+        {
             SpotLight slight = new SpotLight();
             slight.ambientColor = ambientColor;
             slight.diffuseColor = diffuseColor;
@@ -167,13 +170,15 @@ namespace SceneTool
             slight.name = name;
             slights.Add(slight);
         }
-        public void buildObject(int meshindex, int materialindex) {
+        public void buildObject(int meshindex, int materialindex)
+        {
             Object obj = new SceneTool.Scene.Object();
             obj.meshindex = meshindex;
             obj.materialindex = materialindex;
             objects.Add(obj);
         }
-        public void buildMaterial(int diffuseindex, int normalindex, int specularindex, int multiplyindex, int pshader, int vshader,string name) {
+        public void buildMaterial(int diffuseindex, int normalindex, int specularindex, int multiplyindex, int pshader, int vshader, string name)
+        {
             Material mat = new SceneTool.Scene.Material();
             mat.diffuseindex = diffuseindex;
             mat.normalindex = normalindex;
@@ -184,21 +189,25 @@ namespace SceneTool
             mat.name = name;
             materials.Add(mat);
         }
-        public void loadMesh(string filepath) {
+        public void loadMesh(string filepath)
+        {
             Mesh mesh = new SceneTool.Scene.Mesh();
             mesh.filepath = filepath;
         }
-        public void deleteMesh(int index) {
+        public void deleteMesh(int index)
+        {
             if (index < 0) return;
             meshes.RemoveAt(index);
         }
-        public void loadDiffuse(string filepath) {
+        public void loadDiffuse(string filepath)
+        {
             diffusetextures.Add(filepath);
         }
         public void loadSpecular(string filepath) { spectextures.Add(filepath); }
         public void loadMultiply(string filepath) { multiplytextures.Add(filepath); }
         public void loadNormal(string filepath) { normaltextures.Add(filepath); }
-        public void deleteTexture(int index) {
+        public void deleteTexture(int index)
+        {
             //more complicated implementation
             //need to calculate which list to go off of
             //based on size of index relative to lengths of lists
@@ -224,7 +233,8 @@ namespace SceneTool
         }
         public void loadPixelShader(string filepath) { pixelshaders.Add(filepath); }
         public void loadVertexShader(string filepath) { vertexshaders.Add(filepath); }
-        public void deleteShader(int index) { //see delete texture above for comments
+        public void deleteShader(int index)
+        { //see delete texture above for comments
             if (index < 0) return;
             if (index >= vertexshaders.Count)//must be a pixel shader
             {
@@ -250,8 +260,131 @@ namespace SceneTool
             else
                 dlights.RemoveAt(index);
         }
+
+        public void editLight(int index, double[] ambient, double[] diffuse, double[] position, double[] direction, string name)
+        {
+            if (index < 0)
+                return;
+            if (index >= dlights.Count)
+            {
+                index -= dlights.Count;
+                if (index >= plights.Count)
+                {
+                    SpotLight newslight = new SpotLight();
+                    newslight.ambientColor = ambient;
+                    newslight.diffuseColor = diffuse;
+                    newslight.direction = direction;
+                    newslight.position = position;
+                    newslight.name = name;
+                    slights[index] = newslight;
+                }
+                else
+                {
+                    PointLight newplight = new PointLight();
+                    newplight.ambientColor = ambient;
+                    newplight.diffuseColor = diffuse;
+                    newplight.position = position;
+                    newplight.name = name;
+                    plights[index] = newplight;
+                }
+            }
+            else
+            {
+                DirectionalLight newdlight = new DirectionalLight();
+                newdlight.ambientColor = ambient;
+                newdlight.diffuseColor = diffuse;
+                newdlight.direction = direction;
+                newdlight.name = name;
+                dlights[index] = newdlight;
+            }
+        }
         //will be done later
         public bool loadScene(string filepath) { return true; }
         public bool saveScene(string filepath) { return true; }
+
+
+        public bool isDirectionalLight(int index)
+        {
+            return index >= 0 && index < dlights.Count;
+        }
+        public bool isSpotLight(int index)
+        {
+            return index >= dlights.Count + plights.Count && index < dlights.Count + plights.Count + slights.Count;
+        }
+        public bool isPointLight(int index)
+        {
+            return index >= dlights.Count && index < dlights.Count + plights.Count;
+        }
+
+        public string[] getLightData(int index)
+        {
+            if (index < 0) return null;
+
+            string[] lightData = new string[16];
+            if(index >= dlights.Count)
+            {
+                if(index>= dlights.Count+plights.Count)
+                {
+                    SpotLight light = slights[index];
+                    lightData[0] = light.ambientColor[0].ToString();
+                    lightData[1] = light.ambientColor[1].ToString();
+                    lightData[2] = light.ambientColor[2].ToString();
+                    lightData[3] = light.ambientColor[3].ToString();
+                    lightData[4] = light.diffuseColor[0].ToString();
+                    lightData[5] = light.diffuseColor[1].ToString();
+                    lightData[6] = light.diffuseColor[2].ToString();
+                    lightData[7] = light.diffuseColor[3].ToString();
+                    lightData[8] = light.position[0].ToString();
+                    lightData[9] = light.position[1].ToString();
+                    lightData[10] = light.position[2].ToString();
+                    lightData[11] = light.direction[0].ToString();
+                    lightData[12] = light.direction[1].ToString();
+                    lightData[13] = light.direction[2].ToString();
+                    lightData[14] = light.direction[3].ToString();
+                    lightData[15] = light.name;
+                }
+                else
+                {
+                    PointLight light = plights[index];
+                    lightData[0] = light.ambientColor[0].ToString();
+                    lightData[1] = light.ambientColor[1].ToString();
+                    lightData[2] = light.ambientColor[2].ToString();
+                    lightData[3] = light.ambientColor[3].ToString();
+                    lightData[4] = light.diffuseColor[0].ToString();
+                    lightData[5] = light.diffuseColor[1].ToString();
+                    lightData[6] = light.diffuseColor[2].ToString();
+                    lightData[7] = light.diffuseColor[3].ToString();
+                    lightData[8] = light.position[0].ToString();
+                    lightData[9] = light.position[1].ToString();
+                    lightData[10] = light.position[2].ToString();
+                    lightData[11] = "";
+                    lightData[12] = "";
+                    lightData[13] = "";
+                    lightData[14] = "";
+                    lightData[15] = light.name;
+                }
+            }
+            else
+            {
+                DirectionalLight light = dlights[index];
+                lightData[0] = light.ambientColor[0].ToString();
+                lightData[1] = light.ambientColor[1].ToString();
+                lightData[2] = light.ambientColor[2].ToString();
+                lightData[3] = light.ambientColor[3].ToString();
+                lightData[4] = light.diffuseColor[0].ToString();
+                lightData[5] = light.diffuseColor[1].ToString();
+                lightData[6] = light.diffuseColor[2].ToString();
+                lightData[7] = light.diffuseColor[3].ToString();
+                lightData[8] = "";
+                lightData[9] = "";
+                lightData[10] = "";
+                lightData[11] = light.direction[0].ToString();
+                lightData[12] = light.direction[1].ToString();
+                lightData[13] = light.direction[2].ToString();
+                lightData[14] = "";
+                lightData[15] = light.name;
+            }
+            return lightData;
+        }
     }
 }

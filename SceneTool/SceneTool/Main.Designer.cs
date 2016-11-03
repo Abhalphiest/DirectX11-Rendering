@@ -47,7 +47,16 @@
             this.loadmeshbutton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.lighttab = new System.Windows.Forms.TabPage();
+            this.lightpanel = new System.Windows.Forms.Panel();
+            this.lightdisplaytogglebutton = new System.Windows.Forms.Button();
+            this.deletelightbutton = new System.Windows.Forms.Button();
+            this.editlightbutton = new System.Windows.Forms.Button();
+            this.createlightbutton = new System.Windows.Forms.Button();
+            this.currentlightslist = new System.Windows.Forms.ListBox();
+            this.currentlightslabel = new System.Windows.Forms.Label();
             this.buildlightpanel = new System.Windows.Forms.Panel();
+            this.lightname = new System.Windows.Forms.TextBox();
+            this.lightnamelabel = new System.Windows.Forms.Label();
             this.buildlightbackbutton = new System.Windows.Forms.Button();
             this.diffuseA = new System.Windows.Forms.TextBox();
             this.ambientA = new System.Windows.Forms.TextBox();
@@ -72,17 +81,26 @@
             this.diffuseR = new System.Windows.Forms.TextBox();
             this.ambientR = new System.Windows.Forms.TextBox();
             this.directionalradio = new System.Windows.Forms.RadioButton();
-            this.lightpanel = new System.Windows.Forms.Panel();
-            this.lightdisplaytogglebutton = new System.Windows.Forms.Button();
-            this.deletelightbutton = new System.Windows.Forms.Button();
-            this.editlightbutton = new System.Windows.Forms.Button();
-            this.createlightbutton = new System.Windows.Forms.Button();
-            this.currentlightslist = new System.Windows.Forms.ListBox();
-            this.currentlightslabel = new System.Windows.Forms.Label();
             this.objecttab = new System.Windows.Forms.TabPage();
             this.createobjectpanel = new System.Windows.Forms.Panel();
             this.materialstab = new System.Windows.Forms.TabPage();
             this.creatematerialpanel = new System.Windows.Forms.Panel();
+            this.materialnamelabel = new System.Windows.Forms.Label();
+            this.materialname = new System.Windows.Forms.TextBox();
+            this.materialbackbutton = new System.Windows.Forms.Button();
+            this.buildmaterialbutton = new System.Windows.Forms.Button();
+            this.materialpshaderlist = new System.Windows.Forms.ListBox();
+            this.materialpshaderlabel = new System.Windows.Forms.Label();
+            this.materialvshaderlist = new System.Windows.Forms.ListBox();
+            this.materialnormallist = new System.Windows.Forms.ListBox();
+            this.materialnormallabel = new System.Windows.Forms.Label();
+            this.materialmultiplylist = new System.Windows.Forms.ListBox();
+            this.materialmultiplylabel = new System.Windows.Forms.Label();
+            this.materialspecularlist = new System.Windows.Forms.ListBox();
+            this.materialspecularlabel = new System.Windows.Forms.Label();
+            this.materialdiffuselabel = new System.Windows.Forms.Label();
+            this.materialdiffuselist = new System.Windows.Forms.ListBox();
+            this.materialvshaderlabel = new System.Windows.Forms.Label();
             this.materialpanel = new System.Windows.Forms.Panel();
             this.deletematerialbutton = new System.Windows.Forms.Button();
             this.editmaterialbutton = new System.Windows.Forms.Button();
@@ -118,30 +136,13 @@
             this.savescenebutton = new System.Windows.Forms.Button();
             this.loadbutton = new System.Windows.Forms.Button();
             this.clearbutton = new System.Windows.Forms.Button();
-            this.materialdiffuselist = new System.Windows.Forms.ListBox();
-            this.materialdiffuselabel = new System.Windows.Forms.Label();
-            this.materialspecularlabel = new System.Windows.Forms.Label();
-            this.materialspecularlist = new System.Windows.Forms.ListBox();
-            this.materialmultiplylabel = new System.Windows.Forms.Label();
-            this.materialmultiplylist = new System.Windows.Forms.ListBox();
-            this.materialnormallabel = new System.Windows.Forms.Label();
-            this.materialnormallist = new System.Windows.Forms.ListBox();
-            this.materialvshaderlabel = new System.Windows.Forms.Label();
-            this.materialvshaderlist = new System.Windows.Forms.ListBox();
-            this.materialpshaderlabel = new System.Windows.Forms.Label();
-            this.materialpshaderlist = new System.Windows.Forms.ListBox();
-            this.buildmaterialbutton = new System.Windows.Forms.Button();
-            this.materialbackbutton = new System.Windows.Forms.Button();
-            this.materialname = new System.Windows.Forms.TextBox();
-            this.materialnamelabel = new System.Windows.Forms.Label();
-            this.lightnamelabel = new System.Windows.Forms.Label();
-            this.lightname = new System.Windows.Forms.TextBox();
+            this.savelightchangesbutton = new System.Windows.Forms.Button();
             this.objectpanel.SuspendLayout();
             this.startpanel.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.lighttab.SuspendLayout();
-            this.buildlightpanel.SuspendLayout();
             this.lightpanel.SuspendLayout();
+            this.buildlightpanel.SuspendLayout();
             this.objecttab.SuspendLayout();
             this.materialstab.SuspendLayout();
             this.creatematerialpanel.SuspendLayout();
@@ -345,8 +346,8 @@
             // 
             // lighttab
             // 
-            this.lighttab.Controls.Add(this.lightpanel);
             this.lighttab.Controls.Add(this.buildlightpanel);
+            this.lighttab.Controls.Add(this.lightpanel);
             this.lighttab.Location = new System.Drawing.Point(4, 25);
             this.lighttab.Margin = new System.Windows.Forms.Padding(4);
             this.lighttab.Name = "lighttab";
@@ -355,8 +356,87 @@
             this.lighttab.Text = "Lights";
             this.lighttab.UseVisualStyleBackColor = true;
             // 
+            // lightpanel
+            // 
+            this.lightpanel.Controls.Add(this.lightdisplaytogglebutton);
+            this.lightpanel.Controls.Add(this.deletelightbutton);
+            this.lightpanel.Controls.Add(this.editlightbutton);
+            this.lightpanel.Controls.Add(this.createlightbutton);
+            this.lightpanel.Controls.Add(this.currentlightslist);
+            this.lightpanel.Controls.Add(this.currentlightslabel);
+            this.lightpanel.Location = new System.Drawing.Point(4, 4);
+            this.lightpanel.Margin = new System.Windows.Forms.Padding(4);
+            this.lightpanel.Name = "lightpanel";
+            this.lightpanel.Size = new System.Drawing.Size(316, 378);
+            this.lightpanel.TabIndex = 2;
+            // 
+            // lightdisplaytogglebutton
+            // 
+            this.lightdisplaytogglebutton.Location = new System.Drawing.Point(27, 293);
+            this.lightdisplaytogglebutton.Margin = new System.Windows.Forms.Padding(4);
+            this.lightdisplaytogglebutton.Name = "lightdisplaytogglebutton";
+            this.lightdisplaytogglebutton.Size = new System.Drawing.Size(155, 28);
+            this.lightdisplaytogglebutton.TabIndex = 5;
+            this.lightdisplaytogglebutton.Text = "Toggle Light Display";
+            this.lightdisplaytogglebutton.UseVisualStyleBackColor = true;
+            this.lightdisplaytogglebutton.Visible = false;
+            // 
+            // deletelightbutton
+            // 
+            this.deletelightbutton.Location = new System.Drawing.Point(25, 257);
+            this.deletelightbutton.Margin = new System.Windows.Forms.Padding(4);
+            this.deletelightbutton.Name = "deletelightbutton";
+            this.deletelightbutton.Size = new System.Drawing.Size(155, 28);
+            this.deletelightbutton.TabIndex = 4;
+            this.deletelightbutton.Text = "Delete Light";
+            this.deletelightbutton.UseVisualStyleBackColor = true;
+            this.deletelightbutton.Click += new System.EventHandler(this.deletelightbutton_Click);
+            // 
+            // editlightbutton
+            // 
+            this.editlightbutton.Location = new System.Drawing.Point(25, 224);
+            this.editlightbutton.Margin = new System.Windows.Forms.Padding(4);
+            this.editlightbutton.Name = "editlightbutton";
+            this.editlightbutton.Size = new System.Drawing.Size(155, 28);
+            this.editlightbutton.TabIndex = 3;
+            this.editlightbutton.Text = "Edit Light";
+            this.editlightbutton.UseVisualStyleBackColor = true;
+            this.editlightbutton.Click += new System.EventHandler(this.editlightbutton_Click);
+            // 
+            // createlightbutton
+            // 
+            this.createlightbutton.Location = new System.Drawing.Point(25, 10);
+            this.createlightbutton.Margin = new System.Windows.Forms.Padding(4);
+            this.createlightbutton.Name = "createlightbutton";
+            this.createlightbutton.Size = new System.Drawing.Size(155, 28);
+            this.createlightbutton.TabIndex = 2;
+            this.createlightbutton.Text = "Create Light";
+            this.createlightbutton.UseVisualStyleBackColor = true;
+            this.createlightbutton.Click += new System.EventHandler(this.createlightbutton_Click);
+            // 
+            // currentlightslist
+            // 
+            this.currentlightslist.FormattingEnabled = true;
+            this.currentlightslist.ItemHeight = 16;
+            this.currentlightslist.Location = new System.Drawing.Point(21, 81);
+            this.currentlightslist.Margin = new System.Windows.Forms.Padding(4);
+            this.currentlightslist.Name = "currentlightslist";
+            this.currentlightslist.Size = new System.Drawing.Size(207, 116);
+            this.currentlightslist.TabIndex = 0;
+            // 
+            // currentlightslabel
+            // 
+            this.currentlightslabel.AutoSize = true;
+            this.currentlightslabel.Location = new System.Drawing.Point(21, 58);
+            this.currentlightslabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.currentlightslabel.Name = "currentlightslabel";
+            this.currentlightslabel.Size = new System.Drawing.Size(93, 17);
+            this.currentlightslabel.TabIndex = 1;
+            this.currentlightslabel.Text = "CurrentLights";
+            // 
             // buildlightpanel
             // 
+            this.buildlightpanel.Controls.Add(this.savelightchangesbutton);
             this.buildlightpanel.Controls.Add(this.lightname);
             this.buildlightpanel.Controls.Add(this.lightnamelabel);
             this.buildlightpanel.Controls.Add(this.buildlightbackbutton);
@@ -390,9 +470,25 @@
             this.buildlightpanel.TabIndex = 5;
             this.buildlightpanel.Visible = false;
             // 
+            // lightname
+            // 
+            this.lightname.Location = new System.Drawing.Point(32, 341);
+            this.lightname.Name = "lightname";
+            this.lightname.Size = new System.Drawing.Size(188, 22);
+            this.lightname.TabIndex = 25;
+            // 
+            // lightnamelabel
+            // 
+            this.lightnamelabel.AutoSize = true;
+            this.lightnamelabel.Location = new System.Drawing.Point(32, 316);
+            this.lightnamelabel.Name = "lightnamelabel";
+            this.lightnamelabel.Size = new System.Drawing.Size(80, 17);
+            this.lightnamelabel.TabIndex = 24;
+            this.lightnamelabel.Text = "Light Name";
+            // 
             // buildlightbackbutton
             // 
-            this.buildlightbackbutton.Location = new System.Drawing.Point(137, 370);
+            this.buildlightbackbutton.Location = new System.Drawing.Point(167, 370);
             this.buildlightbackbutton.Margin = new System.Windows.Forms.Padding(4);
             this.buildlightbackbutton.Name = "buildlightbackbutton";
             this.buildlightbackbutton.Size = new System.Drawing.Size(100, 28);
@@ -607,92 +703,15 @@
             this.directionalradio.UseVisualStyleBackColor = true;
             this.directionalradio.CheckedChanged += new System.EventHandler(this.directionalradio_CheckedChanged);
             // 
-            // lightpanel
-            // 
-            this.lightpanel.Controls.Add(this.lightdisplaytogglebutton);
-            this.lightpanel.Controls.Add(this.deletelightbutton);
-            this.lightpanel.Controls.Add(this.editlightbutton);
-            this.lightpanel.Controls.Add(this.createlightbutton);
-            this.lightpanel.Controls.Add(this.currentlightslist);
-            this.lightpanel.Controls.Add(this.currentlightslabel);
-            this.lightpanel.Location = new System.Drawing.Point(4, 4);
-            this.lightpanel.Margin = new System.Windows.Forms.Padding(4);
-            this.lightpanel.Name = "lightpanel";
-            this.lightpanel.Size = new System.Drawing.Size(316, 378);
-            this.lightpanel.TabIndex = 2;
-            // 
-            // lightdisplaytogglebutton
-            // 
-            this.lightdisplaytogglebutton.Location = new System.Drawing.Point(27, 293);
-            this.lightdisplaytogglebutton.Margin = new System.Windows.Forms.Padding(4);
-            this.lightdisplaytogglebutton.Name = "lightdisplaytogglebutton";
-            this.lightdisplaytogglebutton.Size = new System.Drawing.Size(155, 28);
-            this.lightdisplaytogglebutton.TabIndex = 5;
-            this.lightdisplaytogglebutton.Text = "Toggle Light Display";
-            this.lightdisplaytogglebutton.UseVisualStyleBackColor = true;
-            this.lightdisplaytogglebutton.Visible = false;
-            // 
-            // deletelightbutton
-            // 
-            this.deletelightbutton.Location = new System.Drawing.Point(25, 257);
-            this.deletelightbutton.Margin = new System.Windows.Forms.Padding(4);
-            this.deletelightbutton.Name = "deletelightbutton";
-            this.deletelightbutton.Size = new System.Drawing.Size(155, 28);
-            this.deletelightbutton.TabIndex = 4;
-            this.deletelightbutton.Text = "Delete Light";
-            this.deletelightbutton.UseVisualStyleBackColor = true;
-            this.deletelightbutton.Click += new System.EventHandler(this.deletelightbutton_Click);
-            // 
-            // editlightbutton
-            // 
-            this.editlightbutton.Location = new System.Drawing.Point(25, 224);
-            this.editlightbutton.Margin = new System.Windows.Forms.Padding(4);
-            this.editlightbutton.Name = "editlightbutton";
-            this.editlightbutton.Size = new System.Drawing.Size(155, 28);
-            this.editlightbutton.TabIndex = 3;
-            this.editlightbutton.Text = "Edit Light";
-            this.editlightbutton.UseVisualStyleBackColor = true;
-            // 
-            // createlightbutton
-            // 
-            this.createlightbutton.Location = new System.Drawing.Point(25, 10);
-            this.createlightbutton.Margin = new System.Windows.Forms.Padding(4);
-            this.createlightbutton.Name = "createlightbutton";
-            this.createlightbutton.Size = new System.Drawing.Size(155, 28);
-            this.createlightbutton.TabIndex = 2;
-            this.createlightbutton.Text = "Create Light";
-            this.createlightbutton.UseVisualStyleBackColor = true;
-            this.createlightbutton.Click += new System.EventHandler(this.createlightbutton_Click);
-            // 
-            // currentlightslist
-            // 
-            this.currentlightslist.FormattingEnabled = true;
-            this.currentlightslist.ItemHeight = 16;
-            this.currentlightslist.Location = new System.Drawing.Point(21, 81);
-            this.currentlightslist.Margin = new System.Windows.Forms.Padding(4);
-            this.currentlightslist.Name = "currentlightslist";
-            this.currentlightslist.Size = new System.Drawing.Size(207, 116);
-            this.currentlightslist.TabIndex = 0;
-            // 
-            // currentlightslabel
-            // 
-            this.currentlightslabel.AutoSize = true;
-            this.currentlightslabel.Location = new System.Drawing.Point(21, 58);
-            this.currentlightslabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.currentlightslabel.Name = "currentlightslabel";
-            this.currentlightslabel.Size = new System.Drawing.Size(93, 17);
-            this.currentlightslabel.TabIndex = 1;
-            this.currentlightslabel.Text = "CurrentLights";
-            // 
             // objecttab
             // 
             this.objecttab.Controls.Add(this.createobjectpanel);
             this.objecttab.Controls.Add(this.objectpanel);
-            this.objecttab.Location = new System.Drawing.Point(4, 46);
+            this.objecttab.Location = new System.Drawing.Point(4, 25);
             this.objecttab.Margin = new System.Windows.Forms.Padding(4);
             this.objecttab.Name = "objecttab";
             this.objecttab.Padding = new System.Windows.Forms.Padding(4);
-            this.objecttab.Size = new System.Drawing.Size(329, 389);
+            this.objecttab.Size = new System.Drawing.Size(397, 410);
             this.objecttab.TabIndex = 0;
             this.objecttab.Text = "Objects";
             this.objecttab.UseVisualStyleBackColor = true;
@@ -744,6 +763,150 @@
             this.creatematerialpanel.Size = new System.Drawing.Size(336, 382);
             this.creatematerialpanel.TabIndex = 5;
             this.creatematerialpanel.Visible = false;
+            // 
+            // materialnamelabel
+            // 
+            this.materialnamelabel.AutoSize = true;
+            this.materialnamelabel.Location = new System.Drawing.Point(26, 679);
+            this.materialnamelabel.Name = "materialnamelabel";
+            this.materialnamelabel.Size = new System.Drawing.Size(99, 17);
+            this.materialnamelabel.TabIndex = 19;
+            this.materialnamelabel.Text = "Material Name";
+            // 
+            // materialname
+            // 
+            this.materialname.Location = new System.Drawing.Point(22, 699);
+            this.materialname.Name = "materialname";
+            this.materialname.Size = new System.Drawing.Size(265, 22);
+            this.materialname.TabIndex = 18;
+            // 
+            // materialbackbutton
+            // 
+            this.materialbackbutton.Location = new System.Drawing.Point(222, 731);
+            this.materialbackbutton.Name = "materialbackbutton";
+            this.materialbackbutton.Size = new System.Drawing.Size(75, 23);
+            this.materialbackbutton.TabIndex = 17;
+            this.materialbackbutton.Text = "Back";
+            this.materialbackbutton.UseVisualStyleBackColor = true;
+            this.materialbackbutton.Click += new System.EventHandler(this.materialbackbutton_Click);
+            // 
+            // buildmaterialbutton
+            // 
+            this.buildmaterialbutton.Location = new System.Drawing.Point(22, 731);
+            this.buildmaterialbutton.Name = "buildmaterialbutton";
+            this.buildmaterialbutton.Size = new System.Drawing.Size(106, 23);
+            this.buildmaterialbutton.TabIndex = 16;
+            this.buildmaterialbutton.Text = "Build Material";
+            this.buildmaterialbutton.UseVisualStyleBackColor = true;
+            this.buildmaterialbutton.Click += new System.EventHandler(this.buildmaterialbutton_Click);
+            // 
+            // materialpshaderlist
+            // 
+            this.materialpshaderlist.FormattingEnabled = true;
+            this.materialpshaderlist.ItemHeight = 16;
+            this.materialpshaderlist.Location = new System.Drawing.Point(22, 598);
+            this.materialpshaderlist.Name = "materialpshaderlist";
+            this.materialpshaderlist.Size = new System.Drawing.Size(275, 68);
+            this.materialpshaderlist.TabIndex = 15;
+            // 
+            // materialpshaderlabel
+            // 
+            this.materialpshaderlabel.AutoSize = true;
+            this.materialpshaderlabel.Location = new System.Drawing.Point(19, 573);
+            this.materialpshaderlabel.Name = "materialpshaderlabel";
+            this.materialpshaderlabel.Size = new System.Drawing.Size(87, 17);
+            this.materialpshaderlabel.TabIndex = 14;
+            this.materialpshaderlabel.Text = "Pixel Shader";
+            // 
+            // materialvshaderlist
+            // 
+            this.materialvshaderlist.FormattingEnabled = true;
+            this.materialvshaderlist.ItemHeight = 16;
+            this.materialvshaderlist.Location = new System.Drawing.Point(22, 478);
+            this.materialvshaderlist.Name = "materialvshaderlist";
+            this.materialvshaderlist.Size = new System.Drawing.Size(275, 84);
+            this.materialvshaderlist.TabIndex = 13;
+            // 
+            // materialnormallist
+            // 
+            this.materialnormallist.FormattingEnabled = true;
+            this.materialnormallist.ItemHeight = 16;
+            this.materialnormallist.Location = new System.Drawing.Point(22, 363);
+            this.materialnormallist.Name = "materialnormallist";
+            this.materialnormallist.Size = new System.Drawing.Size(275, 84);
+            this.materialnormallist.TabIndex = 7;
+            // 
+            // materialnormallabel
+            // 
+            this.materialnormallabel.AutoSize = true;
+            this.materialnormallabel.Location = new System.Drawing.Point(19, 337);
+            this.materialnormallabel.Name = "materialnormallabel";
+            this.materialnormallabel.Size = new System.Drawing.Size(84, 17);
+            this.materialnormallabel.TabIndex = 6;
+            this.materialnormallabel.Text = "Normal Map";
+            // 
+            // materialmultiplylist
+            // 
+            this.materialmultiplylist.FormattingEnabled = true;
+            this.materialmultiplylist.ItemHeight = 16;
+            this.materialmultiplylist.Location = new System.Drawing.Point(19, 242);
+            this.materialmultiplylist.Name = "materialmultiplylist";
+            this.materialmultiplylist.Size = new System.Drawing.Size(278, 84);
+            this.materialmultiplylist.TabIndex = 5;
+            // 
+            // materialmultiplylabel
+            // 
+            this.materialmultiplylabel.AutoSize = true;
+            this.materialmultiplylabel.Location = new System.Drawing.Point(19, 218);
+            this.materialmultiplylabel.Name = "materialmultiplylabel";
+            this.materialmultiplylabel.Size = new System.Drawing.Size(86, 17);
+            this.materialmultiplylabel.TabIndex = 4;
+            this.materialmultiplylabel.Text = "Multiply Map";
+            // 
+            // materialspecularlist
+            // 
+            this.materialspecularlist.FormattingEnabled = true;
+            this.materialspecularlist.ItemHeight = 16;
+            this.materialspecularlist.Location = new System.Drawing.Point(19, 127);
+            this.materialspecularlist.Name = "materialspecularlist";
+            this.materialspecularlist.Size = new System.Drawing.Size(278, 84);
+            this.materialspecularlist.TabIndex = 3;
+            // 
+            // materialspecularlabel
+            // 
+            this.materialspecularlabel.AutoSize = true;
+            this.materialspecularlabel.Location = new System.Drawing.Point(16, 107);
+            this.materialspecularlabel.Name = "materialspecularlabel";
+            this.materialspecularlabel.Size = new System.Drawing.Size(95, 17);
+            this.materialspecularlabel.TabIndex = 2;
+            this.materialspecularlabel.Text = "Specular Map";
+            // 
+            // materialdiffuselabel
+            // 
+            this.materialdiffuselabel.AutoSize = true;
+            this.materialdiffuselabel.Location = new System.Drawing.Point(16, 11);
+            this.materialdiffuselabel.Name = "materialdiffuselabel";
+            this.materialdiffuselabel.Size = new System.Drawing.Size(83, 17);
+            this.materialdiffuselabel.TabIndex = 1;
+            this.materialdiffuselabel.Text = "Diffuse Map";
+            // 
+            // materialdiffuselist
+            // 
+            this.materialdiffuselist.FormattingEnabled = true;
+            this.materialdiffuselist.ItemHeight = 16;
+            this.materialdiffuselist.Location = new System.Drawing.Point(19, 31);
+            this.materialdiffuselist.Name = "materialdiffuselist";
+            this.materialdiffuselist.Size = new System.Drawing.Size(278, 68);
+            this.materialdiffuselist.TabIndex = 0;
+            // 
+            // materialvshaderlabel
+            // 
+            this.materialvshaderlabel.AutoSize = true;
+            this.materialvshaderlabel.Location = new System.Drawing.Point(19, 454);
+            this.materialvshaderlabel.Name = "materialvshaderlabel";
+            this.materialvshaderlabel.Size = new System.Drawing.Size(98, 17);
+            this.materialvshaderlabel.TabIndex = 12;
+            this.materialvshaderlabel.Text = "Vertex Shader";
             // 
             // materialpanel
             // 
@@ -818,11 +981,11 @@
             this.meshtab.Controls.Add(this.meshname);
             this.meshtab.Controls.Add(this.meshfilepath);
             this.meshtab.Controls.Add(this.loadmeshbutton);
-            this.meshtab.Location = new System.Drawing.Point(4, 46);
+            this.meshtab.Location = new System.Drawing.Point(4, 25);
             this.meshtab.Margin = new System.Windows.Forms.Padding(4);
             this.meshtab.Name = "meshtab";
             this.meshtab.Padding = new System.Windows.Forms.Padding(4);
-            this.meshtab.Size = new System.Drawing.Size(329, 389);
+            this.meshtab.Size = new System.Drawing.Size(397, 410);
             this.meshtab.TabIndex = 1;
             this.meshtab.Text = "Meshes";
             this.meshtab.UseVisualStyleBackColor = true;
@@ -872,10 +1035,10 @@
             this.texturetab.Controls.Add(this.texturename);
             this.texturetab.Controls.Add(this.texturefilepath);
             this.texturetab.Controls.Add(this.texturefilepathlabel);
-            this.texturetab.Location = new System.Drawing.Point(4, 46);
+            this.texturetab.Location = new System.Drawing.Point(4, 25);
             this.texturetab.Margin = new System.Windows.Forms.Padding(4);
             this.texturetab.Name = "texturetab";
-            this.texturetab.Size = new System.Drawing.Size(329, 389);
+            this.texturetab.Size = new System.Drawing.Size(397, 410);
             this.texturetab.TabIndex = 2;
             this.texturetab.Text = "Textures";
             this.texturetab.UseVisualStyleBackColor = true;
@@ -1012,10 +1175,10 @@
             this.shadertab.Controls.Add(this.vertexshaderradio);
             this.shadertab.Controls.Add(this.shaderfilepath);
             this.shadertab.Controls.Add(this.shaderfilepathlabel);
-            this.shadertab.Location = new System.Drawing.Point(4, 46);
+            this.shadertab.Location = new System.Drawing.Point(4, 25);
             this.shadertab.Margin = new System.Windows.Forms.Padding(4);
             this.shadertab.Name = "shadertab";
-            this.shadertab.Size = new System.Drawing.Size(329, 389);
+            this.shadertab.Size = new System.Drawing.Size(397, 410);
             this.shadertab.TabIndex = 3;
             this.shadertab.Text = "Shaders";
             this.shadertab.UseVisualStyleBackColor = true;
@@ -1137,165 +1300,16 @@
             this.clearbutton.UseVisualStyleBackColor = true;
             this.clearbutton.Visible = false;
             // 
-            // materialdiffuselist
+            // savelightchangesbutton
             // 
-            this.materialdiffuselist.FormattingEnabled = true;
-            this.materialdiffuselist.ItemHeight = 16;
-            this.materialdiffuselist.Location = new System.Drawing.Point(19, 31);
-            this.materialdiffuselist.Name = "materialdiffuselist";
-            this.materialdiffuselist.Size = new System.Drawing.Size(278, 68);
-            this.materialdiffuselist.TabIndex = 0;
-            // 
-            // materialdiffuselabel
-            // 
-            this.materialdiffuselabel.AutoSize = true;
-            this.materialdiffuselabel.Location = new System.Drawing.Point(16, 11);
-            this.materialdiffuselabel.Name = "materialdiffuselabel";
-            this.materialdiffuselabel.Size = new System.Drawing.Size(83, 17);
-            this.materialdiffuselabel.TabIndex = 1;
-            this.materialdiffuselabel.Text = "Diffuse Map";
-            // 
-            // materialspecularlabel
-            // 
-            this.materialspecularlabel.AutoSize = true;
-            this.materialspecularlabel.Location = new System.Drawing.Point(16, 107);
-            this.materialspecularlabel.Name = "materialspecularlabel";
-            this.materialspecularlabel.Size = new System.Drawing.Size(95, 17);
-            this.materialspecularlabel.TabIndex = 2;
-            this.materialspecularlabel.Text = "Specular Map";
-            // 
-            // materialspecularlist
-            // 
-            this.materialspecularlist.FormattingEnabled = true;
-            this.materialspecularlist.ItemHeight = 16;
-            this.materialspecularlist.Location = new System.Drawing.Point(19, 127);
-            this.materialspecularlist.Name = "materialspecularlist";
-            this.materialspecularlist.Size = new System.Drawing.Size(278, 84);
-            this.materialspecularlist.TabIndex = 3;
-            // 
-            // materialmultiplylabel
-            // 
-            this.materialmultiplylabel.AutoSize = true;
-            this.materialmultiplylabel.Location = new System.Drawing.Point(19, 218);
-            this.materialmultiplylabel.Name = "materialmultiplylabel";
-            this.materialmultiplylabel.Size = new System.Drawing.Size(86, 17);
-            this.materialmultiplylabel.TabIndex = 4;
-            this.materialmultiplylabel.Text = "Multiply Map";
-            // 
-            // materialmultiplylist
-            // 
-            this.materialmultiplylist.FormattingEnabled = true;
-            this.materialmultiplylist.ItemHeight = 16;
-            this.materialmultiplylist.Location = new System.Drawing.Point(19, 242);
-            this.materialmultiplylist.Name = "materialmultiplylist";
-            this.materialmultiplylist.Size = new System.Drawing.Size(278, 84);
-            this.materialmultiplylist.TabIndex = 5;
-            // 
-            // materialnormallabel
-            // 
-            this.materialnormallabel.AutoSize = true;
-            this.materialnormallabel.Location = new System.Drawing.Point(19, 337);
-            this.materialnormallabel.Name = "materialnormallabel";
-            this.materialnormallabel.Size = new System.Drawing.Size(84, 17);
-            this.materialnormallabel.TabIndex = 6;
-            this.materialnormallabel.Text = "Normal Map";
-            // 
-            // materialnormallist
-            // 
-            this.materialnormallist.FormattingEnabled = true;
-            this.materialnormallist.ItemHeight = 16;
-            this.materialnormallist.Location = new System.Drawing.Point(22, 363);
-            this.materialnormallist.Name = "materialnormallist";
-            this.materialnormallist.Size = new System.Drawing.Size(275, 84);
-            this.materialnormallist.TabIndex = 7;
-            // 
-            // materialvshaderlabel
-            // 
-            this.materialvshaderlabel.AutoSize = true;
-            this.materialvshaderlabel.Location = new System.Drawing.Point(19, 454);
-            this.materialvshaderlabel.Name = "materialvshaderlabel";
-            this.materialvshaderlabel.Size = new System.Drawing.Size(98, 17);
-            this.materialvshaderlabel.TabIndex = 12;
-            this.materialvshaderlabel.Text = "Vertex Shader";
-            // 
-            // materialvshaderlist
-            // 
-            this.materialvshaderlist.FormattingEnabled = true;
-            this.materialvshaderlist.ItemHeight = 16;
-            this.materialvshaderlist.Location = new System.Drawing.Point(22, 478);
-            this.materialvshaderlist.Name = "materialvshaderlist";
-            this.materialvshaderlist.Size = new System.Drawing.Size(275, 84);
-            this.materialvshaderlist.TabIndex = 13;
-            // 
-            // materialpshaderlabel
-            // 
-            this.materialpshaderlabel.AutoSize = true;
-            this.materialpshaderlabel.Location = new System.Drawing.Point(19, 573);
-            this.materialpshaderlabel.Name = "materialpshaderlabel";
-            this.materialpshaderlabel.Size = new System.Drawing.Size(87, 17);
-            this.materialpshaderlabel.TabIndex = 14;
-            this.materialpshaderlabel.Text = "Pixel Shader";
-            // 
-            // materialpshaderlist
-            // 
-            this.materialpshaderlist.FormattingEnabled = true;
-            this.materialpshaderlist.ItemHeight = 16;
-            this.materialpshaderlist.Location = new System.Drawing.Point(22, 598);
-            this.materialpshaderlist.Name = "materialpshaderlist";
-            this.materialpshaderlist.Size = new System.Drawing.Size(275, 68);
-            this.materialpshaderlist.TabIndex = 15;
-            // 
-            // buildmaterialbutton
-            // 
-            this.buildmaterialbutton.Location = new System.Drawing.Point(22, 731);
-            this.buildmaterialbutton.Name = "buildmaterialbutton";
-            this.buildmaterialbutton.Size = new System.Drawing.Size(106, 23);
-            this.buildmaterialbutton.TabIndex = 16;
-            this.buildmaterialbutton.Text = "Build Material";
-            this.buildmaterialbutton.UseVisualStyleBackColor = true;
-            this.buildmaterialbutton.Click += new System.EventHandler(this.buildmaterialbutton_Click);
-            // 
-            // materialbackbutton
-            // 
-            this.materialbackbutton.Location = new System.Drawing.Point(222, 731);
-            this.materialbackbutton.Name = "materialbackbutton";
-            this.materialbackbutton.Size = new System.Drawing.Size(75, 23);
-            this.materialbackbutton.TabIndex = 17;
-            this.materialbackbutton.Text = "Back";
-            this.materialbackbutton.UseVisualStyleBackColor = true;
-            this.materialbackbutton.Click += new System.EventHandler(this.materialbackbutton_Click);
-            // 
-            // materialname
-            // 
-            this.materialname.Location = new System.Drawing.Point(22, 699);
-            this.materialname.Name = "materialname";
-            this.materialname.Size = new System.Drawing.Size(265, 22);
-            this.materialname.TabIndex = 18;
-            // 
-            // materialnamelabel
-            // 
-            this.materialnamelabel.AutoSize = true;
-            this.materialnamelabel.Location = new System.Drawing.Point(26, 679);
-            this.materialnamelabel.Name = "materialnamelabel";
-            this.materialnamelabel.Size = new System.Drawing.Size(99, 17);
-            this.materialnamelabel.TabIndex = 19;
-            this.materialnamelabel.Text = "Material Name";
-            // 
-            // lightnamelabel
-            // 
-            this.lightnamelabel.AutoSize = true;
-            this.lightnamelabel.Location = new System.Drawing.Point(32, 316);
-            this.lightnamelabel.Name = "lightnamelabel";
-            this.lightnamelabel.Size = new System.Drawing.Size(80, 17);
-            this.lightnamelabel.TabIndex = 24;
-            this.lightnamelabel.Text = "Light Name";
-            // 
-            // lightname
-            // 
-            this.lightname.Location = new System.Drawing.Point(32, 341);
-            this.lightname.Name = "lightname";
-            this.lightname.Size = new System.Drawing.Size(188, 22);
-            this.lightname.TabIndex = 25;
+            this.savelightchangesbutton.Location = new System.Drawing.Point(29, 370);
+            this.savelightchangesbutton.Name = "savelightchangesbutton";
+            this.savelightchangesbutton.Size = new System.Drawing.Size(131, 28);
+            this.savelightchangesbutton.TabIndex = 26;
+            this.savelightchangesbutton.Text = "Save Changes";
+            this.savelightchangesbutton.UseVisualStyleBackColor = true;
+            this.savelightchangesbutton.Visible = false;
+            this.savelightchangesbutton.Click += new System.EventHandler(this.savelightchangesbutton_Click);
             // 
             // mainscreen
             // 
@@ -1317,10 +1331,10 @@
             this.startpanel.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
             this.lighttab.ResumeLayout(false);
-            this.buildlightpanel.ResumeLayout(false);
-            this.buildlightpanel.PerformLayout();
             this.lightpanel.ResumeLayout(false);
             this.lightpanel.PerformLayout();
+            this.buildlightpanel.ResumeLayout(false);
+            this.buildlightpanel.PerformLayout();
             this.objecttab.ResumeLayout(false);
             this.materialstab.ResumeLayout(false);
             this.creatematerialpanel.ResumeLayout(false);
@@ -1447,5 +1461,6 @@
         private System.Windows.Forms.Label materialvshaderlabel;
         private System.Windows.Forms.TextBox lightname;
         private System.Windows.Forms.Label lightnamelabel;
+        private System.Windows.Forms.Button savelightchangesbutton;
     }
 }

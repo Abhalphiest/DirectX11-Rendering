@@ -54,6 +54,12 @@ namespace SceneTool
 
         private void buildlightbackbutton_Click(object sender, EventArgs e)
         {
+            lightname.Text = "";
+            buildlightbutton.Visible = false;
+            savelightchangesbutton.Visible = true;
+            spotradio.Enabled = true;
+            directionalradio.Enabled = true;
+            pointradio.Enabled = true;
             lightdirectionX.Clear();
             lightdirectionY.Clear();
             lightdirectionZ.Clear();
@@ -132,17 +138,17 @@ namespace SceneTool
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseG.Text, out ambient[1]);
+                result = Double.TryParse(diffuseG.Text, out diffuse[1]);
                 if (!result)
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseG.Text, out ambient[2]);
+                result = Double.TryParse(diffuseB.Text, out diffuse[2]);
                 if (!result)
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseA.Text, out ambient[3]);
+                result = Double.TryParse(diffuseA.Text, out diffuse[3]);
                 if (!result)
                 {
                     //error handling
@@ -205,17 +211,17 @@ namespace SceneTool
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseG.Text, out ambient[1]);
+                result = Double.TryParse(diffuseG.Text, out diffuse[1]);
                 if (!result)
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseG.Text, out ambient[2]);
+                result = Double.TryParse(diffuseB.Text, out diffuse[2]);
                 if (!result)
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseA.Text, out ambient[3]);
+                result = Double.TryParse(diffuseA.Text, out diffuse[3]);
                 if (!result)
                 {
                     //error handling
@@ -294,12 +300,12 @@ namespace SceneTool
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseG.Text, out ambient[1]);
+                result = Double.TryParse(diffuseG.Text, out diffuse[1]);
                 if (!result)
                 {
                     //error handling
                 }
-                result = Double.TryParse(diffuseG.Text, out ambient[2]);
+                result = Double.TryParse(diffuseB.Text, out diffuse[2]);
                 if (!result)
                 {
                     //error handling
@@ -508,6 +514,146 @@ namespace SceneTool
         {
             scene.deleteLight(currentlightslist.SelectedIndex);
             updateLightLists();
+        }
+
+        private void editlightbutton_Click(object sender, EventArgs e)
+        {
+            lightpanel.Visible = false;
+            buildlightpanel.Visible = true;
+            buildlightbutton.Visible = false;
+            savelightchangesbutton.Visible = true;
+            if (scene.isDirectionalLight(currentlightslist.SelectedIndex))
+            {
+                directionalradio.Checked = true;
+                spotradio.Enabled = false;
+                pointradio.Enabled = false;
+            }
+            else if (scene.isPointLight(currentlightslist.SelectedIndex))
+            {
+                pointradio.Checked = true;
+                directionalradio.Enabled = false;
+                spotradio.Enabled = false;
+            }
+            else
+            {
+                spotradio.Checked = true;
+                pointradio.Enabled = false;
+                directionalradio.Enabled = false;
+            }
+
+            string[] lightData = scene.getLightData(currentlightslist.SelectedIndex);
+            ambientR.Text = lightData[0];
+            ambientG.Text = lightData[1];
+            ambientB.Text = lightData[2];
+            ambientA.Text = lightData[3];
+            diffuseR.Text = lightData[4];
+            diffuseG.Text = lightData[5];
+            diffuseB.Text = lightData[6];
+            diffuseA.Text = lightData[7];
+            lightpositionX.Text = lightData[8];
+            lightpositionY.Text = lightData[9];
+            lightpositionZ.Text = lightData[10];
+            lightdirectionX.Text = lightData[11];
+            lightdirectionY.Text = lightData[12];
+            lightdirectionZ.Text = lightData[13];
+            lightdirectionW.Text = lightData[14];
+            lightname.Text = lightData[15];
+
+        }
+
+        private void savelightchangesbutton_Click(object sender, EventArgs e)
+        {
+            double[] direction = new double[3];
+            double[] position = new double[3];
+            double[] ambient = new double[4];
+            double[] diffuse = new double[4];
+
+            //get direction
+            bool result = Double.TryParse(lightdirectionX.Text, out direction[0]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(lightdirectionY.Text, out direction[1]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(lightdirectionZ.Text, out direction[2]);
+            if (!result)
+            {
+                //error handling
+            }
+
+            //get position
+            result = Double.TryParse(lightpositionX.Text, out position[0]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(lightpositionY.Text, out position[1]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(lightpositionZ.Text, out position[2]);
+            if (!result)
+            {
+                //error handling
+            }
+
+            //get ambient
+            result = Double.TryParse(ambientR.Text, out ambient[0]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(ambientG.Text, out ambient[1]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(ambientB.Text, out ambient[2]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(ambientA.Text, out ambient[3]);
+            if (!result)
+            {
+                //error handling
+            }
+
+
+
+            //get diffuse
+
+            result = Double.TryParse(diffuseR.Text, out diffuse[0]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(diffuseG.Text, out diffuse[1]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(diffuseB.Text, out diffuse[2]);
+            if (!result)
+            {
+                //error handling
+            }
+            result = Double.TryParse(diffuseA.Text, out diffuse[3]);
+            if (!result)
+            {
+                //error handling
+            }
+            scene.editLight(currentlightslist.SelectedIndex,ambient, diffuse, position, direction, lightname.Text);
+
+            //clean up the mess we made
+            
+            updateLightLists();
+            buildlightbackbutton_Click(sender, e); //reset all our values
         }
     }
 }
