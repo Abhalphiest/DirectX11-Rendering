@@ -53,8 +53,8 @@ void Game::Init()
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
 	// uint scene =scenemanager->LoadScene("scenes/testscene.txt");
-    uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
-    // uint scene = scenemanager->LoadScene("scenes/walltestscene.txt");
+    // uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
+    uint scene = scenemanager->LoadScene("scenes/walltestscene.txt");
 	scenemanager->SetScene(scene);
 	
 	// Tell the input assembler stage of the pipeline what kind of
