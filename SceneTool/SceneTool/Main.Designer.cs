@@ -137,6 +137,7 @@
             this.loadbutton = new System.Windows.Forms.Button();
             this.clearbutton = new System.Windows.Forms.Button();
             this.savelightchangesbutton = new System.Windows.Forms.Button();
+            this.materialsavechangesbutton = new System.Windows.Forms.Button();
             this.objectpanel.SuspendLayout();
             this.startpanel.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -741,6 +742,7 @@
             // creatematerialpanel
             // 
             this.creatematerialpanel.AutoScroll = true;
+            this.creatematerialpanel.Controls.Add(this.materialsavechangesbutton);
             this.creatematerialpanel.Controls.Add(this.materialnamelabel);
             this.creatematerialpanel.Controls.Add(this.materialname);
             this.creatematerialpanel.Controls.Add(this.materialbackbutton);
@@ -930,6 +932,7 @@
             this.deletematerialbutton.TabIndex = 4;
             this.deletematerialbutton.Text = "Delete Material";
             this.deletematerialbutton.UseVisualStyleBackColor = true;
+            this.deletematerialbutton.Click += new System.EventHandler(this.deletematerialbutton_Click);
             // 
             // editmaterialbutton
             // 
@@ -940,6 +943,7 @@
             this.editmaterialbutton.TabIndex = 3;
             this.editmaterialbutton.Text = "Edit Material";
             this.editmaterialbutton.UseVisualStyleBackColor = true;
+            this.editmaterialbutton.Click += new System.EventHandler(this.editmaterialbutton_Click);
             // 
             // materialslistlabel
             // 
@@ -970,6 +974,7 @@
             this.addmaterialbutton.TabIndex = 0;
             this.addmaterialbutton.Text = "Add Material";
             this.addmaterialbutton.UseVisualStyleBackColor = true;
+            this.addmaterialbutton.Click += new System.EventHandler(this.addmaterialbutton_Click);
             // 
             // meshtab
             // 
@@ -1311,6 +1316,15 @@
             this.savelightchangesbutton.Visible = false;
             this.savelightchangesbutton.Click += new System.EventHandler(this.savelightchangesbutton_Click);
             // 
+            // materialsavechangesbutton
+            // 
+            this.materialsavechangesbutton.Location = new System.Drawing.Point(22, 735);
+            this.materialsavechangesbutton.Name = "materialsavechangesbutton";
+            this.materialsavechangesbutton.Size = new System.Drawing.Size(147, 23);
+            this.materialsavechangesbutton.TabIndex = 20;
+            this.materialsavechangesbutton.Text = "Save Changes";
+            this.materialsavechangesbutton.UseVisualStyleBackColor = true;
+            // 
             // mainscreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1462,5 +1476,6 @@
         private System.Windows.Forms.TextBox lightname;
         private System.Windows.Forms.Label lightnamelabel;
         private System.Windows.Forms.Button savelightchangesbutton;
+        private System.Windows.Forms.Button materialsavechangesbutton;
     }
 }

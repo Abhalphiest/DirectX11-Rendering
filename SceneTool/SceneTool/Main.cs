@@ -503,6 +503,8 @@ namespace SceneTool
             pshaderindex = materialpshaderlist.SelectedIndex;
 
             scene.buildMaterial(diffuseindex, normalindex, specindex, multindex, pshaderindex, vshaderindex, name);
+            updateMaterialLists();
+            materialbackbutton_Click(sender, e);
         }
 
         private void loadscenebutton_Click(object sender, EventArgs e)
@@ -654,6 +656,30 @@ namespace SceneTool
             
             updateLightLists();
             buildlightbackbutton_Click(sender, e); //reset all our values
+        }
+
+        private void addmaterialbutton_Click(object sender, EventArgs e)
+        {
+            materialpanel.Visible = false;
+            creatematerialpanel.Visible = true;
+        }
+
+        private void deletematerialbutton_Click(object sender, EventArgs e)
+        {
+            scene.deleteMaterial(materialslist.SelectedIndex);
+            updateMaterialLists();
+        }
+
+        private void editmaterialbutton_Click(object sender, EventArgs e)
+        {
+            materialpanel.Visible = false;
+            creatematerialpanel.Visible = true;
+            buildmaterialbutton.Visible = false;
+            materialsavechangesbutton.Visible = true;
+            string name;
+            int[] matData = scene.getMaterialData(materialslist.SelectedIndex, out name);
+            materialname.Text = name;
+            
         }
     }
 }

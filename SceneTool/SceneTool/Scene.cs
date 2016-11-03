@@ -189,6 +189,11 @@ namespace SceneTool
             mat.name = name;
             materials.Add(mat);
         }
+        public void deleteMaterial(int index)
+        {
+            if (index < 0) return;
+            materials.RemoveAt(index);
+        }
         public void loadMesh(string filepath)
         {
             Mesh mesh = new SceneTool.Scene.Mesh();
@@ -386,6 +391,22 @@ namespace SceneTool
                 lightData[15] = light.name;
             }
             return lightData;
+        }
+
+        public int[] getMaterialData(int index, out string name)
+        {
+            name = "";
+            if (index < 0) return;
+            int[] matData = new int[6];
+            Material mat = materials[index];
+            matData[0] = mat.diffuseindex;
+            matData[1] = mat.specindex;
+            matData[2] = mat.multiplyindex;
+            matData[3] = mat.normalindex;
+            matData[4] = mat.vertexshader;
+            matData[5] = mat.pixelshader;
+            name = mat.name;
+            return matData;
         }
     }
 }
