@@ -681,5 +681,10 @@ namespace SceneTool
             materialname.Text = name;
             
         }
+
+        private void objectmateriallabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
