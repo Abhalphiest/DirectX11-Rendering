@@ -84,6 +84,15 @@
             this.currentlightslabel = new System.Windows.Forms.Label();
             this.objecttab = new System.Windows.Forms.TabPage();
             this.createobjectpanel = new System.Windows.Forms.Panel();
+            this.objectsavechangesbutton = new System.Windows.Forms.Button();
+            this.objectbackbutton = new System.Windows.Forms.Button();
+            this.buildobjectbutton = new System.Windows.Forms.Button();
+            this.objectname = new System.Windows.Forms.TextBox();
+            this.objectnamelabel = new System.Windows.Forms.Label();
+            this.objectmateriallist = new System.Windows.Forms.ListBox();
+            this.objectmateriallabel = new System.Windows.Forms.Label();
+            this.objectmeshlist = new System.Windows.Forms.ListBox();
+            this.objectmeshlabel = new System.Windows.Forms.Label();
             this.materialstab = new System.Windows.Forms.TabPage();
             this.creatematerialpanel = new System.Windows.Forms.Panel();
             this.materialsavechangesbutton = new System.Windows.Forms.Button();
@@ -138,15 +147,6 @@
             this.savescenebutton = new System.Windows.Forms.Button();
             this.loadbutton = new System.Windows.Forms.Button();
             this.clearbutton = new System.Windows.Forms.Button();
-            this.objectmeshlabel = new System.Windows.Forms.Label();
-            this.objectmeshlist = new System.Windows.Forms.ListBox();
-            this.objectmateriallabel = new System.Windows.Forms.Label();
-            this.objectmateriallist = new System.Windows.Forms.ListBox();
-            this.objectnamelabel = new System.Windows.Forms.Label();
-            this.objectname = new System.Windows.Forms.TextBox();
-            this.buildobjectbutton = new System.Windows.Forms.Button();
-            this.objectbackbutton = new System.Windows.Forms.Button();
-            this.objectsavechangesbutton = new System.Windows.Forms.Button();
             this.objectpanel.SuspendLayout();
             this.startpanel.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -185,7 +185,6 @@
             this.objectpanel.Name = "objectpanel";
             this.objectpanel.Size = new System.Drawing.Size(215, 298);
             this.objectpanel.TabIndex = 1;
-            this.objectpanel.Visible = false;
             // 
             // deleteobjectbutton
             // 
@@ -231,6 +230,7 @@
             this.createobjectbutton.TabIndex = 8;
             this.createobjectbutton.Text = "Create Object";
             this.createobjectbutton.UseVisualStyleBackColor = true;
+            this.createobjectbutton.Click += new System.EventHandler(this.createobjectbutton_Click);
             // 
             // objectlistlabel
             // 
@@ -385,7 +385,7 @@
             // savelightchangesbutton
             // 
             this.savelightchangesbutton.Location = new System.Drawing.Point(22, 301);
-            this.savelightchangesbutton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.savelightchangesbutton.Margin = new System.Windows.Forms.Padding(2);
             this.savelightchangesbutton.Name = "savelightchangesbutton";
             this.savelightchangesbutton.Size = new System.Drawing.Size(98, 23);
             this.savelightchangesbutton.TabIndex = 26;
@@ -397,7 +397,7 @@
             // lightname
             // 
             this.lightname.Location = new System.Drawing.Point(24, 277);
-            this.lightname.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lightname.Margin = new System.Windows.Forms.Padding(2);
             this.lightname.Name = "lightname";
             this.lightname.Size = new System.Drawing.Size(142, 20);
             this.lightname.TabIndex = 25;
@@ -677,11 +677,11 @@
             // 
             // objecttab
             // 
-            this.objecttab.Controls.Add(this.createobjectpanel);
             this.objecttab.Controls.Add(this.objectpanel);
+            this.objecttab.Controls.Add(this.createobjectpanel);
             this.objecttab.Location = new System.Drawing.Point(4, 22);
             this.objecttab.Name = "objecttab";
-            this.objecttab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.objecttab.Padding = new System.Windows.Forms.Padding(3);
             this.objecttab.Size = new System.Drawing.Size(296, 331);
             this.objecttab.TabIndex = 0;
             this.objecttab.Text = "Objects";
@@ -689,9 +689,9 @@
             // 
             // createobjectpanel
             // 
+            this.createobjectpanel.Controls.Add(this.buildobjectbutton);
             this.createobjectpanel.Controls.Add(this.objectsavechangesbutton);
             this.createobjectpanel.Controls.Add(this.objectbackbutton);
-            this.createobjectpanel.Controls.Add(this.buildobjectbutton);
             this.createobjectpanel.Controls.Add(this.objectname);
             this.createobjectpanel.Controls.Add(this.objectnamelabel);
             this.createobjectpanel.Controls.Add(this.objectmateriallist);
@@ -704,13 +704,94 @@
             this.createobjectpanel.TabIndex = 13;
             this.createobjectpanel.Visible = false;
             // 
+            // objectsavechangesbutton
+            // 
+            this.objectsavechangesbutton.Location = new System.Drawing.Point(22, 255);
+            this.objectsavechangesbutton.Name = "objectsavechangesbutton";
+            this.objectsavechangesbutton.Size = new System.Drawing.Size(91, 23);
+            this.objectsavechangesbutton.TabIndex = 8;
+            this.objectsavechangesbutton.Text = "Save Changes";
+            this.objectsavechangesbutton.UseVisualStyleBackColor = false;
+            this.objectsavechangesbutton.Visible = false;
+            this.objectsavechangesbutton.Click += new System.EventHandler(this.objectsavechangesbutton_Click);
+            // 
+            // objectbackbutton
+            // 
+            this.objectbackbutton.Location = new System.Drawing.Point(143, 254);
+            this.objectbackbutton.Name = "objectbackbutton";
+            this.objectbackbutton.Size = new System.Drawing.Size(75, 23);
+            this.objectbackbutton.TabIndex = 7;
+            this.objectbackbutton.Text = "Back";
+            this.objectbackbutton.UseVisualStyleBackColor = true;
+            this.objectbackbutton.Click += new System.EventHandler(this.objectbackbutton_Click);
+            // 
+            // buildobjectbutton
+            // 
+            this.buildobjectbutton.Location = new System.Drawing.Point(22, 254);
+            this.buildobjectbutton.Name = "buildobjectbutton";
+            this.buildobjectbutton.Size = new System.Drawing.Size(75, 23);
+            this.buildobjectbutton.TabIndex = 6;
+            this.buildobjectbutton.Text = "Build Object";
+            this.buildobjectbutton.UseVisualStyleBackColor = true;
+            this.buildobjectbutton.Click += new System.EventHandler(this.buildobjectbutton_Click);
+            // 
+            // objectname
+            // 
+            this.objectname.Location = new System.Drawing.Point(23, 199);
+            this.objectname.Name = "objectname";
+            this.objectname.Size = new System.Drawing.Size(119, 20);
+            this.objectname.TabIndex = 5;
+            // 
+            // objectnamelabel
+            // 
+            this.objectnamelabel.AutoSize = true;
+            this.objectnamelabel.Location = new System.Drawing.Point(10, 178);
+            this.objectnamelabel.Name = "objectnamelabel";
+            this.objectnamelabel.Size = new System.Drawing.Size(69, 13);
+            this.objectnamelabel.TabIndex = 4;
+            this.objectnamelabel.Text = "Object Name";
+            // 
+            // objectmateriallist
+            // 
+            this.objectmateriallist.FormattingEnabled = true;
+            this.objectmateriallist.Location = new System.Drawing.Point(22, 102);
+            this.objectmateriallist.Name = "objectmateriallist";
+            this.objectmateriallist.Size = new System.Drawing.Size(165, 69);
+            this.objectmateriallist.TabIndex = 3;
+            // 
+            // objectmateriallabel
+            // 
+            this.objectmateriallabel.AutoSize = true;
+            this.objectmateriallabel.Location = new System.Drawing.Point(9, 86);
+            this.objectmateriallabel.Name = "objectmateriallabel";
+            this.objectmateriallabel.Size = new System.Drawing.Size(44, 13);
+            this.objectmateriallabel.TabIndex = 2;
+            this.objectmateriallabel.Text = "Material";
+            // 
+            // objectmeshlist
+            // 
+            this.objectmeshlist.FormattingEnabled = true;
+            this.objectmeshlist.Location = new System.Drawing.Point(22, 24);
+            this.objectmeshlist.Name = "objectmeshlist";
+            this.objectmeshlist.Size = new System.Drawing.Size(165, 56);
+            this.objectmeshlist.TabIndex = 1;
+            // 
+            // objectmeshlabel
+            // 
+            this.objectmeshlabel.AutoSize = true;
+            this.objectmeshlabel.Location = new System.Drawing.Point(7, 8);
+            this.objectmeshlabel.Name = "objectmeshlabel";
+            this.objectmeshlabel.Size = new System.Drawing.Size(33, 13);
+            this.objectmeshlabel.TabIndex = 0;
+            this.objectmeshlabel.Text = "Mesh";
+            // 
             // materialstab
             // 
             this.materialstab.Controls.Add(this.creatematerialpanel);
             this.materialstab.Controls.Add(this.materialpanel);
             this.materialstab.Location = new System.Drawing.Point(4, 22);
             this.materialstab.Name = "materialstab";
-            this.materialstab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.materialstab.Padding = new System.Windows.Forms.Padding(3);
             this.materialstab.Size = new System.Drawing.Size(296, 331);
             this.materialstab.TabIndex = 6;
             this.materialstab.Text = "Materials";
@@ -745,12 +826,14 @@
             // materialsavechangesbutton
             // 
             this.materialsavechangesbutton.Location = new System.Drawing.Point(16, 597);
-            this.materialsavechangesbutton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialsavechangesbutton.Margin = new System.Windows.Forms.Padding(2);
             this.materialsavechangesbutton.Name = "materialsavechangesbutton";
             this.materialsavechangesbutton.Size = new System.Drawing.Size(110, 19);
             this.materialsavechangesbutton.TabIndex = 20;
             this.materialsavechangesbutton.Text = "Save Changes";
             this.materialsavechangesbutton.UseVisualStyleBackColor = true;
+            this.materialsavechangesbutton.Visible = false;
+            this.materialsavechangesbutton.Click += new System.EventHandler(this.materialsavechangesbutton_Click);
             // 
             // materialnamelabel
             // 
@@ -765,7 +848,7 @@
             // materialname
             // 
             this.materialname.Location = new System.Drawing.Point(16, 568);
-            this.materialname.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialname.Margin = new System.Windows.Forms.Padding(2);
             this.materialname.Name = "materialname";
             this.materialname.Size = new System.Drawing.Size(200, 20);
             this.materialname.TabIndex = 18;
@@ -773,7 +856,7 @@
             // materialbackbutton
             // 
             this.materialbackbutton.Location = new System.Drawing.Point(166, 594);
-            this.materialbackbutton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialbackbutton.Margin = new System.Windows.Forms.Padding(2);
             this.materialbackbutton.Name = "materialbackbutton";
             this.materialbackbutton.Size = new System.Drawing.Size(56, 19);
             this.materialbackbutton.TabIndex = 17;
@@ -784,7 +867,7 @@
             // buildmaterialbutton
             // 
             this.buildmaterialbutton.Location = new System.Drawing.Point(16, 594);
-            this.buildmaterialbutton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buildmaterialbutton.Margin = new System.Windows.Forms.Padding(2);
             this.buildmaterialbutton.Name = "buildmaterialbutton";
             this.buildmaterialbutton.Size = new System.Drawing.Size(80, 19);
             this.buildmaterialbutton.TabIndex = 16;
@@ -796,7 +879,7 @@
             // 
             this.materialpshaderlist.FormattingEnabled = true;
             this.materialpshaderlist.Location = new System.Drawing.Point(16, 486);
-            this.materialpshaderlist.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialpshaderlist.Margin = new System.Windows.Forms.Padding(2);
             this.materialpshaderlist.Name = "materialpshaderlist";
             this.materialpshaderlist.Size = new System.Drawing.Size(207, 56);
             this.materialpshaderlist.TabIndex = 15;
@@ -815,7 +898,7 @@
             // 
             this.materialvshaderlist.FormattingEnabled = true;
             this.materialvshaderlist.Location = new System.Drawing.Point(16, 388);
-            this.materialvshaderlist.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialvshaderlist.Margin = new System.Windows.Forms.Padding(2);
             this.materialvshaderlist.Name = "materialvshaderlist";
             this.materialvshaderlist.Size = new System.Drawing.Size(207, 69);
             this.materialvshaderlist.TabIndex = 13;
@@ -824,7 +907,7 @@
             // 
             this.materialnormallist.FormattingEnabled = true;
             this.materialnormallist.Location = new System.Drawing.Point(16, 295);
-            this.materialnormallist.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialnormallist.Margin = new System.Windows.Forms.Padding(2);
             this.materialnormallist.Name = "materialnormallist";
             this.materialnormallist.Size = new System.Drawing.Size(207, 69);
             this.materialnormallist.TabIndex = 7;
@@ -843,7 +926,7 @@
             // 
             this.materialmultiplylist.FormattingEnabled = true;
             this.materialmultiplylist.Location = new System.Drawing.Point(14, 197);
-            this.materialmultiplylist.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialmultiplylist.Margin = new System.Windows.Forms.Padding(2);
             this.materialmultiplylist.Name = "materialmultiplylist";
             this.materialmultiplylist.Size = new System.Drawing.Size(210, 69);
             this.materialmultiplylist.TabIndex = 5;
@@ -862,7 +945,7 @@
             // 
             this.materialspecularlist.FormattingEnabled = true;
             this.materialspecularlist.Location = new System.Drawing.Point(14, 103);
-            this.materialspecularlist.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialspecularlist.Margin = new System.Windows.Forms.Padding(2);
             this.materialspecularlist.Name = "materialspecularlist";
             this.materialspecularlist.Size = new System.Drawing.Size(210, 69);
             this.materialspecularlist.TabIndex = 3;
@@ -891,7 +974,7 @@
             // 
             this.materialdiffuselist.FormattingEnabled = true;
             this.materialdiffuselist.Location = new System.Drawing.Point(14, 25);
-            this.materialdiffuselist.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.materialdiffuselist.Margin = new System.Windows.Forms.Padding(2);
             this.materialdiffuselist.Name = "materialdiffuselist";
             this.materialdiffuselist.Size = new System.Drawing.Size(210, 56);
             this.materialdiffuselist.TabIndex = 0;
@@ -977,7 +1060,7 @@
             this.meshtab.Controls.Add(this.loadmeshbutton);
             this.meshtab.Location = new System.Drawing.Point(4, 22);
             this.meshtab.Name = "meshtab";
-            this.meshtab.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.meshtab.Padding = new System.Windows.Forms.Padding(3);
             this.meshtab.Size = new System.Drawing.Size(296, 331);
             this.meshtab.TabIndex = 1;
             this.meshtab.Text = "Meshes";
@@ -1035,7 +1118,7 @@
             // 
             this.multiplyradio.AutoSize = true;
             this.multiplyradio.Location = new System.Drawing.Point(140, 89);
-            this.multiplyradio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.multiplyradio.Margin = new System.Windows.Forms.Padding(2);
             this.multiplyradio.Name = "multiplyradio";
             this.multiplyradio.Size = new System.Drawing.Size(60, 17);
             this.multiplyradio.TabIndex = 11;
@@ -1047,7 +1130,7 @@
             // 
             this.specularradio.AutoSize = true;
             this.specularradio.Location = new System.Drawing.Point(140, 66);
-            this.specularradio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.specularradio.Margin = new System.Windows.Forms.Padding(2);
             this.specularradio.Name = "specularradio";
             this.specularradio.Size = new System.Drawing.Size(67, 17);
             this.specularradio.TabIndex = 10;
@@ -1059,7 +1142,7 @@
             // 
             this.normalradio.AutoSize = true;
             this.normalradio.Location = new System.Drawing.Point(140, 39);
-            this.normalradio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.normalradio.Margin = new System.Windows.Forms.Padding(2);
             this.normalradio.Name = "normalradio";
             this.normalradio.Size = new System.Drawing.Size(58, 17);
             this.normalradio.TabIndex = 9;
@@ -1071,7 +1154,7 @@
             // 
             this.diffuseradio.AutoSize = true;
             this.diffuseradio.Location = new System.Drawing.Point(140, 16);
-            this.diffuseradio.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.diffuseradio.Margin = new System.Windows.Forms.Padding(2);
             this.diffuseradio.Name = "diffuseradio";
             this.diffuseradio.Size = new System.Drawing.Size(58, 17);
             this.diffuseradio.TabIndex = 8;
@@ -1269,85 +1352,6 @@
             this.clearbutton.Text = "Clear Scene";
             this.clearbutton.UseVisualStyleBackColor = true;
             this.clearbutton.Visible = false;
-            // 
-            // objectmeshlabel
-            // 
-            this.objectmeshlabel.AutoSize = true;
-            this.objectmeshlabel.Location = new System.Drawing.Point(7, 8);
-            this.objectmeshlabel.Name = "objectmeshlabel";
-            this.objectmeshlabel.Size = new System.Drawing.Size(33, 13);
-            this.objectmeshlabel.TabIndex = 0;
-            this.objectmeshlabel.Text = "Mesh";
-            // 
-            // objectmeshlist
-            // 
-            this.objectmeshlist.FormattingEnabled = true;
-            this.objectmeshlist.Location = new System.Drawing.Point(22, 24);
-            this.objectmeshlist.Name = "objectmeshlist";
-            this.objectmeshlist.Size = new System.Drawing.Size(165, 56);
-            this.objectmeshlist.TabIndex = 1;
-            // 
-            // objectmateriallabel
-            // 
-            this.objectmateriallabel.AutoSize = true;
-            this.objectmateriallabel.Location = new System.Drawing.Point(9, 86);
-            this.objectmateriallabel.Name = "objectmateriallabel";
-            this.objectmateriallabel.Size = new System.Drawing.Size(44, 13);
-            this.objectmateriallabel.TabIndex = 2;
-            this.objectmateriallabel.Text = "Material";
-            this.objectmateriallabel.Click += new System.EventHandler(this.objectmateriallabel_Click);
-            // 
-            // objectmateriallist
-            // 
-            this.objectmateriallist.FormattingEnabled = true;
-            this.objectmateriallist.Location = new System.Drawing.Point(22, 102);
-            this.objectmateriallist.Name = "objectmateriallist";
-            this.objectmateriallist.Size = new System.Drawing.Size(165, 69);
-            this.objectmateriallist.TabIndex = 3;
-            // 
-            // objectnamelabel
-            // 
-            this.objectnamelabel.AutoSize = true;
-            this.objectnamelabel.Location = new System.Drawing.Point(10, 178);
-            this.objectnamelabel.Name = "objectnamelabel";
-            this.objectnamelabel.Size = new System.Drawing.Size(69, 13);
-            this.objectnamelabel.TabIndex = 4;
-            this.objectnamelabel.Text = "Object Name";
-            // 
-            // objectname
-            // 
-            this.objectname.Location = new System.Drawing.Point(23, 199);
-            this.objectname.Name = "objectname";
-            this.objectname.Size = new System.Drawing.Size(119, 20);
-            this.objectname.TabIndex = 5;
-            // 
-            // buildobjectbutton
-            // 
-            this.buildobjectbutton.Location = new System.Drawing.Point(22, 254);
-            this.buildobjectbutton.Name = "buildobjectbutton";
-            this.buildobjectbutton.Size = new System.Drawing.Size(75, 23);
-            this.buildobjectbutton.TabIndex = 6;
-            this.buildobjectbutton.Text = "Build Object";
-            this.buildobjectbutton.UseVisualStyleBackColor = true;
-            // 
-            // objectbackbutton
-            // 
-            this.objectbackbutton.Location = new System.Drawing.Point(143, 254);
-            this.objectbackbutton.Name = "objectbackbutton";
-            this.objectbackbutton.Size = new System.Drawing.Size(75, 23);
-            this.objectbackbutton.TabIndex = 7;
-            this.objectbackbutton.Text = "Back";
-            this.objectbackbutton.UseVisualStyleBackColor = true;
-            // 
-            // objectsavechangesbutton
-            // 
-            this.objectsavechangesbutton.Location = new System.Drawing.Point(22, 255);
-            this.objectsavechangesbutton.Name = "objectsavechangesbutton";
-            this.objectsavechangesbutton.Size = new System.Drawing.Size(91, 23);
-            this.objectsavechangesbutton.TabIndex = 8;
-            this.objectsavechangesbutton.Text = "Save Changes";
-            this.objectsavechangesbutton.UseVisualStyleBackColor = false;
-            this.objectsavechangesbutton.Visible = false;
             // 
             // mainscreen
             // 

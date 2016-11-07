@@ -448,6 +448,8 @@ namespace SceneTool
         {
             materialslist.Items.Clear();
             materialslist.Items.AddRange(scene.getMaterialNameArray());
+            objectmateriallist.Items.Clear();
+            objectmateriallist.Items.AddRange(scene.getMaterialNameArray());
         }
         private void updateObjectLists()
         {
@@ -474,7 +476,7 @@ namespace SceneTool
             materialmultiplylist.Items.AddRange(scene.getMultiplyTextureArray());
             materialdiffuselist.Items.AddRange(scene.getDiffuseTextureArray());
             materialspecularlist.Items.AddRange(scene.getSpecularTextureArray());
-            materialnormallist.Items.AddRange(scene.getSpecularTextureArray());
+            materialnormallist.Items.AddRange(scene.getNormalTextureArray());
 
             currenttextureslist.Items.Clear();
             currenttextureslist.Items.AddRange(scene.getTextureArray());
@@ -483,6 +485,8 @@ namespace SceneTool
         {
             currentmeshlist.Items.Clear();
             currentmeshlist.Items.AddRange(scene.getMeshArray());
+            objectmeshlist.Items.Clear();
+            objectmeshlist.Items.AddRange(scene.getMeshArray());
         }
         private void updateLightLists()
         {
@@ -682,9 +686,51 @@ namespace SceneTool
             
         }
 
-        private void objectmateriallabel_Click(object sender, EventArgs e)
-        {
+       
 
+        private void objectbackbutton_Click(object sender, EventArgs e)
+        {
+            objectpanel.Visible = true;
+            createobjectpanel.Visible = false;
+            objectmeshlist.ClearSelected();
+            objectmateriallist.ClearSelected();
+            objectname.Text = "";
+            
+        }
+
+        private void objectsavechangesbutton_Click(object sender, EventArgs e)
+        {
+            scene.editObject(objectlist.SelectedIndex, objectmeshlist.SelectedIndex,
+                objectmateriallist.SelectedIndex, objectname.Text);
+            objectsavechangesbutton.Visible = false;
+            buildobjectbutton.Visible = true;
+            objectbackbutton_Click(sender, e);
+            updateObjectLists();
+        }
+
+        private void buildobjectbutton_Click(object sender, EventArgs e)
+        {
+            scene.buildObject(objectmeshlist.SelectedIndex, objectmateriallist.SelectedIndex, objectname.Text);
+            updateObjectLists();
+            objectbackbutton_Click(sender, e);
+        }
+
+        private void materialsavechangesbutton_Click(object sender, EventArgs e)
+        {
+            scene.editMaterial(materialslist.SelectedIndex, materialdiffuselist.SelectedIndex,
+                  materialspecularlist.SelectedIndex, materialmultiplylist.SelectedIndex,
+                  materialnormallist.SelectedIndex,materialpshaderlist.SelectedIndex,
+                  materialvshaderlist.SelectedIndex, materialname.Text);
+            updateMaterialLists();
+            materialsavechangesbutton.Visible = false;
+            buildmaterialbutton.Visible = true;
+            materialbackbutton_Click(sender, e);
+        }
+
+        private void createobjectbutton_Click(object sender, EventArgs e)
+        {
+            createobjectpanel.Visible = true;
+            objectpanel.Visible = false;
         }
     }
 }

@@ -170,11 +170,12 @@ namespace SceneTool
             slight.name = name;
             slights.Add(slight);
         }
-        public void buildObject(int meshindex, int materialindex)
+        public void buildObject(int meshindex, int materialindex, string name)
         {
             Object obj = new SceneTool.Scene.Object();
             obj.meshindex = meshindex;
             obj.materialindex = materialindex;
+            obj.name = name;
             objects.Add(obj);
         }
         public void buildMaterial(int diffuseindex, int normalindex, int specularindex, int multiplyindex, int pshader, int vshader, string name)
@@ -193,6 +194,16 @@ namespace SceneTool
         {
             if (index < 0) return;
             materials.RemoveAt(index);
+        }
+
+        public void editObject(int index, int meshindex, int materialindex, string name)
+        {
+            if (index < 0) return;
+            Object obj;
+            obj.meshindex = meshindex;
+            obj.materialindex = materialindex;
+            obj.name = name;
+            objects[index] = obj;
         }
         public void loadMesh(string filepath)
         {
@@ -396,7 +407,7 @@ namespace SceneTool
         public int[] getMaterialData(int index, out string name)
         {
             name = "";
-            if (index < 0) return;
+            if (index < 0) return null;
             int[] matData = new int[6];
             Material mat = materials[index];
             matData[0] = mat.diffuseindex;
@@ -408,5 +419,22 @@ namespace SceneTool
             name = mat.name;
             return matData;
         }
+    
+
+    public void editMaterial(int index, int diffuseindex, int specularindex, int multiplyindex,
+        int normalindex, int pixelshader, int vertexshader, string name)
+    {
+            if (index < 0) return;
+            Material mat;
+            mat.diffuseindex = diffuseindex;
+            mat.specindex = specularindex;
+            mat.multiplyindex = multiplyindex;
+            mat.normalindex = normalindex;
+            mat.pixelshader = pixelshader;
+            mat.vertexshader = vertexshader;
+            mat.name = name;
+            materials[index] = mat;
+
+    }
     }
 }
