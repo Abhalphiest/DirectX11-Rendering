@@ -9,7 +9,10 @@ namespace SceneTool
     class Scene
     {
         struct Mesh { public string filepath; } //in case we want to expand functionality in the future
-        struct Object { public string name; public int meshindex, materialindex; } //needs more data - position, orientation, etc
+        struct Object { public string name; public int meshindex, materialindex;
+            public double[] position, orientation;
+            public double scale;
+        } 
         struct Material { public string name; public int diffuseindex, multiplyindex, normalindex, specindex, pixelshader, vertexshader; }
         struct DirectionalLight { public double[] ambientColor, diffuseColor, direction; public string name; }
         struct PointLight { public double[] ambientColor, diffuseColor, position; public string name; }
@@ -170,12 +173,15 @@ namespace SceneTool
             slight.name = name;
             slights.Add(slight);
         }
-        public void buildObject(int meshindex, int materialindex, string name)
+        public void buildObject(int meshindex, int materialindex, string name, double[] position, double[] orientation, double scale)
         {
             Object obj = new SceneTool.Scene.Object();
             obj.meshindex = meshindex;
             obj.materialindex = materialindex;
             obj.name = name;
+            obj.position = position;
+            obj.orientation = orientation;
+            obj.scale = scale;
             objects.Add(obj);
         }
         public void buildMaterial(int diffuseindex, int normalindex, int specularindex, int multiplyindex, int pshader, int vshader, string name)
@@ -196,13 +202,16 @@ namespace SceneTool
             materials.RemoveAt(index);
         }
 
-        public void editObject(int index, int meshindex, int materialindex, string name)
+        public void editObject(int index, int meshindex, int materialindex, string name, double[] position, double[] orientation, double scale)
         {
             if (index < 0) return;
             Object obj;
             obj.meshindex = meshindex;
             obj.materialindex = materialindex;
             obj.name = name;
+            obj.position = position;
+            obj.orientation = orientation;
+            obj.scale = scale;
             objects[index] = obj;
         }
         public void loadMesh(string filepath)

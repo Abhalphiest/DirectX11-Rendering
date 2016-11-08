@@ -31,7 +31,6 @@
             this.scenewindow = new System.Windows.Forms.Panel();
             this.objectpanel = new System.Windows.Forms.Panel();
             this.deleteobjectbutton = new System.Windows.Forms.Button();
-            this.addobjectbutton = new System.Windows.Forms.Button();
             this.editobjectbutton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.createobjectbutton = new System.Windows.Forms.Button();
@@ -84,9 +83,9 @@
             this.currentlightslabel = new System.Windows.Forms.Label();
             this.objecttab = new System.Windows.Forms.TabPage();
             this.createobjectpanel = new System.Windows.Forms.Panel();
+            this.buildobjectbutton = new System.Windows.Forms.Button();
             this.objectsavechangesbutton = new System.Windows.Forms.Button();
             this.objectbackbutton = new System.Windows.Forms.Button();
-            this.buildobjectbutton = new System.Windows.Forms.Button();
             this.objectname = new System.Windows.Forms.TextBox();
             this.objectnamelabel = new System.Windows.Forms.Label();
             this.objectmateriallist = new System.Windows.Forms.ListBox();
@@ -147,6 +146,16 @@
             this.savescenebutton = new System.Windows.Forms.Button();
             this.loadbutton = new System.Windows.Forms.Button();
             this.clearbutton = new System.Windows.Forms.Button();
+            this.objectpositionlabel = new System.Windows.Forms.Label();
+            this.objectorientationlabel = new System.Windows.Forms.Label();
+            this.objectscalelabel = new System.Windows.Forms.Label();
+            this.objectpositionX = new System.Windows.Forms.TextBox();
+            this.objectorientationX = new System.Windows.Forms.TextBox();
+            this.objectscale = new System.Windows.Forms.TextBox();
+            this.objectorientationY = new System.Windows.Forms.TextBox();
+            this.objectorientationZ = new System.Windows.Forms.TextBox();
+            this.objectpositionY = new System.Windows.Forms.TextBox();
+            this.objectpositionZ = new System.Windows.Forms.TextBox();
             this.objectpanel.SuspendLayout();
             this.startpanel.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -175,7 +184,6 @@
             // objectpanel
             // 
             this.objectpanel.Controls.Add(this.deleteobjectbutton);
-            this.objectpanel.Controls.Add(this.addobjectbutton);
             this.objectpanel.Controls.Add(this.editobjectbutton);
             this.objectpanel.Controls.Add(this.button1);
             this.objectpanel.Controls.Add(this.createobjectbutton);
@@ -188,21 +196,12 @@
             // 
             // deleteobjectbutton
             // 
-            this.deleteobjectbutton.Location = new System.Drawing.Point(30, 249);
+            this.deleteobjectbutton.Location = new System.Drawing.Point(30, 218);
             this.deleteobjectbutton.Name = "deleteobjectbutton";
             this.deleteobjectbutton.Size = new System.Drawing.Size(132, 23);
             this.deleteobjectbutton.TabIndex = 12;
             this.deleteobjectbutton.Text = "Delete Object";
             this.deleteobjectbutton.UseVisualStyleBackColor = true;
-            // 
-            // addobjectbutton
-            // 
-            this.addobjectbutton.Location = new System.Drawing.Point(30, 219);
-            this.addobjectbutton.Name = "addobjectbutton";
-            this.addobjectbutton.Size = new System.Drawing.Size(132, 23);
-            this.addobjectbutton.TabIndex = 11;
-            this.addobjectbutton.Text = "Add Object to Scene";
-            this.addobjectbutton.UseVisualStyleBackColor = true;
             // 
             // editobjectbutton
             // 
@@ -677,8 +676,8 @@
             // 
             // objecttab
             // 
-            this.objecttab.Controls.Add(this.objectpanel);
             this.objecttab.Controls.Add(this.createobjectpanel);
+            this.objecttab.Controls.Add(this.objectpanel);
             this.objecttab.Location = new System.Drawing.Point(4, 22);
             this.objecttab.Name = "objecttab";
             this.objecttab.Padding = new System.Windows.Forms.Padding(3);
@@ -689,6 +688,17 @@
             // 
             // createobjectpanel
             // 
+            this.createobjectpanel.AutoScroll = true;
+            this.createobjectpanel.Controls.Add(this.objectpositionZ);
+            this.createobjectpanel.Controls.Add(this.objectpositionY);
+            this.createobjectpanel.Controls.Add(this.objectorientationZ);
+            this.createobjectpanel.Controls.Add(this.objectorientationY);
+            this.createobjectpanel.Controls.Add(this.objectscale);
+            this.createobjectpanel.Controls.Add(this.objectorientationX);
+            this.createobjectpanel.Controls.Add(this.objectpositionX);
+            this.createobjectpanel.Controls.Add(this.objectscalelabel);
+            this.createobjectpanel.Controls.Add(this.objectorientationlabel);
+            this.createobjectpanel.Controls.Add(this.objectpositionlabel);
             this.createobjectpanel.Controls.Add(this.buildobjectbutton);
             this.createobjectpanel.Controls.Add(this.objectsavechangesbutton);
             this.createobjectpanel.Controls.Add(this.objectbackbutton);
@@ -704,9 +714,19 @@
             this.createobjectpanel.TabIndex = 13;
             this.createobjectpanel.Visible = false;
             // 
+            // buildobjectbutton
+            // 
+            this.buildobjectbutton.Location = new System.Drawing.Point(20, 361);
+            this.buildobjectbutton.Name = "buildobjectbutton";
+            this.buildobjectbutton.Size = new System.Drawing.Size(75, 23);
+            this.buildobjectbutton.TabIndex = 6;
+            this.buildobjectbutton.Text = "Build Object";
+            this.buildobjectbutton.UseVisualStyleBackColor = true;
+            this.buildobjectbutton.Click += new System.EventHandler(this.buildobjectbutton_Click);
+            // 
             // objectsavechangesbutton
             // 
-            this.objectsavechangesbutton.Location = new System.Drawing.Point(22, 255);
+            this.objectsavechangesbutton.Location = new System.Drawing.Point(20, 360);
             this.objectsavechangesbutton.Name = "objectsavechangesbutton";
             this.objectsavechangesbutton.Size = new System.Drawing.Size(91, 23);
             this.objectsavechangesbutton.TabIndex = 8;
@@ -717,23 +737,13 @@
             // 
             // objectbackbutton
             // 
-            this.objectbackbutton.Location = new System.Drawing.Point(143, 254);
+            this.objectbackbutton.Location = new System.Drawing.Point(141, 359);
             this.objectbackbutton.Name = "objectbackbutton";
             this.objectbackbutton.Size = new System.Drawing.Size(75, 23);
             this.objectbackbutton.TabIndex = 7;
             this.objectbackbutton.Text = "Back";
             this.objectbackbutton.UseVisualStyleBackColor = true;
             this.objectbackbutton.Click += new System.EventHandler(this.objectbackbutton_Click);
-            // 
-            // buildobjectbutton
-            // 
-            this.buildobjectbutton.Location = new System.Drawing.Point(22, 254);
-            this.buildobjectbutton.Name = "buildobjectbutton";
-            this.buildobjectbutton.Size = new System.Drawing.Size(75, 23);
-            this.buildobjectbutton.TabIndex = 6;
-            this.buildobjectbutton.Text = "Build Object";
-            this.buildobjectbutton.UseVisualStyleBackColor = true;
-            this.buildobjectbutton.Click += new System.EventHandler(this.buildobjectbutton_Click);
             // 
             // objectname
             // 
@@ -1353,6 +1363,82 @@
             this.clearbutton.UseVisualStyleBackColor = true;
             this.clearbutton.Visible = false;
             // 
+            // objectpositionlabel
+            // 
+            this.objectpositionlabel.AutoSize = true;
+            this.objectpositionlabel.Location = new System.Drawing.Point(23, 226);
+            this.objectpositionlabel.Name = "objectpositionlabel";
+            this.objectpositionlabel.Size = new System.Drawing.Size(44, 13);
+            this.objectpositionlabel.TabIndex = 9;
+            this.objectpositionlabel.Text = "Position";
+            // 
+            // objectorientationlabel
+            // 
+            this.objectorientationlabel.AutoSize = true;
+            this.objectorientationlabel.Location = new System.Drawing.Point(23, 268);
+            this.objectorientationlabel.Name = "objectorientationlabel";
+            this.objectorientationlabel.Size = new System.Drawing.Size(58, 13);
+            this.objectorientationlabel.TabIndex = 10;
+            this.objectorientationlabel.Text = "Orientation";
+            // 
+            // objectscalelabel
+            // 
+            this.objectscalelabel.AutoSize = true;
+            this.objectscalelabel.Location = new System.Drawing.Point(23, 309);
+            this.objectscalelabel.Name = "objectscalelabel";
+            this.objectscalelabel.Size = new System.Drawing.Size(34, 13);
+            this.objectscalelabel.TabIndex = 12;
+            this.objectscalelabel.Text = "Scale";
+            // 
+            // objectpositionX
+            // 
+            this.objectpositionX.Location = new System.Drawing.Point(26, 242);
+            this.objectpositionX.Name = "objectpositionX";
+            this.objectpositionX.Size = new System.Drawing.Size(41, 20);
+            this.objectpositionX.TabIndex = 13;
+            // 
+            // objectorientationX
+            // 
+            this.objectorientationX.Location = new System.Drawing.Point(26, 285);
+            this.objectorientationX.Name = "objectorientationX";
+            this.objectorientationX.Size = new System.Drawing.Size(41, 20);
+            this.objectorientationX.TabIndex = 14;
+            // 
+            // objectscale
+            // 
+            this.objectscale.Location = new System.Drawing.Point(26, 326);
+            this.objectscale.Name = "objectscale";
+            this.objectscale.Size = new System.Drawing.Size(41, 20);
+            this.objectscale.TabIndex = 15;
+            // 
+            // objectorientationY
+            // 
+            this.objectorientationY.Location = new System.Drawing.Point(74, 285);
+            this.objectorientationY.Name = "objectorientationY";
+            this.objectorientationY.Size = new System.Drawing.Size(37, 20);
+            this.objectorientationY.TabIndex = 16;
+            // 
+            // objectorientationZ
+            // 
+            this.objectorientationZ.Location = new System.Drawing.Point(118, 284);
+            this.objectorientationZ.Name = "objectorientationZ";
+            this.objectorientationZ.Size = new System.Drawing.Size(39, 20);
+            this.objectorientationZ.TabIndex = 17;
+            // 
+            // objectpositionY
+            // 
+            this.objectpositionY.Location = new System.Drawing.Point(73, 242);
+            this.objectpositionY.Name = "objectpositionY";
+            this.objectpositionY.Size = new System.Drawing.Size(37, 20);
+            this.objectpositionY.TabIndex = 18;
+            // 
+            // objectpositionZ
+            // 
+            this.objectpositionZ.Location = new System.Drawing.Point(118, 242);
+            this.objectpositionZ.Name = "objectpositionZ";
+            this.objectpositionZ.Size = new System.Drawing.Size(39, 20);
+            this.objectpositionZ.TabIndex = 19;
+            // 
             // mainscreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1415,7 +1501,6 @@
         private System.Windows.Forms.TabPage shadertab;
         private System.Windows.Forms.TabPage lighttab;
         private System.Windows.Forms.Button deleteobjectbutton;
-        private System.Windows.Forms.Button addobjectbutton;
         private System.Windows.Forms.Button editobjectbutton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button createobjectbutton;
@@ -1515,5 +1600,15 @@
         private System.Windows.Forms.Button buildobjectbutton;
         private System.Windows.Forms.TextBox objectname;
         private System.Windows.Forms.Label objectnamelabel;
+        private System.Windows.Forms.TextBox objectpositionZ;
+        private System.Windows.Forms.TextBox objectpositionY;
+        private System.Windows.Forms.TextBox objectorientationZ;
+        private System.Windows.Forms.TextBox objectorientationY;
+        private System.Windows.Forms.TextBox objectscale;
+        private System.Windows.Forms.TextBox objectorientationX;
+        private System.Windows.Forms.TextBox objectpositionX;
+        private System.Windows.Forms.Label objectscalelabel;
+        private System.Windows.Forms.Label objectorientationlabel;
+        private System.Windows.Forms.Label objectpositionlabel;
     }
 }
