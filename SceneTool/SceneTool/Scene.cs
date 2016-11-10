@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace SceneTool
 {
@@ -326,9 +327,492 @@ namespace SceneTool
                 dlights[index] = newdlight;
             }
         }
+
+        private void processLine(ref string line)
+        {
+            int i = 0;
+            while (Char.IsWhiteSpace(line[0])) i++;
+
+            line.Remove(0, i); //remove leading whitespace
+
+            i = line.IndexOf('#');
+            if (i != -1)
+                line.Remove(i); //remove comments
+        }
         //will be done later
-        public bool loadScene(string filepath) { return true; }
-        public bool saveScene(string filepath) { return true; }
+        public bool loadScene(string filepath) {
+            // File input object\
+            StreamReader file;
+            try
+            {
+                file = new StreamReader(filepath);
+            }
+            catch (Exception ex) //invalid filepath
+            {
+                return false;
+            }
+
+            string line = file.ReadLine();                     // String for line reading
+            processLine(ref line);
+
+
+            while (line != null  && !line.Contains("%")) //while in resources section of file
+            {
+
+                processLine(ref line);
+                if(line.Length <= 0)
+                {
+                    line = file.ReadLine();
+                    continue;
+                }
+                switch (line[0]) //first not whitespace character tells us how to interpret
+                {
+                    case 'o': //object file
+                        {
+                            line.Remove(0, 1);
+                            processLine(ref line);
+                            Mesh mesh;
+                            mesh.filepath = line;
+                            meshes.Add(mesh);
+                            break;
+                        }
+                    case 't': //diffuse texture
+                        {
+                            line.Remove(0, 1);
+                            processLine(ref line);
+                            diffusetextures.Add(line);
+                            break;
+                        }
+                    case 'n': //normal map
+                        {
+                            line.Remove(0, 1);
+                            processLine(ref line);
+                            normaltextures.Add(line);
+                            break;
+                        }
+                    case 's': //spec map
+                        {
+                            line.Remove(0, 1);
+                            processLine(ref line);
+                            spectextures.Add(line);
+                            break;
+                        }
+                    case 'm': //multiply map
+                        {
+                            line.Remove(0, 1);
+                            processLine(ref line);
+                            multiplytextures.Add(line);
+                            break;
+                        }
+                    case 'p': //pixel shader
+                        {
+                            line.Remove(0, 1);
+                            processLine(ref line);
+                            pixelshaders.Add(line);
+                            break;
+                        }
+                    case 'v': //vertex shader
+                        {
+                            line.Remove(0, 1);
+                            processLine(ref line);
+                            vertexshaders.Add(line);
+                            break;
+                        }
+                }
+                line = file.ReadLine();
+            }
+
+            line = file.ReadLine();
+            //moving on to constructing materials
+            while (line !=  null && !line.Contains('$'))
+            {
+                processLine(ref line);
+                if(line.Length <= 0)
+                {
+                    line = file.ReadLine();
+                    continue;
+                }
+                //get our indices
+                string[] indices = line.Split('/');
+                //create material
+                Material mat = new Material();
+                mat.diffuseindex = Int16.Parse(indices[0]);
+                mat.normalindex = Int16.Parse(indices[1]);
+                mat.specindex = Int16.Parse(indices[2]);
+                mat.multiplyindex = Int16.Parse(indices[3]);
+                materials.Add(mat);
+                line = file.ReadLine();
+            }
+
+            line = file.ReadLine();
+            //now we make objects
+            while (line != null && !line.Contains('&'))
+            {
+                processLine(ref line);
+                if (line.Length <= 0)
+                {
+                    line = file.ReadLine();
+                    continue;
+                }
+                string[] indices = line.Split('/');
+                Object obj = new Object();
+                obj.meshindex = Int16.Parse(indices[0]);
+                obj.materialindex = Int16.Parse(indices[1]);
+
+                line = file.ReadLine();
+                processLine(ref line);
+                while(line.Length < 0)
+                {
+                    line = file.ReadLine();
+                    processLine(ref line);
+                }
+                line.Remove(0, 3); //remove pos prefix
+                processLine(ref line);
+                string[] values = line.Split(' ');
+                double[] position = new double[3];
+                position[0] = Int16.Parse(values[0]);
+                position[1] = Int16.Parse(values[1]);
+                position[2] = Int16.Parse(values[2]);
+
+                obj.position = position;
+
+                //orientation
+                line = file.ReadLine();
+                processLine(ref line);
+                while (line.Length < 0)
+                {
+                    line = file.ReadLine();
+                    processLine(ref line);
+                }
+                line.Remove(0, 3); //remove orn prefix
+                processLine(ref line);
+                values = line.Split(' ');
+                double[] orientation = new double[3];
+                orientation[0] = Double.Parse(values[0]);
+                orientation[1] = Double.Parse(values[1]);
+                orientation[2] = Double.Parse(values[2]);
+
+                obj.orientation = orientation;
+
+                //scale
+                line = file.ReadLine();
+                processLine(ref line);
+                while (line.Length < 0)
+                {
+                    line = file.ReadLine();
+                    processLine(ref line);
+                }
+
+                line.Remove(0, 2); //remove sc prefix
+                processLine(ref line);
+                obj.scale = Double.Parse(line);
+
+                objects.Add(obj);
+                //done with this object
+                line = file.ReadLine();
+            }
+
+            line = file.ReadLine();
+            //now we make the lights
+            while (line != null)
+            {
+                processLine(ref line);
+                if (line.Length < 0)
+                {
+                    line = file.ReadLine();
+                    continue;
+                }
+
+                switch (line[0])
+                {
+                    case 'd': //directional light
+                        {
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            string[] values = line.Split(' ');
+                            double[] ambient = new double[4];
+                            ambient[0] = Double.Parse(values[0]);
+                            ambient[1] = Double.Parse(values[1]);
+                            ambient[2] = Double.Parse(values[2]);
+                            ambient[3] = Double.Parse(values[3]);
+
+
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            values = line.Split(' ');
+                            double[] diffuse = new double[4];
+                            diffuse[0] = Double.Parse(values[0]);
+                            diffuse[1] = Double.Parse(values[1]);
+                            diffuse[2] = Double.Parse(values[2]);
+                            diffuse[3] = Double.Parse(values[3]);
+
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            values = line.Split(' ');
+                            double[] direction = new double[3];
+                            direction[0] = Double.Parse(values[0]);
+                            direction[1] = Double.Parse(values[1]);
+                            direction[2] = Double.Parse(values[2]);
+
+                            DirectionalLight d = new DirectionalLight();
+                            d.ambientColor = ambient;
+                            d.diffuseColor = diffuse;
+                            d.direction = direction;
+
+                            dlights.Add(d);
+                            break;
+                        }
+                    case 'p': //point light
+                        {
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            string[] values = line.Split(' ');
+                            double[] ambient = new double[4];
+                            ambient[0] = Double.Parse(values[0]);
+                            ambient[1] = Double.Parse(values[1]);
+                            ambient[2] = Double.Parse(values[2]);
+                            ambient[3] = Double.Parse(values[3]);
+
+
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            values = line.Split(' ');
+                            double[] diffuse = new double[4];
+                            diffuse[0] = Double.Parse(values[0]);
+                            diffuse[1] = Double.Parse(values[1]);
+                            diffuse[2] = Double.Parse(values[2]);
+                            diffuse[3] = Double.Parse(values[3]);
+
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            values = line.Split(' ');
+                            double[] position = new double[3];
+                            position[0] = Double.Parse(values[0]);
+                            position[1] = Double.Parse(values[1]);
+                            position[2] = Double.Parse(values[2]);
+
+                            PointLight p = new PointLight();
+                            p.ambientColor = ambient;
+                            p.diffuseColor = diffuse;
+                            p.position = position;
+
+                            plights.Add(p);
+                            break;
+                        }
+                    case 's': //spot light
+                        {
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            string[] values = line.Split(' ');
+                            double[] ambient = new double[4];
+                            ambient[0] = Double.Parse(values[0]);
+                            ambient[1] = Double.Parse(values[1]);
+                            ambient[2] = Double.Parse(values[2]);
+                            ambient[3] = Double.Parse(values[3]);
+
+
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            values = line.Split(' ');
+                            double[] diffuse = new double[4];
+                            diffuse[0] = Double.Parse(values[0]);
+                            diffuse[1] = Double.Parse(values[1]);
+                            diffuse[2] = Double.Parse(values[2]);
+                            diffuse[3] = Double.Parse(values[3]);
+
+
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            values = line.Split(' ');
+                            double[] direction = new double[4];
+                            direction[0] = Double.Parse(values[0]);
+                            direction[1] = Double.Parse(values[1]);
+                            direction[2] = Double.Parse(values[2]);
+                            direction[3] = Double.Parse(values[3]);
+
+                            line = file.ReadLine();
+                            processLine(ref line);
+                            while (line.Length < 0)
+                            {
+                                line = file.ReadLine();
+                                processLine(ref line);
+                            }
+
+                            values = line.Split(' ');
+                            double[] position = new double[3];
+                            position[0] = Double.Parse(values[0]);
+                            position[1] = Double.Parse(values[1]);
+                            position[2] = Double.Parse(values[2]);
+
+                            SpotLight s = new SpotLight();
+                            s.ambientColor = ambient;
+                            s.diffuseColor = diffuse;
+                            s.direction = direction;
+                            s.position = position;
+
+                            slights.Add(s);
+                            break;
+                        }
+                }
+            }
+
+            //close the file
+            file.Close();
+            return true;
+
+
+        }
+        public bool saveScene(string filepath)
+        {
+            StreamWriter file;
+            try
+            {
+                file = File.AppendText(filepath);
+            }
+            catch (Exception ex) //invalid filepath
+            {
+                return false;
+            }
+
+
+            foreach (Mesh m in meshes)
+            {
+                file.WriteLine("m " + m.filepath);
+            }
+            foreach (string t in diffusetextures)
+            {
+                file.WriteLine("t " + t);
+            }
+            foreach (string n in normaltextures)
+            {
+                file.WriteLine("n " + n);
+            }
+            foreach (string s in spectextures)
+            {
+                file.WriteLine("s " + s);
+            }
+            foreach (string m in multiplytextures)
+            {
+                file.WriteLine("m " + m);
+            }
+            foreach (string p in pixelshaders)
+            {
+                file.WriteLine("p " + p);
+            }
+            foreach (string v in vertexshaders)
+            {
+                file.WriteLine("v " + v);
+            }
+
+            file.WriteLine("%");
+
+            //now materials
+
+            foreach (Material mat in materials)
+            {
+                file.WriteLine("#"+mat.name);
+                file.WriteLine(mat.diffuseindex.ToString() + "/" + mat.normalindex.ToString()+"/"
+                        +mat.specindex.ToString()+"/"+mat.multiplyindex.ToString()+"/"
+                        +mat.vertexshader.ToString()+"/"+mat.pixelshader.ToString());
+            }
+            file.WriteLine("$");
+            //now objects
+            foreach (Object obj in objects)
+            {
+                file.WriteLine("#" + obj.name);
+                file.WriteLine(obj.meshindex.ToString() + "/" +obj.materialindex.ToString());
+                file.WriteLine("pos " + obj.position[0] + " " + obj.position[1] + " " + obj.position[2]);
+                file.WriteLine("orn " + obj.orientation[0] + " " + obj.orientation[1] + " " + obj.orientation[2]);
+                file.WriteLine("sc " + obj.scale);
+                file.WriteLine();
+            }
+            file.WriteLine("&");
+            //now lights
+            foreach (DirectionalLight d in dlights)
+            {
+                file.WriteLine("#" + d.name);
+                file.WriteLine("d");
+                file.WriteLine(d.ambientColor[0] + " " + d.ambientColor[1] + " " + d.ambientColor[2] + " " + d.ambientColor[3]);
+                file.WriteLine(d.diffuseColor[0] + " " + d.diffuseColor[1] + " " + d.diffuseColor[2] + " " + d.diffuseColor[3]);
+                file.WriteLine(d.direction[0] + " " + d.direction[1] + " " + d.direction[2]);
+                file.WriteLine();
+            }
+            foreach (PointLight p in plights)
+            {
+                file.WriteLine("#" + p.name);
+                file.WriteLine("p");
+                file.WriteLine(p.ambientColor[0] + " " + p.ambientColor[1] + " " + p.ambientColor[2] + " " + p.ambientColor[3]);
+                file.WriteLine(p.diffuseColor[0] + " " + p.diffuseColor[1] + " " + p.diffuseColor[2] + " " + p.diffuseColor[3]);
+                file.WriteLine(p.position[0] + " " + p.position[1] + " " + p.position[2]);
+                file.WriteLine();
+            }
+            foreach(SpotLight s in slights)
+            {
+                file.WriteLine("#" + s.name);
+                file.WriteLine("s");
+                file.WriteLine(s.ambientColor[0] + " " + s.ambientColor[1] + " " + s.ambientColor[2] + " " + s.ambientColor[3]);
+                file.WriteLine(s.diffuseColor[0] + " " + s.diffuseColor[1] + " " + s.diffuseColor[2] + " " + s.diffuseColor[3]);
+                file.WriteLine(s.direction[0] + " " + s.direction[1] + " " + s.direction[2] + " " + s.direction[3]);
+                file.WriteLine(s.position[0] + " " + s.position[1] + " " + s.position[2]);
+                file.WriteLine();
+            }
+            file.Close();
+            return true;
+        }
 
 
         public bool isDirectionalLight(int index)

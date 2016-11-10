@@ -42,6 +42,8 @@ namespace SceneTool
             scenewindow.Visible = true;
             tabControl.Visible = true;
             clearbutton.Visible = true;
+            savescenefilepath.Visible = true;
+            loadscenetextbox.Visible = true;
             loadbutton.Visible = true;
             savescenebutton.Visible = true;
         }
@@ -513,7 +515,23 @@ namespace SceneTool
 
         private void loadscenebutton_Click(object sender, EventArgs e)
         {
-            
+            if(scene.loadScene(editscenefilepath.Text))
+            {
+                startpanel.Visible = false;
+                scenewindow.Visible = true;
+                tabControl.Visible = true;
+                savescenefilepath.Visible = true;
+                loadscenetextbox.Visible = true;
+                clearbutton.Visible = true;
+                loadbutton.Visible = true;
+                savescenebutton.Visible = true;
+                updateLightLists();
+                updateMaterialLists();
+                updateTextureLists();
+                updateObjectLists();
+                updateShaderLists();
+                updateMeshLists();
+            }
         }
 
         private void deletelightbutton_Click(object sender, EventArgs e)
@@ -776,7 +794,7 @@ namespace SceneTool
 
             string name;
             int meshindex, materialindex;
-            float[] data;
+            double[] data;
 
             scene.getObjectData(objectlist.SelectedIndex, out name, out meshindex, out materialindex, out data);
             objectpositionX.Text = data[0].ToString();
@@ -804,14 +822,24 @@ namespace SceneTool
 
         private void savescenebutton_Click(object sender, EventArgs e)
         {
-            string filepath ="";
-            scene.saveScene(filepath);
+            if(scene.saveScene(savescenefilepath.Text))
+            {
+                savescenefilepath.Text = "";
+            }
         }
 
         private void loadbutton_Click(object sender, EventArgs e)
         {
-            string filepath = "";
-            scene.loadScene(filepath);
+            if(scene.loadScene(loadscenetextbox.Text))
+            {
+                loadscenetextbox.Text = "";
+                updateMeshLists();
+                updateTextureLists();
+                updateShaderLists();
+                updateMaterialLists();
+                updateObjectLists();
+                updateLightLists();
+            }
         }
     }
 }

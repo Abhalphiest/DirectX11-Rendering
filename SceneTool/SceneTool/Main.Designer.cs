@@ -37,6 +37,7 @@
             this.objectlistlabel = new System.Windows.Forms.Label();
             this.objectlist = new System.Windows.Forms.ListBox();
             this.startpanel = new System.Windows.Forms.Panel();
+            this.editscenefilepath = new System.Windows.Forms.TextBox();
             this.loadscenebutton = new System.Windows.Forms.Button();
             this.newscene = new System.Windows.Forms.Button();
             this.meshfilepathlabel = new System.Windows.Forms.Label();
@@ -45,6 +46,27 @@
             this.meshfilepath = new System.Windows.Forms.TextBox();
             this.loadmeshbutton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.objecttab = new System.Windows.Forms.TabPage();
+            this.createobjectpanel = new System.Windows.Forms.Panel();
+            this.objectpositionZ = new System.Windows.Forms.TextBox();
+            this.objectpositionY = new System.Windows.Forms.TextBox();
+            this.objectorientationZ = new System.Windows.Forms.TextBox();
+            this.objectorientationY = new System.Windows.Forms.TextBox();
+            this.objectscale = new System.Windows.Forms.TextBox();
+            this.objectorientationX = new System.Windows.Forms.TextBox();
+            this.objectpositionX = new System.Windows.Forms.TextBox();
+            this.objectscalelabel = new System.Windows.Forms.Label();
+            this.objectorientationlabel = new System.Windows.Forms.Label();
+            this.objectpositionlabel = new System.Windows.Forms.Label();
+            this.buildobjectbutton = new System.Windows.Forms.Button();
+            this.objectsavechangesbutton = new System.Windows.Forms.Button();
+            this.objectbackbutton = new System.Windows.Forms.Button();
+            this.objectname = new System.Windows.Forms.TextBox();
+            this.objectnamelabel = new System.Windows.Forms.Label();
+            this.objectmateriallist = new System.Windows.Forms.ListBox();
+            this.objectmateriallabel = new System.Windows.Forms.Label();
+            this.objectmeshlist = new System.Windows.Forms.ListBox();
+            this.objectmeshlabel = new System.Windows.Forms.Label();
             this.lighttab = new System.Windows.Forms.TabPage();
             this.buildlightpanel = new System.Windows.Forms.Panel();
             this.savelightchangesbutton = new System.Windows.Forms.Button();
@@ -81,27 +103,6 @@
             this.createlightbutton = new System.Windows.Forms.Button();
             this.currentlightslist = new System.Windows.Forms.ListBox();
             this.currentlightslabel = new System.Windows.Forms.Label();
-            this.objecttab = new System.Windows.Forms.TabPage();
-            this.createobjectpanel = new System.Windows.Forms.Panel();
-            this.objectpositionZ = new System.Windows.Forms.TextBox();
-            this.objectpositionY = new System.Windows.Forms.TextBox();
-            this.objectorientationZ = new System.Windows.Forms.TextBox();
-            this.objectorientationY = new System.Windows.Forms.TextBox();
-            this.objectscale = new System.Windows.Forms.TextBox();
-            this.objectorientationX = new System.Windows.Forms.TextBox();
-            this.objectpositionX = new System.Windows.Forms.TextBox();
-            this.objectscalelabel = new System.Windows.Forms.Label();
-            this.objectorientationlabel = new System.Windows.Forms.Label();
-            this.objectpositionlabel = new System.Windows.Forms.Label();
-            this.buildobjectbutton = new System.Windows.Forms.Button();
-            this.objectsavechangesbutton = new System.Windows.Forms.Button();
-            this.objectbackbutton = new System.Windows.Forms.Button();
-            this.objectname = new System.Windows.Forms.TextBox();
-            this.objectnamelabel = new System.Windows.Forms.Label();
-            this.objectmateriallist = new System.Windows.Forms.ListBox();
-            this.objectmateriallabel = new System.Windows.Forms.Label();
-            this.objectmeshlist = new System.Windows.Forms.ListBox();
-            this.objectmeshlabel = new System.Windows.Forms.Label();
             this.materialstab = new System.Windows.Forms.TabPage();
             this.creatematerialpanel = new System.Windows.Forms.Panel();
             this.materialsavechangesbutton = new System.Windows.Forms.Button();
@@ -156,14 +157,16 @@
             this.savescenebutton = new System.Windows.Forms.Button();
             this.loadbutton = new System.Windows.Forms.Button();
             this.clearbutton = new System.Windows.Forms.Button();
+            this.savescenefilepath = new System.Windows.Forms.TextBox();
+            this.loadscenetextbox = new System.Windows.Forms.TextBox();
             this.objectpanel.SuspendLayout();
             this.startpanel.SuspendLayout();
             this.tabControl.SuspendLayout();
+            this.objecttab.SuspendLayout();
+            this.createobjectpanel.SuspendLayout();
             this.lighttab.SuspendLayout();
             this.buildlightpanel.SuspendLayout();
             this.lightpanel.SuspendLayout();
-            this.objecttab.SuspendLayout();
-            this.createobjectpanel.SuspendLayout();
             this.materialstab.SuspendLayout();
             this.creatematerialpanel.SuspendLayout();
             this.materialpanel.SuspendLayout();
@@ -175,7 +178,7 @@
             // scenewindow
             // 
             this.scenewindow.Location = new System.Drawing.Point(33, 26);
-            this.scenewindow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.scenewindow.Margin = new System.Windows.Forms.Padding(4);
             this.scenewindow.Name = "scenewindow";
             this.scenewindow.Size = new System.Drawing.Size(619, 412);
             this.scenewindow.TabIndex = 0;
@@ -191,7 +194,7 @@
             this.objectpanel.Controls.Add(this.objectlistlabel);
             this.objectpanel.Controls.Add(this.objectlist);
             this.objectpanel.Location = new System.Drawing.Point(8, 7);
-            this.objectpanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.objectpanel.Margin = new System.Windows.Forms.Padding(4);
             this.objectpanel.Name = "objectpanel";
             this.objectpanel.Size = new System.Drawing.Size(287, 367);
             this.objectpanel.TabIndex = 1;
@@ -199,7 +202,7 @@
             // deleteobjectbutton
             // 
             this.deleteobjectbutton.Location = new System.Drawing.Point(40, 268);
-            this.deleteobjectbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deleteobjectbutton.Margin = new System.Windows.Forms.Padding(4);
             this.deleteobjectbutton.Name = "deleteobjectbutton";
             this.deleteobjectbutton.Size = new System.Drawing.Size(176, 28);
             this.deleteobjectbutton.TabIndex = 12;
@@ -210,7 +213,7 @@
             // editobjectbutton
             // 
             this.editobjectbutton.Location = new System.Drawing.Point(40, 233);
-            this.editobjectbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.editobjectbutton.Margin = new System.Windows.Forms.Padding(4);
             this.editobjectbutton.Name = "editobjectbutton";
             this.editobjectbutton.Size = new System.Drawing.Size(176, 28);
             this.editobjectbutton.TabIndex = 10;
@@ -221,7 +224,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(197, 377);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 9;
@@ -231,7 +234,7 @@
             // createobjectbutton
             // 
             this.createobjectbutton.Location = new System.Drawing.Point(40, 22);
-            this.createobjectbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.createobjectbutton.Margin = new System.Windows.Forms.Padding(4);
             this.createobjectbutton.Name = "createobjectbutton";
             this.createobjectbutton.Size = new System.Drawing.Size(141, 28);
             this.createobjectbutton.TabIndex = 8;
@@ -254,25 +257,33 @@
             this.objectlist.FormattingEnabled = true;
             this.objectlist.ItemHeight = 16;
             this.objectlist.Location = new System.Drawing.Point(40, 91);
-            this.objectlist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.objectlist.Margin = new System.Windows.Forms.Padding(4);
             this.objectlist.Name = "objectlist";
             this.objectlist.Size = new System.Drawing.Size(175, 132);
             this.objectlist.TabIndex = 4;
             // 
             // startpanel
             // 
+            this.startpanel.Controls.Add(this.editscenefilepath);
             this.startpanel.Controls.Add(this.loadscenebutton);
             this.startpanel.Controls.Add(this.newscene);
             this.startpanel.Location = new System.Drawing.Point(275, 47);
-            this.startpanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.startpanel.Margin = new System.Windows.Forms.Padding(4);
             this.startpanel.Name = "startpanel";
             this.startpanel.Size = new System.Drawing.Size(564, 348);
             this.startpanel.TabIndex = 0;
             // 
+            // editscenefilepath
+            // 
+            this.editscenefilepath.Location = new System.Drawing.Point(197, 166);
+            this.editscenefilepath.Name = "editscenefilepath";
+            this.editscenefilepath.Size = new System.Drawing.Size(146, 22);
+            this.editscenefilepath.TabIndex = 2;
+            // 
             // loadscenebutton
             // 
-            this.loadscenebutton.Location = new System.Drawing.Point(197, 160);
-            this.loadscenebutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.loadscenebutton.Location = new System.Drawing.Point(197, 206);
+            this.loadscenebutton.Margin = new System.Windows.Forms.Padding(4);
             this.loadscenebutton.Name = "loadscenebutton";
             this.loadscenebutton.Size = new System.Drawing.Size(180, 28);
             this.loadscenebutton.TabIndex = 1;
@@ -283,7 +294,7 @@
             // newscene
             // 
             this.newscene.Location = new System.Drawing.Point(197, 89);
-            this.newscene.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.newscene.Margin = new System.Windows.Forms.Padding(4);
             this.newscene.Name = "newscene";
             this.newscene.Size = new System.Drawing.Size(180, 28);
             this.newscene.TabIndex = 0;
@@ -314,7 +325,7 @@
             // meshname
             // 
             this.meshname.Location = new System.Drawing.Point(31, 124);
-            this.meshname.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.meshname.Margin = new System.Windows.Forms.Padding(4);
             this.meshname.Name = "meshname";
             this.meshname.Size = new System.Drawing.Size(132, 22);
             this.meshname.TabIndex = 2;
@@ -322,7 +333,7 @@
             // meshfilepath
             // 
             this.meshfilepath.Location = new System.Drawing.Point(31, 52);
-            this.meshfilepath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.meshfilepath.Margin = new System.Windows.Forms.Padding(4);
             this.meshfilepath.Name = "meshfilepath";
             this.meshfilepath.Size = new System.Drawing.Size(132, 22);
             this.meshfilepath.TabIndex = 1;
@@ -330,7 +341,7 @@
             // loadmeshbutton
             // 
             this.loadmeshbutton.Location = new System.Drawing.Point(31, 174);
-            this.loadmeshbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.loadmeshbutton.Margin = new System.Windows.Forms.Padding(4);
             this.loadmeshbutton.Name = "loadmeshbutton";
             this.loadmeshbutton.Size = new System.Drawing.Size(100, 28);
             this.loadmeshbutton.TabIndex = 0;
@@ -347,7 +358,7 @@
             this.tabControl.Controls.Add(this.texturetab);
             this.tabControl.Controls.Add(this.shadertab);
             this.tabControl.Location = new System.Drawing.Point(660, 15);
-            this.tabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Multiline = true;
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -355,12 +366,232 @@
             this.tabControl.TabIndex = 8;
             this.tabControl.Visible = false;
             // 
+            // objecttab
+            // 
+            this.objecttab.Controls.Add(this.objectpanel);
+            this.objecttab.Controls.Add(this.createobjectpanel);
+            this.objecttab.Location = new System.Drawing.Point(4, 25);
+            this.objecttab.Margin = new System.Windows.Forms.Padding(4);
+            this.objecttab.Name = "objecttab";
+            this.objecttab.Padding = new System.Windows.Forms.Padding(4);
+            this.objecttab.Size = new System.Drawing.Size(397, 410);
+            this.objecttab.TabIndex = 0;
+            this.objecttab.Text = "Objects";
+            this.objecttab.UseVisualStyleBackColor = true;
+            // 
+            // createobjectpanel
+            // 
+            this.createobjectpanel.AutoScroll = true;
+            this.createobjectpanel.Controls.Add(this.objectpositionZ);
+            this.createobjectpanel.Controls.Add(this.objectpositionY);
+            this.createobjectpanel.Controls.Add(this.objectorientationZ);
+            this.createobjectpanel.Controls.Add(this.objectorientationY);
+            this.createobjectpanel.Controls.Add(this.objectscale);
+            this.createobjectpanel.Controls.Add(this.objectorientationX);
+            this.createobjectpanel.Controls.Add(this.objectpositionX);
+            this.createobjectpanel.Controls.Add(this.objectscalelabel);
+            this.createobjectpanel.Controls.Add(this.objectorientationlabel);
+            this.createobjectpanel.Controls.Add(this.objectpositionlabel);
+            this.createobjectpanel.Controls.Add(this.buildobjectbutton);
+            this.createobjectpanel.Controls.Add(this.objectsavechangesbutton);
+            this.createobjectpanel.Controls.Add(this.objectbackbutton);
+            this.createobjectpanel.Controls.Add(this.objectname);
+            this.createobjectpanel.Controls.Add(this.objectnamelabel);
+            this.createobjectpanel.Controls.Add(this.objectmateriallist);
+            this.createobjectpanel.Controls.Add(this.objectmateriallabel);
+            this.createobjectpanel.Controls.Add(this.objectmeshlist);
+            this.createobjectpanel.Controls.Add(this.objectmeshlabel);
+            this.createobjectpanel.Location = new System.Drawing.Point(0, 0);
+            this.createobjectpanel.Margin = new System.Windows.Forms.Padding(4);
+            this.createobjectpanel.Name = "createobjectpanel";
+            this.createobjectpanel.Size = new System.Drawing.Size(313, 373);
+            this.createobjectpanel.TabIndex = 13;
+            this.createobjectpanel.Visible = false;
+            // 
+            // objectpositionZ
+            // 
+            this.objectpositionZ.Location = new System.Drawing.Point(157, 298);
+            this.objectpositionZ.Margin = new System.Windows.Forms.Padding(4);
+            this.objectpositionZ.Name = "objectpositionZ";
+            this.objectpositionZ.Size = new System.Drawing.Size(51, 22);
+            this.objectpositionZ.TabIndex = 19;
+            // 
+            // objectpositionY
+            // 
+            this.objectpositionY.Location = new System.Drawing.Point(97, 298);
+            this.objectpositionY.Margin = new System.Windows.Forms.Padding(4);
+            this.objectpositionY.Name = "objectpositionY";
+            this.objectpositionY.Size = new System.Drawing.Size(48, 22);
+            this.objectpositionY.TabIndex = 18;
+            // 
+            // objectorientationZ
+            // 
+            this.objectorientationZ.Location = new System.Drawing.Point(157, 350);
+            this.objectorientationZ.Margin = new System.Windows.Forms.Padding(4);
+            this.objectorientationZ.Name = "objectorientationZ";
+            this.objectorientationZ.Size = new System.Drawing.Size(51, 22);
+            this.objectorientationZ.TabIndex = 17;
+            // 
+            // objectorientationY
+            // 
+            this.objectorientationY.Location = new System.Drawing.Point(99, 351);
+            this.objectorientationY.Margin = new System.Windows.Forms.Padding(4);
+            this.objectorientationY.Name = "objectorientationY";
+            this.objectorientationY.Size = new System.Drawing.Size(48, 22);
+            this.objectorientationY.TabIndex = 16;
+            // 
+            // objectscale
+            // 
+            this.objectscale.Location = new System.Drawing.Point(35, 401);
+            this.objectscale.Margin = new System.Windows.Forms.Padding(4);
+            this.objectscale.Name = "objectscale";
+            this.objectscale.Size = new System.Drawing.Size(53, 22);
+            this.objectscale.TabIndex = 15;
+            // 
+            // objectorientationX
+            // 
+            this.objectorientationX.Location = new System.Drawing.Point(35, 351);
+            this.objectorientationX.Margin = new System.Windows.Forms.Padding(4);
+            this.objectorientationX.Name = "objectorientationX";
+            this.objectorientationX.Size = new System.Drawing.Size(53, 22);
+            this.objectorientationX.TabIndex = 14;
+            // 
+            // objectpositionX
+            // 
+            this.objectpositionX.Location = new System.Drawing.Point(35, 298);
+            this.objectpositionX.Margin = new System.Windows.Forms.Padding(4);
+            this.objectpositionX.Name = "objectpositionX";
+            this.objectpositionX.Size = new System.Drawing.Size(53, 22);
+            this.objectpositionX.TabIndex = 13;
+            // 
+            // objectscalelabel
+            // 
+            this.objectscalelabel.AutoSize = true;
+            this.objectscalelabel.Location = new System.Drawing.Point(31, 380);
+            this.objectscalelabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.objectscalelabel.Name = "objectscalelabel";
+            this.objectscalelabel.Size = new System.Drawing.Size(43, 17);
+            this.objectscalelabel.TabIndex = 12;
+            this.objectscalelabel.Text = "Scale";
+            // 
+            // objectorientationlabel
+            // 
+            this.objectorientationlabel.AutoSize = true;
+            this.objectorientationlabel.Location = new System.Drawing.Point(31, 330);
+            this.objectorientationlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.objectorientationlabel.Name = "objectorientationlabel";
+            this.objectorientationlabel.Size = new System.Drawing.Size(78, 17);
+            this.objectorientationlabel.TabIndex = 10;
+            this.objectorientationlabel.Text = "Orientation";
+            // 
+            // objectpositionlabel
+            // 
+            this.objectpositionlabel.AutoSize = true;
+            this.objectpositionlabel.Location = new System.Drawing.Point(31, 278);
+            this.objectpositionlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.objectpositionlabel.Name = "objectpositionlabel";
+            this.objectpositionlabel.Size = new System.Drawing.Size(58, 17);
+            this.objectpositionlabel.TabIndex = 9;
+            this.objectpositionlabel.Text = "Position";
+            // 
+            // buildobjectbutton
+            // 
+            this.buildobjectbutton.Location = new System.Drawing.Point(27, 444);
+            this.buildobjectbutton.Margin = new System.Windows.Forms.Padding(4);
+            this.buildobjectbutton.Name = "buildobjectbutton";
+            this.buildobjectbutton.Size = new System.Drawing.Size(100, 28);
+            this.buildobjectbutton.TabIndex = 6;
+            this.buildobjectbutton.Text = "Build Object";
+            this.buildobjectbutton.UseVisualStyleBackColor = true;
+            this.buildobjectbutton.Click += new System.EventHandler(this.buildobjectbutton_Click);
+            // 
+            // objectsavechangesbutton
+            // 
+            this.objectsavechangesbutton.Location = new System.Drawing.Point(27, 443);
+            this.objectsavechangesbutton.Margin = new System.Windows.Forms.Padding(4);
+            this.objectsavechangesbutton.Name = "objectsavechangesbutton";
+            this.objectsavechangesbutton.Size = new System.Drawing.Size(121, 28);
+            this.objectsavechangesbutton.TabIndex = 8;
+            this.objectsavechangesbutton.Text = "Save Changes";
+            this.objectsavechangesbutton.UseVisualStyleBackColor = false;
+            this.objectsavechangesbutton.Visible = false;
+            this.objectsavechangesbutton.Click += new System.EventHandler(this.objectsavechangesbutton_Click);
+            // 
+            // objectbackbutton
+            // 
+            this.objectbackbutton.Location = new System.Drawing.Point(188, 442);
+            this.objectbackbutton.Margin = new System.Windows.Forms.Padding(4);
+            this.objectbackbutton.Name = "objectbackbutton";
+            this.objectbackbutton.Size = new System.Drawing.Size(100, 28);
+            this.objectbackbutton.TabIndex = 7;
+            this.objectbackbutton.Text = "Back";
+            this.objectbackbutton.UseVisualStyleBackColor = true;
+            this.objectbackbutton.Click += new System.EventHandler(this.objectbackbutton_Click);
+            // 
+            // objectname
+            // 
+            this.objectname.Location = new System.Drawing.Point(31, 245);
+            this.objectname.Margin = new System.Windows.Forms.Padding(4);
+            this.objectname.Name = "objectname";
+            this.objectname.Size = new System.Drawing.Size(157, 22);
+            this.objectname.TabIndex = 5;
+            // 
+            // objectnamelabel
+            // 
+            this.objectnamelabel.AutoSize = true;
+            this.objectnamelabel.Location = new System.Drawing.Point(13, 219);
+            this.objectnamelabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.objectnamelabel.Name = "objectnamelabel";
+            this.objectnamelabel.Size = new System.Drawing.Size(90, 17);
+            this.objectnamelabel.TabIndex = 4;
+            this.objectnamelabel.Text = "Object Name";
+            // 
+            // objectmateriallist
+            // 
+            this.objectmateriallist.FormattingEnabled = true;
+            this.objectmateriallist.ItemHeight = 16;
+            this.objectmateriallist.Location = new System.Drawing.Point(29, 126);
+            this.objectmateriallist.Margin = new System.Windows.Forms.Padding(4);
+            this.objectmateriallist.Name = "objectmateriallist";
+            this.objectmateriallist.Size = new System.Drawing.Size(219, 84);
+            this.objectmateriallist.TabIndex = 3;
+            // 
+            // objectmateriallabel
+            // 
+            this.objectmateriallabel.AutoSize = true;
+            this.objectmateriallabel.Location = new System.Drawing.Point(12, 106);
+            this.objectmateriallabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.objectmateriallabel.Name = "objectmateriallabel";
+            this.objectmateriallabel.Size = new System.Drawing.Size(58, 17);
+            this.objectmateriallabel.TabIndex = 2;
+            this.objectmateriallabel.Text = "Material";
+            // 
+            // objectmeshlist
+            // 
+            this.objectmeshlist.FormattingEnabled = true;
+            this.objectmeshlist.ItemHeight = 16;
+            this.objectmeshlist.Location = new System.Drawing.Point(29, 30);
+            this.objectmeshlist.Margin = new System.Windows.Forms.Padding(4);
+            this.objectmeshlist.Name = "objectmeshlist";
+            this.objectmeshlist.Size = new System.Drawing.Size(219, 68);
+            this.objectmeshlist.TabIndex = 1;
+            // 
+            // objectmeshlabel
+            // 
+            this.objectmeshlabel.AutoSize = true;
+            this.objectmeshlabel.Location = new System.Drawing.Point(9, 10);
+            this.objectmeshlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.objectmeshlabel.Name = "objectmeshlabel";
+            this.objectmeshlabel.Size = new System.Drawing.Size(42, 17);
+            this.objectmeshlabel.TabIndex = 0;
+            this.objectmeshlabel.Text = "Mesh";
+            // 
             // lighttab
             // 
             this.lighttab.Controls.Add(this.buildlightpanel);
             this.lighttab.Controls.Add(this.lightpanel);
             this.lighttab.Location = new System.Drawing.Point(4, 25);
-            this.lighttab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lighttab.Margin = new System.Windows.Forms.Padding(4);
             this.lighttab.Name = "lighttab";
             this.lighttab.Size = new System.Drawing.Size(397, 410);
             this.lighttab.TabIndex = 4;
@@ -397,7 +628,7 @@
             this.buildlightpanel.Controls.Add(this.ambientR);
             this.buildlightpanel.Controls.Add(this.directionalradio);
             this.buildlightpanel.Location = new System.Drawing.Point(0, 0);
-            this.buildlightpanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buildlightpanel.Margin = new System.Windows.Forms.Padding(4);
             this.buildlightpanel.Name = "buildlightpanel";
             this.buildlightpanel.Size = new System.Drawing.Size(312, 418);
             this.buildlightpanel.TabIndex = 5;
@@ -435,7 +666,7 @@
             // buildlightbackbutton
             // 
             this.buildlightbackbutton.Location = new System.Drawing.Point(167, 370);
-            this.buildlightbackbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buildlightbackbutton.Margin = new System.Windows.Forms.Padding(4);
             this.buildlightbackbutton.Name = "buildlightbackbutton";
             this.buildlightbackbutton.Size = new System.Drawing.Size(100, 28);
             this.buildlightbackbutton.TabIndex = 23;
@@ -446,7 +677,7 @@
             // diffuseA
             // 
             this.diffuseA.Location = new System.Drawing.Point(193, 175);
-            this.diffuseA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.diffuseA.Margin = new System.Windows.Forms.Padding(4);
             this.diffuseA.Name = "diffuseA";
             this.diffuseA.Size = new System.Drawing.Size(43, 22);
             this.diffuseA.TabIndex = 22;
@@ -454,7 +685,7 @@
             // ambientA
             // 
             this.ambientA.Location = new System.Drawing.Point(193, 122);
-            this.ambientA.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ambientA.Margin = new System.Windows.Forms.Padding(4);
             this.ambientA.Name = "ambientA";
             this.ambientA.Size = new System.Drawing.Size(43, 22);
             this.ambientA.TabIndex = 21;
@@ -462,7 +693,7 @@
             // diffuseB
             // 
             this.diffuseB.Location = new System.Drawing.Point(137, 175);
-            this.diffuseB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.diffuseB.Margin = new System.Windows.Forms.Padding(4);
             this.diffuseB.Name = "diffuseB";
             this.diffuseB.Size = new System.Drawing.Size(45, 22);
             this.diffuseB.TabIndex = 20;
@@ -470,7 +701,7 @@
             // ambientB
             // 
             this.ambientB.Location = new System.Drawing.Point(137, 122);
-            this.ambientB.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ambientB.Margin = new System.Windows.Forms.Padding(4);
             this.ambientB.Name = "ambientB";
             this.ambientB.Size = new System.Drawing.Size(45, 22);
             this.ambientB.TabIndex = 19;
@@ -478,7 +709,7 @@
             // ambientG
             // 
             this.ambientG.Location = new System.Drawing.Point(85, 123);
-            this.ambientG.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ambientG.Margin = new System.Windows.Forms.Padding(4);
             this.ambientG.Name = "ambientG";
             this.ambientG.Size = new System.Drawing.Size(43, 22);
             this.ambientG.TabIndex = 18;
@@ -486,7 +717,7 @@
             // diffuseG
             // 
             this.diffuseG.Location = new System.Drawing.Point(85, 175);
-            this.diffuseG.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.diffuseG.Margin = new System.Windows.Forms.Padding(4);
             this.diffuseG.Name = "diffuseG";
             this.diffuseG.Size = new System.Drawing.Size(43, 22);
             this.diffuseG.TabIndex = 17;
@@ -494,7 +725,7 @@
             // lightpositionZ
             // 
             this.lightpositionZ.Location = new System.Drawing.Point(137, 228);
-            this.lightpositionZ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightpositionZ.Margin = new System.Windows.Forms.Padding(4);
             this.lightpositionZ.Name = "lightpositionZ";
             this.lightpositionZ.Size = new System.Drawing.Size(45, 22);
             this.lightpositionZ.TabIndex = 16;
@@ -502,7 +733,7 @@
             // lightpositionY
             // 
             this.lightpositionY.Location = new System.Drawing.Point(85, 228);
-            this.lightpositionY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightpositionY.Margin = new System.Windows.Forms.Padding(4);
             this.lightpositionY.Name = "lightpositionY";
             this.lightpositionY.Size = new System.Drawing.Size(43, 22);
             this.lightpositionY.TabIndex = 15;
@@ -510,7 +741,7 @@
             // lightdirectionW
             // 
             this.lightdirectionW.Location = new System.Drawing.Point(193, 284);
-            this.lightdirectionW.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightdirectionW.Margin = new System.Windows.Forms.Padding(4);
             this.lightdirectionW.Name = "lightdirectionW";
             this.lightdirectionW.Size = new System.Drawing.Size(43, 22);
             this.lightdirectionW.TabIndex = 14;
@@ -518,7 +749,7 @@
             // lightdirectionZ
             // 
             this.lightdirectionZ.Location = new System.Drawing.Point(137, 286);
-            this.lightdirectionZ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightdirectionZ.Margin = new System.Windows.Forms.Padding(4);
             this.lightdirectionZ.Name = "lightdirectionZ";
             this.lightdirectionZ.Size = new System.Drawing.Size(45, 22);
             this.lightdirectionZ.TabIndex = 13;
@@ -526,7 +757,7 @@
             // lightdirectionY
             // 
             this.lightdirectionY.Location = new System.Drawing.Point(85, 286);
-            this.lightdirectionY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightdirectionY.Margin = new System.Windows.Forms.Padding(4);
             this.lightdirectionY.Name = "lightdirectionY";
             this.lightdirectionY.Size = new System.Drawing.Size(43, 22);
             this.lightdirectionY.TabIndex = 12;
@@ -535,7 +766,7 @@
             // 
             this.spotradio.AutoSize = true;
             this.spotradio.Location = new System.Drawing.Point(29, 64);
-            this.spotradio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spotradio.Margin = new System.Windows.Forms.Padding(4);
             this.spotradio.Name = "spotradio";
             this.spotradio.Size = new System.Drawing.Size(93, 21);
             this.spotradio.TabIndex = 11;
@@ -546,7 +777,7 @@
             // 
             this.pointradio.AutoSize = true;
             this.pointradio.Location = new System.Drawing.Point(29, 37);
-            this.pointradio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pointradio.Margin = new System.Windows.Forms.Padding(4);
             this.pointradio.Name = "pointradio";
             this.pointradio.Size = new System.Drawing.Size(96, 21);
             this.pointradio.TabIndex = 10;
@@ -597,7 +828,7 @@
             // buildlightbutton
             // 
             this.buildlightbutton.Location = new System.Drawing.Point(29, 370);
-            this.buildlightbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buildlightbutton.Margin = new System.Windows.Forms.Padding(4);
             this.buildlightbutton.Name = "buildlightbutton";
             this.buildlightbutton.Size = new System.Drawing.Size(100, 28);
             this.buildlightbutton.TabIndex = 5;
@@ -608,7 +839,7 @@
             // lightdirectionX
             // 
             this.lightdirectionX.Location = new System.Drawing.Point(33, 286);
-            this.lightdirectionX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightdirectionX.Margin = new System.Windows.Forms.Padding(4);
             this.lightdirectionX.Name = "lightdirectionX";
             this.lightdirectionX.Size = new System.Drawing.Size(41, 22);
             this.lightdirectionX.TabIndex = 4;
@@ -616,7 +847,7 @@
             // lightpositionX
             // 
             this.lightpositionX.Location = new System.Drawing.Point(33, 229);
-            this.lightpositionX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightpositionX.Margin = new System.Windows.Forms.Padding(4);
             this.lightpositionX.Name = "lightpositionX";
             this.lightpositionX.Size = new System.Drawing.Size(41, 22);
             this.lightpositionX.TabIndex = 3;
@@ -624,7 +855,7 @@
             // diffuseR
             // 
             this.diffuseR.Location = new System.Drawing.Point(33, 175);
-            this.diffuseR.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.diffuseR.Margin = new System.Windows.Forms.Padding(4);
             this.diffuseR.Name = "diffuseR";
             this.diffuseR.Size = new System.Drawing.Size(41, 22);
             this.diffuseR.TabIndex = 2;
@@ -632,7 +863,7 @@
             // ambientR
             // 
             this.ambientR.Location = new System.Drawing.Point(33, 122);
-            this.ambientR.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ambientR.Margin = new System.Windows.Forms.Padding(4);
             this.ambientR.Name = "ambientR";
             this.ambientR.Size = new System.Drawing.Size(41, 22);
             this.ambientR.TabIndex = 1;
@@ -641,7 +872,7 @@
             // 
             this.directionalradio.AutoSize = true;
             this.directionalradio.Location = new System.Drawing.Point(29, 14);
-            this.directionalradio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.directionalradio.Margin = new System.Windows.Forms.Padding(4);
             this.directionalradio.Name = "directionalradio";
             this.directionalradio.Size = new System.Drawing.Size(131, 21);
             this.directionalradio.TabIndex = 0;
@@ -658,7 +889,7 @@
             this.lightpanel.Controls.Add(this.currentlightslist);
             this.lightpanel.Controls.Add(this.currentlightslabel);
             this.lightpanel.Location = new System.Drawing.Point(4, 4);
-            this.lightpanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightpanel.Margin = new System.Windows.Forms.Padding(4);
             this.lightpanel.Name = "lightpanel";
             this.lightpanel.Size = new System.Drawing.Size(316, 378);
             this.lightpanel.TabIndex = 2;
@@ -666,7 +897,7 @@
             // lightdisplaytogglebutton
             // 
             this.lightdisplaytogglebutton.Location = new System.Drawing.Point(27, 293);
-            this.lightdisplaytogglebutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lightdisplaytogglebutton.Margin = new System.Windows.Forms.Padding(4);
             this.lightdisplaytogglebutton.Name = "lightdisplaytogglebutton";
             this.lightdisplaytogglebutton.Size = new System.Drawing.Size(155, 28);
             this.lightdisplaytogglebutton.TabIndex = 5;
@@ -677,7 +908,7 @@
             // deletelightbutton
             // 
             this.deletelightbutton.Location = new System.Drawing.Point(25, 257);
-            this.deletelightbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deletelightbutton.Margin = new System.Windows.Forms.Padding(4);
             this.deletelightbutton.Name = "deletelightbutton";
             this.deletelightbutton.Size = new System.Drawing.Size(155, 28);
             this.deletelightbutton.TabIndex = 4;
@@ -688,7 +919,7 @@
             // editlightbutton
             // 
             this.editlightbutton.Location = new System.Drawing.Point(25, 224);
-            this.editlightbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.editlightbutton.Margin = new System.Windows.Forms.Padding(4);
             this.editlightbutton.Name = "editlightbutton";
             this.editlightbutton.Size = new System.Drawing.Size(155, 28);
             this.editlightbutton.TabIndex = 3;
@@ -699,7 +930,7 @@
             // createlightbutton
             // 
             this.createlightbutton.Location = new System.Drawing.Point(25, 10);
-            this.createlightbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.createlightbutton.Margin = new System.Windows.Forms.Padding(4);
             this.createlightbutton.Name = "createlightbutton";
             this.createlightbutton.Size = new System.Drawing.Size(155, 28);
             this.createlightbutton.TabIndex = 2;
@@ -712,7 +943,7 @@
             this.currentlightslist.FormattingEnabled = true;
             this.currentlightslist.ItemHeight = 16;
             this.currentlightslist.Location = new System.Drawing.Point(21, 81);
-            this.currentlightslist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.currentlightslist.Margin = new System.Windows.Forms.Padding(4);
             this.currentlightslist.Name = "currentlightslist";
             this.currentlightslist.Size = new System.Drawing.Size(207, 116);
             this.currentlightslist.TabIndex = 0;
@@ -727,235 +958,15 @@
             this.currentlightslabel.TabIndex = 1;
             this.currentlightslabel.Text = "CurrentLights";
             // 
-            // objecttab
-            // 
-            this.objecttab.Controls.Add(this.objectpanel);
-            this.objecttab.Controls.Add(this.createobjectpanel);
-            this.objecttab.Location = new System.Drawing.Point(4, 25);
-            this.objecttab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objecttab.Name = "objecttab";
-            this.objecttab.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objecttab.Size = new System.Drawing.Size(397, 410);
-            this.objecttab.TabIndex = 0;
-            this.objecttab.Text = "Objects";
-            this.objecttab.UseVisualStyleBackColor = true;
-            // 
-            // createobjectpanel
-            // 
-            this.createobjectpanel.AutoScroll = true;
-            this.createobjectpanel.Controls.Add(this.objectpositionZ);
-            this.createobjectpanel.Controls.Add(this.objectpositionY);
-            this.createobjectpanel.Controls.Add(this.objectorientationZ);
-            this.createobjectpanel.Controls.Add(this.objectorientationY);
-            this.createobjectpanel.Controls.Add(this.objectscale);
-            this.createobjectpanel.Controls.Add(this.objectorientationX);
-            this.createobjectpanel.Controls.Add(this.objectpositionX);
-            this.createobjectpanel.Controls.Add(this.objectscalelabel);
-            this.createobjectpanel.Controls.Add(this.objectorientationlabel);
-            this.createobjectpanel.Controls.Add(this.objectpositionlabel);
-            this.createobjectpanel.Controls.Add(this.buildobjectbutton);
-            this.createobjectpanel.Controls.Add(this.objectsavechangesbutton);
-            this.createobjectpanel.Controls.Add(this.objectbackbutton);
-            this.createobjectpanel.Controls.Add(this.objectname);
-            this.createobjectpanel.Controls.Add(this.objectnamelabel);
-            this.createobjectpanel.Controls.Add(this.objectmateriallist);
-            this.createobjectpanel.Controls.Add(this.objectmateriallabel);
-            this.createobjectpanel.Controls.Add(this.objectmeshlist);
-            this.createobjectpanel.Controls.Add(this.objectmeshlabel);
-            this.createobjectpanel.Location = new System.Drawing.Point(0, 0);
-            this.createobjectpanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.createobjectpanel.Name = "createobjectpanel";
-            this.createobjectpanel.Size = new System.Drawing.Size(313, 373);
-            this.createobjectpanel.TabIndex = 13;
-            this.createobjectpanel.Visible = false;
-            // 
-            // objectpositionZ
-            // 
-            this.objectpositionZ.Location = new System.Drawing.Point(157, 298);
-            this.objectpositionZ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectpositionZ.Name = "objectpositionZ";
-            this.objectpositionZ.Size = new System.Drawing.Size(51, 22);
-            this.objectpositionZ.TabIndex = 19;
-            // 
-            // objectpositionY
-            // 
-            this.objectpositionY.Location = new System.Drawing.Point(97, 298);
-            this.objectpositionY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectpositionY.Name = "objectpositionY";
-            this.objectpositionY.Size = new System.Drawing.Size(48, 22);
-            this.objectpositionY.TabIndex = 18;
-            // 
-            // objectorientationZ
-            // 
-            this.objectorientationZ.Location = new System.Drawing.Point(157, 350);
-            this.objectorientationZ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectorientationZ.Name = "objectorientationZ";
-            this.objectorientationZ.Size = new System.Drawing.Size(51, 22);
-            this.objectorientationZ.TabIndex = 17;
-            // 
-            // objectorientationY
-            // 
-            this.objectorientationY.Location = new System.Drawing.Point(99, 351);
-            this.objectorientationY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectorientationY.Name = "objectorientationY";
-            this.objectorientationY.Size = new System.Drawing.Size(48, 22);
-            this.objectorientationY.TabIndex = 16;
-            // 
-            // objectscale
-            // 
-            this.objectscale.Location = new System.Drawing.Point(35, 401);
-            this.objectscale.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectscale.Name = "objectscale";
-            this.objectscale.Size = new System.Drawing.Size(53, 22);
-            this.objectscale.TabIndex = 15;
-            // 
-            // objectorientationX
-            // 
-            this.objectorientationX.Location = new System.Drawing.Point(35, 351);
-            this.objectorientationX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectorientationX.Name = "objectorientationX";
-            this.objectorientationX.Size = new System.Drawing.Size(53, 22);
-            this.objectorientationX.TabIndex = 14;
-            // 
-            // objectpositionX
-            // 
-            this.objectpositionX.Location = new System.Drawing.Point(35, 298);
-            this.objectpositionX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectpositionX.Name = "objectpositionX";
-            this.objectpositionX.Size = new System.Drawing.Size(53, 22);
-            this.objectpositionX.TabIndex = 13;
-            // 
-            // objectscalelabel
-            // 
-            this.objectscalelabel.AutoSize = true;
-            this.objectscalelabel.Location = new System.Drawing.Point(31, 380);
-            this.objectscalelabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.objectscalelabel.Name = "objectscalelabel";
-            this.objectscalelabel.Size = new System.Drawing.Size(43, 17);
-            this.objectscalelabel.TabIndex = 12;
-            this.objectscalelabel.Text = "Scale";
-            // 
-            // objectorientationlabel
-            // 
-            this.objectorientationlabel.AutoSize = true;
-            this.objectorientationlabel.Location = new System.Drawing.Point(31, 330);
-            this.objectorientationlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.objectorientationlabel.Name = "objectorientationlabel";
-            this.objectorientationlabel.Size = new System.Drawing.Size(78, 17);
-            this.objectorientationlabel.TabIndex = 10;
-            this.objectorientationlabel.Text = "Orientation";
-            // 
-            // objectpositionlabel
-            // 
-            this.objectpositionlabel.AutoSize = true;
-            this.objectpositionlabel.Location = new System.Drawing.Point(31, 278);
-            this.objectpositionlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.objectpositionlabel.Name = "objectpositionlabel";
-            this.objectpositionlabel.Size = new System.Drawing.Size(58, 17);
-            this.objectpositionlabel.TabIndex = 9;
-            this.objectpositionlabel.Text = "Position";
-            // 
-            // buildobjectbutton
-            // 
-            this.buildobjectbutton.Location = new System.Drawing.Point(27, 444);
-            this.buildobjectbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.buildobjectbutton.Name = "buildobjectbutton";
-            this.buildobjectbutton.Size = new System.Drawing.Size(100, 28);
-            this.buildobjectbutton.TabIndex = 6;
-            this.buildobjectbutton.Text = "Build Object";
-            this.buildobjectbutton.UseVisualStyleBackColor = true;
-            this.buildobjectbutton.Click += new System.EventHandler(this.buildobjectbutton_Click);
-            // 
-            // objectsavechangesbutton
-            // 
-            this.objectsavechangesbutton.Location = new System.Drawing.Point(27, 443);
-            this.objectsavechangesbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectsavechangesbutton.Name = "objectsavechangesbutton";
-            this.objectsavechangesbutton.Size = new System.Drawing.Size(121, 28);
-            this.objectsavechangesbutton.TabIndex = 8;
-            this.objectsavechangesbutton.Text = "Save Changes";
-            this.objectsavechangesbutton.UseVisualStyleBackColor = false;
-            this.objectsavechangesbutton.Visible = false;
-            this.objectsavechangesbutton.Click += new System.EventHandler(this.objectsavechangesbutton_Click);
-            // 
-            // objectbackbutton
-            // 
-            this.objectbackbutton.Location = new System.Drawing.Point(188, 442);
-            this.objectbackbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectbackbutton.Name = "objectbackbutton";
-            this.objectbackbutton.Size = new System.Drawing.Size(100, 28);
-            this.objectbackbutton.TabIndex = 7;
-            this.objectbackbutton.Text = "Back";
-            this.objectbackbutton.UseVisualStyleBackColor = true;
-            this.objectbackbutton.Click += new System.EventHandler(this.objectbackbutton_Click);
-            // 
-            // objectname
-            // 
-            this.objectname.Location = new System.Drawing.Point(31, 245);
-            this.objectname.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectname.Name = "objectname";
-            this.objectname.Size = new System.Drawing.Size(157, 22);
-            this.objectname.TabIndex = 5;
-            // 
-            // objectnamelabel
-            // 
-            this.objectnamelabel.AutoSize = true;
-            this.objectnamelabel.Location = new System.Drawing.Point(13, 219);
-            this.objectnamelabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.objectnamelabel.Name = "objectnamelabel";
-            this.objectnamelabel.Size = new System.Drawing.Size(90, 17);
-            this.objectnamelabel.TabIndex = 4;
-            this.objectnamelabel.Text = "Object Name";
-            // 
-            // objectmateriallist
-            // 
-            this.objectmateriallist.FormattingEnabled = true;
-            this.objectmateriallist.ItemHeight = 16;
-            this.objectmateriallist.Location = new System.Drawing.Point(29, 126);
-            this.objectmateriallist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectmateriallist.Name = "objectmateriallist";
-            this.objectmateriallist.Size = new System.Drawing.Size(219, 84);
-            this.objectmateriallist.TabIndex = 3;
-            // 
-            // objectmateriallabel
-            // 
-            this.objectmateriallabel.AutoSize = true;
-            this.objectmateriallabel.Location = new System.Drawing.Point(12, 106);
-            this.objectmateriallabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.objectmateriallabel.Name = "objectmateriallabel";
-            this.objectmateriallabel.Size = new System.Drawing.Size(58, 17);
-            this.objectmateriallabel.TabIndex = 2;
-            this.objectmateriallabel.Text = "Material";
-            // 
-            // objectmeshlist
-            // 
-            this.objectmeshlist.FormattingEnabled = true;
-            this.objectmeshlist.ItemHeight = 16;
-            this.objectmeshlist.Location = new System.Drawing.Point(29, 30);
-            this.objectmeshlist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.objectmeshlist.Name = "objectmeshlist";
-            this.objectmeshlist.Size = new System.Drawing.Size(219, 68);
-            this.objectmeshlist.TabIndex = 1;
-            // 
-            // objectmeshlabel
-            // 
-            this.objectmeshlabel.AutoSize = true;
-            this.objectmeshlabel.Location = new System.Drawing.Point(9, 10);
-            this.objectmeshlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.objectmeshlabel.Name = "objectmeshlabel";
-            this.objectmeshlabel.Size = new System.Drawing.Size(42, 17);
-            this.objectmeshlabel.TabIndex = 0;
-            this.objectmeshlabel.Text = "Mesh";
-            // 
             // materialstab
             // 
             this.materialstab.Controls.Add(this.creatematerialpanel);
             this.materialstab.Controls.Add(this.materialpanel);
-            this.materialstab.Location = new System.Drawing.Point(4, 46);
-            this.materialstab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.materialstab.Location = new System.Drawing.Point(4, 25);
+            this.materialstab.Margin = new System.Windows.Forms.Padding(4);
             this.materialstab.Name = "materialstab";
-            this.materialstab.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.materialstab.Size = new System.Drawing.Size(397, 389);
+            this.materialstab.Padding = new System.Windows.Forms.Padding(4);
+            this.materialstab.Size = new System.Drawing.Size(397, 410);
             this.materialstab.TabIndex = 6;
             this.materialstab.Text = "Materials";
             this.materialstab.UseVisualStyleBackColor = true;
@@ -981,7 +992,7 @@
             this.creatematerialpanel.Controls.Add(this.materialdiffuselist);
             this.creatematerialpanel.Controls.Add(this.materialvshaderlabel);
             this.creatematerialpanel.Location = new System.Drawing.Point(0, 0);
-            this.creatematerialpanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.creatematerialpanel.Margin = new System.Windows.Forms.Padding(4);
             this.creatematerialpanel.Name = "creatematerialpanel";
             this.creatematerialpanel.Size = new System.Drawing.Size(336, 382);
             this.creatematerialpanel.TabIndex = 5;
@@ -1160,7 +1171,7 @@
             this.materialpanel.Controls.Add(this.materialslist);
             this.materialpanel.Controls.Add(this.addmaterialbutton);
             this.materialpanel.Location = new System.Drawing.Point(4, 0);
-            this.materialpanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.materialpanel.Margin = new System.Windows.Forms.Padding(4);
             this.materialpanel.Name = "materialpanel";
             this.materialpanel.Size = new System.Drawing.Size(323, 382);
             this.materialpanel.TabIndex = 5;
@@ -1168,7 +1179,7 @@
             // deletematerialbutton
             // 
             this.deletematerialbutton.Location = new System.Drawing.Point(12, 289);
-            this.deletematerialbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deletematerialbutton.Margin = new System.Windows.Forms.Padding(4);
             this.deletematerialbutton.Name = "deletematerialbutton";
             this.deletematerialbutton.Size = new System.Drawing.Size(153, 28);
             this.deletematerialbutton.TabIndex = 4;
@@ -1179,7 +1190,7 @@
             // editmaterialbutton
             // 
             this.editmaterialbutton.Location = new System.Drawing.Point(12, 254);
-            this.editmaterialbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.editmaterialbutton.Margin = new System.Windows.Forms.Padding(4);
             this.editmaterialbutton.Name = "editmaterialbutton";
             this.editmaterialbutton.Size = new System.Drawing.Size(153, 28);
             this.editmaterialbutton.TabIndex = 3;
@@ -1202,7 +1213,7 @@
             this.materialslist.FormattingEnabled = true;
             this.materialslist.ItemHeight = 16;
             this.materialslist.Location = new System.Drawing.Point(12, 86);
-            this.materialslist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.materialslist.Margin = new System.Windows.Forms.Padding(4);
             this.materialslist.Name = "materialslist";
             this.materialslist.Size = new System.Drawing.Size(215, 148);
             this.materialslist.TabIndex = 1;
@@ -1210,7 +1221,7 @@
             // addmaterialbutton
             // 
             this.addmaterialbutton.Location = new System.Drawing.Point(12, 20);
-            this.addmaterialbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addmaterialbutton.Margin = new System.Windows.Forms.Padding(4);
             this.addmaterialbutton.Name = "addmaterialbutton";
             this.addmaterialbutton.Size = new System.Drawing.Size(153, 28);
             this.addmaterialbutton.TabIndex = 0;
@@ -1228,11 +1239,11 @@
             this.meshtab.Controls.Add(this.meshname);
             this.meshtab.Controls.Add(this.meshfilepath);
             this.meshtab.Controls.Add(this.loadmeshbutton);
-            this.meshtab.Location = new System.Drawing.Point(4, 46);
-            this.meshtab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.meshtab.Location = new System.Drawing.Point(4, 25);
+            this.meshtab.Margin = new System.Windows.Forms.Padding(4);
             this.meshtab.Name = "meshtab";
-            this.meshtab.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.meshtab.Size = new System.Drawing.Size(397, 389);
+            this.meshtab.Padding = new System.Windows.Forms.Padding(4);
+            this.meshtab.Size = new System.Drawing.Size(397, 410);
             this.meshtab.TabIndex = 1;
             this.meshtab.Text = "Meshes";
             this.meshtab.UseVisualStyleBackColor = true;
@@ -1250,7 +1261,7 @@
             // deletemeshbutton
             // 
             this.deletemeshbutton.Location = new System.Drawing.Point(31, 340);
-            this.deletemeshbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deletemeshbutton.Margin = new System.Windows.Forms.Padding(4);
             this.deletemeshbutton.Name = "deletemeshbutton";
             this.deletemeshbutton.Size = new System.Drawing.Size(100, 28);
             this.deletemeshbutton.TabIndex = 6;
@@ -1263,7 +1274,7 @@
             this.currentmeshlist.FormattingEnabled = true;
             this.currentmeshlist.ItemHeight = 16;
             this.currentmeshlist.Location = new System.Drawing.Point(31, 246);
-            this.currentmeshlist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.currentmeshlist.Margin = new System.Windows.Forms.Padding(4);
             this.currentmeshlist.Name = "currentmeshlist";
             this.currentmeshlist.Size = new System.Drawing.Size(249, 84);
             this.currentmeshlist.TabIndex = 5;
@@ -1282,10 +1293,10 @@
             this.texturetab.Controls.Add(this.texturename);
             this.texturetab.Controls.Add(this.texturefilepath);
             this.texturetab.Controls.Add(this.texturefilepathlabel);
-            this.texturetab.Location = new System.Drawing.Point(4, 46);
-            this.texturetab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.texturetab.Location = new System.Drawing.Point(4, 25);
+            this.texturetab.Margin = new System.Windows.Forms.Padding(4);
             this.texturetab.Name = "texturetab";
-            this.texturetab.Size = new System.Drawing.Size(397, 389);
+            this.texturetab.Size = new System.Drawing.Size(397, 410);
             this.texturetab.TabIndex = 2;
             this.texturetab.Text = "Textures";
             this.texturetab.UseVisualStyleBackColor = true;
@@ -1341,7 +1352,7 @@
             // deletetexturebutton
             // 
             this.deletetexturebutton.Location = new System.Drawing.Point(29, 340);
-            this.deletetexturebutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deletetexturebutton.Margin = new System.Windows.Forms.Padding(4);
             this.deletetexturebutton.Name = "deletetexturebutton";
             this.deletetexturebutton.Size = new System.Drawing.Size(128, 28);
             this.deletetexturebutton.TabIndex = 7;
@@ -1354,7 +1365,7 @@
             this.currenttextureslist.FormattingEnabled = true;
             this.currenttextureslist.ItemHeight = 16;
             this.currenttextureslist.Location = new System.Drawing.Point(29, 254);
-            this.currenttextureslist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.currenttextureslist.Margin = new System.Windows.Forms.Padding(4);
             this.currenttextureslist.Name = "currenttextureslist";
             this.currenttextureslist.Size = new System.Drawing.Size(257, 68);
             this.currenttextureslist.TabIndex = 6;
@@ -1372,7 +1383,7 @@
             // loadtexturebutton
             // 
             this.loadtexturebutton.Location = new System.Drawing.Point(25, 167);
-            this.loadtexturebutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.loadtexturebutton.Margin = new System.Windows.Forms.Padding(4);
             this.loadtexturebutton.Name = "loadtexturebutton";
             this.loadtexturebutton.Size = new System.Drawing.Size(129, 28);
             this.loadtexturebutton.TabIndex = 4;
@@ -1393,7 +1404,7 @@
             // texturename
             // 
             this.texturename.Location = new System.Drawing.Point(25, 117);
-            this.texturename.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.texturename.Margin = new System.Windows.Forms.Padding(4);
             this.texturename.Name = "texturename";
             this.texturename.Size = new System.Drawing.Size(132, 22);
             this.texturename.TabIndex = 1;
@@ -1401,7 +1412,7 @@
             // texturefilepath
             // 
             this.texturefilepath.Location = new System.Drawing.Point(25, 46);
-            this.texturefilepath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.texturefilepath.Margin = new System.Windows.Forms.Padding(4);
             this.texturefilepath.Name = "texturefilepath";
             this.texturefilepath.Size = new System.Drawing.Size(132, 22);
             this.texturefilepath.TabIndex = 0;
@@ -1426,10 +1437,10 @@
             this.shadertab.Controls.Add(this.vertexshaderradio);
             this.shadertab.Controls.Add(this.shaderfilepath);
             this.shadertab.Controls.Add(this.shaderfilepathlabel);
-            this.shadertab.Location = new System.Drawing.Point(4, 46);
-            this.shadertab.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.shadertab.Location = new System.Drawing.Point(4, 25);
+            this.shadertab.Margin = new System.Windows.Forms.Padding(4);
             this.shadertab.Name = "shadertab";
-            this.shadertab.Size = new System.Drawing.Size(397, 389);
+            this.shadertab.Size = new System.Drawing.Size(397, 410);
             this.shadertab.TabIndex = 3;
             this.shadertab.Text = "Shaders";
             this.shadertab.UseVisualStyleBackColor = true;
@@ -1437,7 +1448,7 @@
             // deleteshaderbutton
             // 
             this.deleteshaderbutton.Location = new System.Drawing.Point(28, 322);
-            this.deleteshaderbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.deleteshaderbutton.Margin = new System.Windows.Forms.Padding(4);
             this.deleteshaderbutton.Name = "deleteshaderbutton";
             this.deleteshaderbutton.Size = new System.Drawing.Size(137, 28);
             this.deleteshaderbutton.TabIndex = 8;
@@ -1460,7 +1471,7 @@
             this.currentshaderlist.FormattingEnabled = true;
             this.currentshaderlist.ItemHeight = 16;
             this.currentshaderlist.Location = new System.Drawing.Point(28, 233);
-            this.currentshaderlist.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.currentshaderlist.Margin = new System.Windows.Forms.Padding(4);
             this.currentshaderlist.Name = "currentshaderlist";
             this.currentshaderlist.Size = new System.Drawing.Size(255, 68);
             this.currentshaderlist.TabIndex = 6;
@@ -1469,7 +1480,7 @@
             // 
             this.pixelshaderradio.AutoSize = true;
             this.pixelshaderradio.Location = new System.Drawing.Point(28, 140);
-            this.pixelshaderradio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pixelshaderradio.Margin = new System.Windows.Forms.Padding(4);
             this.pixelshaderradio.Name = "pixelshaderradio";
             this.pixelshaderradio.Size = new System.Drawing.Size(108, 21);
             this.pixelshaderradio.TabIndex = 5;
@@ -1480,7 +1491,7 @@
             // loadshaderbutton
             // 
             this.loadshaderbutton.Location = new System.Drawing.Point(32, 170);
-            this.loadshaderbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.loadshaderbutton.Margin = new System.Windows.Forms.Padding(4);
             this.loadshaderbutton.Name = "loadshaderbutton";
             this.loadshaderbutton.Size = new System.Drawing.Size(133, 28);
             this.loadshaderbutton.TabIndex = 4;
@@ -1492,7 +1503,7 @@
             // 
             this.vertexshaderradio.AutoSize = true;
             this.vertexshaderradio.Location = new System.Drawing.Point(28, 111);
-            this.vertexshaderradio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.vertexshaderradio.Margin = new System.Windows.Forms.Padding(4);
             this.vertexshaderradio.Name = "vertexshaderradio";
             this.vertexshaderradio.Size = new System.Drawing.Size(119, 21);
             this.vertexshaderradio.TabIndex = 3;
@@ -1503,7 +1514,7 @@
             // shaderfilepath
             // 
             this.shaderfilepath.Location = new System.Drawing.Point(32, 55);
-            this.shaderfilepath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.shaderfilepath.Margin = new System.Windows.Forms.Padding(4);
             this.shaderfilepath.Name = "shaderfilepath";
             this.shaderfilepath.Size = new System.Drawing.Size(132, 22);
             this.shaderfilepath.TabIndex = 2;
@@ -1520,8 +1531,8 @@
             // 
             // savescenebutton
             // 
-            this.savescenebutton.Location = new System.Drawing.Point(33, 466);
-            this.savescenebutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.savescenebutton.Location = new System.Drawing.Point(52, 484);
+            this.savescenebutton.Margin = new System.Windows.Forms.Padding(4);
             this.savescenebutton.Name = "savescenebutton";
             this.savescenebutton.Size = new System.Drawing.Size(121, 28);
             this.savescenebutton.TabIndex = 9;
@@ -1532,8 +1543,8 @@
             // 
             // loadbutton
             // 
-            this.loadbutton.Location = new System.Drawing.Point(163, 466);
-            this.loadbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.loadbutton.Location = new System.Drawing.Point(275, 484);
+            this.loadbutton.Margin = new System.Windows.Forms.Padding(4);
             this.loadbutton.Name = "loadbutton";
             this.loadbutton.Size = new System.Drawing.Size(100, 28);
             this.loadbutton.TabIndex = 10;
@@ -1545,7 +1556,7 @@
             // clearbutton
             // 
             this.clearbutton.Location = new System.Drawing.Point(625, 466);
-            this.clearbutton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.clearbutton.Margin = new System.Windows.Forms.Padding(4);
             this.clearbutton.Name = "clearbutton";
             this.clearbutton.Size = new System.Drawing.Size(100, 28);
             this.clearbutton.TabIndex = 11;
@@ -1554,33 +1565,52 @@
             this.clearbutton.Visible = false;
             this.clearbutton.Click += new System.EventHandler(this.clearbutton_Click);
             // 
+            // savescenefilepath
+            // 
+            this.savescenefilepath.Location = new System.Drawing.Point(52, 446);
+            this.savescenefilepath.Name = "savescenefilepath";
+            this.savescenefilepath.Size = new System.Drawing.Size(187, 22);
+            this.savescenefilepath.TabIndex = 12;
+            this.savescenefilepath.Visible = false;
+            // 
+            // loadscenetextbox
+            // 
+            this.loadscenetextbox.Location = new System.Drawing.Point(275, 446);
+            this.loadscenetextbox.Name = "loadscenetextbox";
+            this.loadscenetextbox.Size = new System.Drawing.Size(216, 22);
+            this.loadscenetextbox.TabIndex = 13;
+            this.loadscenetextbox.Visible = false;
+            // 
             // mainscreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1069, 523);
+            this.Controls.Add(this.loadscenetextbox);
+            this.Controls.Add(this.savescenefilepath);
+            this.Controls.Add(this.startpanel);
             this.Controls.Add(this.clearbutton);
             this.Controls.Add(this.loadbutton);
             this.Controls.Add(this.savescenebutton);
             this.Controls.Add(this.tabControl);
-            this.Controls.Add(this.startpanel);
             this.Controls.Add(this.scenewindow);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "mainscreen";
             this.Text = "Scene Tool";
             this.Load += new System.EventHandler(this.mainscreen_Load);
             this.objectpanel.ResumeLayout(false);
             this.objectpanel.PerformLayout();
             this.startpanel.ResumeLayout(false);
+            this.startpanel.PerformLayout();
             this.tabControl.ResumeLayout(false);
+            this.objecttab.ResumeLayout(false);
+            this.createobjectpanel.ResumeLayout(false);
+            this.createobjectpanel.PerformLayout();
             this.lighttab.ResumeLayout(false);
             this.buildlightpanel.ResumeLayout(false);
             this.buildlightpanel.PerformLayout();
             this.lightpanel.ResumeLayout(false);
             this.lightpanel.PerformLayout();
-            this.objecttab.ResumeLayout(false);
-            this.createobjectpanel.ResumeLayout(false);
-            this.createobjectpanel.PerformLayout();
             this.materialstab.ResumeLayout(false);
             this.creatematerialpanel.ResumeLayout(false);
             this.creatematerialpanel.PerformLayout();
@@ -1593,6 +1623,7 @@
             this.shadertab.ResumeLayout(false);
             this.shadertab.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1726,5 +1757,8 @@
         private System.Windows.Forms.Label objectscalelabel;
         private System.Windows.Forms.Label objectorientationlabel;
         private System.Windows.Forms.Label objectpositionlabel;
+        private System.Windows.Forms.TextBox editscenefilepath;
+        private System.Windows.Forms.TextBox savescenefilepath;
+        private System.Windows.Forms.TextBox loadscenetextbox;
     }
 }
