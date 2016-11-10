@@ -700,8 +700,22 @@ namespace SceneTool
 
         private void objectsavechangesbutton_Click(object sender, EventArgs e)
         {
+            double[] position = new double[3];
+            double[] orientation = new double[3];
+            double scale;
+
+            double.TryParse(objectpositionX.Text, out position[0]);
+            double.TryParse(objectpositionY.Text, out position[1]);
+            double.TryParse(objectpositionZ.Text, out position[2]);
+
+            double.TryParse(objectorientationX.Text, out orientation[0]);
+            double.TryParse(objectorientationY.Text, out orientation[1]);
+            double.TryParse(objectorientationZ.Text, out orientation[2]);
+
+            double.TryParse(objectscale.Text, out scale);
+
             scene.editObject(objectlist.SelectedIndex, objectmeshlist.SelectedIndex,
-                objectmateriallist.SelectedIndex, objectname.Text);
+                objectmateriallist.SelectedIndex, objectname.Text,position,orientation,scale);
             objectsavechangesbutton.Visible = false;
             buildobjectbutton.Visible = true;
             objectbackbutton_Click(sender, e);
@@ -710,7 +724,21 @@ namespace SceneTool
 
         private void buildobjectbutton_Click(object sender, EventArgs e)
         {
-            scene.buildObject(objectmeshlist.SelectedIndex, objectmateriallist.SelectedIndex, objectname.Text);
+            double[] position = new double[3];
+            double[] orientation = new double[3];
+            double scale;
+
+            double.TryParse(objectpositionX.Text, out position[0]);
+            double.TryParse(objectpositionY.Text, out position[1]);
+            double.TryParse(objectpositionZ.Text, out position[2]);
+
+            double.TryParse(objectorientationX.Text, out orientation[0]);
+            double.TryParse(objectorientationY.Text, out orientation[1]);
+            double.TryParse(objectorientationZ.Text, out orientation[2]);
+
+            double.TryParse(objectscale.Text, out scale);
+
+            scene.buildObject(objectmeshlist.SelectedIndex, objectmateriallist.SelectedIndex, objectname.Text, position, orientation, scale);
             updateObjectLists();
             objectbackbutton_Click(sender, e);
         }
@@ -731,6 +759,59 @@ namespace SceneTool
         {
             createobjectpanel.Visible = true;
             objectpanel.Visible = false;
+        }
+
+        private void deleteobjectbutton_Click(object sender, EventArgs e)
+        {
+            scene.deleteObject(objectlist.SelectedIndex);
+            updateObjectLists();
+        }
+
+        private void editobjectbutton_Click(object sender, EventArgs e)
+        {
+            createobjectpanel.Visible = true;
+            objectpanel.Visible = false;
+            buildobjectbutton.Visible = false;
+            objectsavechangesbutton.Visible = true;
+
+            string name;
+            int meshindex, materialindex;
+            float[] data;
+
+            scene.getObjectData(objectlist.SelectedIndex, out name, out meshindex, out materialindex, out data);
+            objectpositionX.Text = data[0].ToString();
+            objectpositionY.Text = data[1].ToString();
+            objectpositionZ.Text = data[2].ToString();
+            objectorientationX.Text = data[3].ToString();
+            objectorientationY.Text = data[4].ToString();
+            objectorientationZ.Text = data[5].ToString();
+            objectscale.Text = data[6].ToString();
+            objectmeshlist.SelectedIndex = meshindex;
+            objectmateriallist.SelectedIndex = materialindex;
+            objectname.Text = name;
+
+        }
+
+        private void clearbutton_Click(object sender, EventArgs e)
+        {
+            scene.Clear();
+            updateObjectLists();
+            updateMaterialLists();
+            updateShaderLists();
+            updateLightLists();
+            updateTextureLists();
+        }
+
+        private void savescenebutton_Click(object sender, EventArgs e)
+        {
+            string filepath ="";
+            scene.saveScene(filepath);
+        }
+
+        private void loadbutton_Click(object sender, EventArgs e)
+        {
+            string filepath = "";
+            scene.loadScene(filepath);
         }
     }
 }

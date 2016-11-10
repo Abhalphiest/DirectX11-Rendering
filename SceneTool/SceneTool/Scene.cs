@@ -9,10 +9,12 @@ namespace SceneTool
     class Scene
     {
         struct Mesh { public string filepath; } //in case we want to expand functionality in the future
-        struct Object { public string name; public int meshindex, materialindex;
+        struct Object
+        {
+            public string name; public int meshindex, materialindex;
             public double[] position, orientation;
             public double scale;
-        } 
+        }
         struct Material { public string name; public int diffuseindex, multiplyindex, normalindex, specindex, pixelshader, vertexshader; }
         struct DirectionalLight { public double[] ambientColor, diffuseColor, direction; public string name; }
         struct PointLight { public double[] ambientColor, diffuseColor, position; public string name; }
@@ -347,9 +349,9 @@ namespace SceneTool
             if (index < 0) return null;
 
             string[] lightData = new string[16];
-            if(index >= dlights.Count)
+            if (index >= dlights.Count)
             {
-                if(index>= dlights.Count+plights.Count)
+                if (index >= dlights.Count + plights.Count)
                 {
                     SpotLight light = slights[index];
                     lightData[0] = light.ambientColor[0].ToString();
@@ -428,11 +430,11 @@ namespace SceneTool
             name = mat.name;
             return matData;
         }
-    
 
-    public void editMaterial(int index, int diffuseindex, int specularindex, int multiplyindex,
-        int normalindex, int pixelshader, int vertexshader, string name)
-    {
+
+        public void editMaterial(int index, int diffuseindex, int specularindex, int multiplyindex,
+            int normalindex, int pixelshader, int vertexshader, string name)
+        {
             if (index < 0) return;
             Material mat;
             mat.diffuseindex = diffuseindex;
@@ -444,6 +446,50 @@ namespace SceneTool
             mat.name = name;
             materials[index] = mat;
 
-    }
+        }
+
+        public void deleteObject(int index)
+        {
+            if (index < 0) return;
+            objects.RemoveAt(index);
+        }
+
+        public void getObjectData(int index, out string name, out int meshindex, out int materialindex, out double[] data)
+        {
+            name = null;
+            meshindex = 0;
+            materialindex = 0;
+            data = null;
+
+            if (index < 0) return;
+
+            Object obj = objects[index];
+            name = obj.name;
+            meshindex = obj.meshindex;
+            materialindex = obj.materialindex;
+            data[0] = obj.position[0];
+            data[1] = obj.position[1];
+            data[2] = obj.position[2];
+            data[3] = obj.orientation[0];
+            data[4] = obj.orientation[1];
+            data[5] = obj.orientation[2];
+            data[6] = obj.scale;
+        }
+
+        public void Clear()
+        {
+            objects.Clear();
+            meshes.Clear();
+            materials.Clear();
+            vertexshaders.Clear();
+            pixelshaders.Clear();
+            diffusetextures.Clear();
+            spectextures.Clear();
+            normaltextures.Clear();
+            multiplytextures.Clear();
+            dlights.Clear();
+            slights.Clear();
+            plights.Clear();
+        }
     }
 }
