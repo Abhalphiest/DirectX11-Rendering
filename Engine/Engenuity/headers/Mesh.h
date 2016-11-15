@@ -31,6 +31,8 @@ public:
     */
 	static Mesh* LoadObj(char* filepath,ID3D11Device* p_device);
 
+    static Mesh* LoadModel(char* filepath, ID3D11Device* p_device);
+
     /**
     * CalcTBN takes the provided vertex and index vector lists and calculates
     *  the mesh's Tangent Binormal matrix with them, then calls IndexVertices

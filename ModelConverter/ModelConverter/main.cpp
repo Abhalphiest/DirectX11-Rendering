@@ -23,17 +23,17 @@ const char* outpath;
 
 vec2 TruncateVec2(vec2 v)
 {
-    v.x = std::trunc(100000 * v.x) / 100000;
-    v.y = std::trunc(100000 * v.y) / 100000;
+    v.x = std::trunc(1000000 * v.x) / 1000000;
+    v.y = std::trunc(1000000 * v.y) / 1000000;
 
     return v;
 }
 
 vec3 TruncateVec3(vec3 v)
 {
-    v.x = std::trunc(100000 * v.x) / 100000;
-    v.y = std::trunc(100000 * v.y) / 100000;
-    v.z = std::trunc(100000 * v.z) / 100000;
+    v.x = std::trunc(1000000 * v.x) / 1000000;
+    v.y = std::trunc(1000000 * v.y) / 1000000;
+    v.z = std::trunc(1000000 * v.z) / 1000000;
 
     return v;
 }
@@ -46,6 +46,9 @@ void WriteModel()
     // Check for successful open
     if (!model.is_open())
         return;
+
+    model.precision(6);
+    model.setf(std::ios::fixed);
 
     vec3 currPos;
     for (int i = 0; i < positions.size(); ++i)
@@ -167,20 +170,20 @@ void CalcTBN(vector<oldVertex> p_vertices, vector<unsigned int> p_indices)
         nf.indices.push_back({ currentFace.indices[0][0],
                                 currentFace.indices[0][1],
                                 currentFace.indices[0][2],
-                                faceIndex,
-                                faceIndex });
+                                faceIndex + 1,
+                                faceIndex + 1 });
 
-        nf.indices.push_back({ currentFace.indices[0][0],
+        nf.indices.push_back({ currentFace.indices[1][0],
                                 currentFace.indices[1][1],
                                 currentFace.indices[1][2],
-                                faceIndex,
-                                faceIndex });
+                                faceIndex + 1,
+                                faceIndex + 1 });
 
         nf.indices.push_back({ currentFace.indices[2][0],
                                 currentFace.indices[2][1],
                                 currentFace.indices[2][2],
-                                faceIndex,
-                                faceIndex });
+                                faceIndex + 1,
+                                faceIndex + 1 });
 
         resultFaces.push_back(nf);
 

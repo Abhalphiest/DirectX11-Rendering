@@ -62,6 +62,15 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			meshes.push_back(mesh);
 			break;
 		}
+        case 'l': //model file
+        {
+            Mesh* mesh = Mesh::LoadModel(chars + i + 2, m_device); //add on the number of characters
+                                                                 //of the data label
+            if (!mesh)
+                printf("Failed to load mesh %s\n", chars + i + 2);
+            meshes.push_back(mesh);
+            break;
+        }
 		case 't': //diffuse texture
 		{
 			s = std::string(chars + i + 2);
