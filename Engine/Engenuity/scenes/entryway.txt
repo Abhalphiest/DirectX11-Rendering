@@ -1,0 +1,168 @@
+#models
+l Assets/Models/armchair.model
+l Assets/Models/plane.model
+l Assets/Models/window.model
+l Assets/Models/windowframe.model
+
+l Assets/Models/windowpane.model
+l Assets/Models/pianobench.model
+l Assets/Models/candlestick.model
+l Assets/Models/dualwindowwall.model
+
+l Assets/Models/singlewindowwall.model
+l Assets/Models/entrypillar.model
+l Assets/Models/candlestick.model
+l Assets/Models/carpet.model
+
+#textures
+t Assets/Textures/armchair.dds
+t Assets/Textures/wood.jpg
+t Assets/Textures/metal.jpg
+t Assets/Textures/carpet_diffuse.jpg
+
+n Assets/Textures/armchair_n.png
+# Fake bump map
+n Assets/Textures/wood_n.jpg
+
+s Assets/Textures/armchair_s.dds
+
+m Assets/Textures/default_m.png
+
+ps PixelShader.cso
+
+vs VertexShader.cso
+
+%
+# '%' char denotes materials
+
+# Material's diffuse/normal/specular/multiply/pixel shader/vertex shader indices
+0/0/0/0/0/0
+1/1/0/0/0/0
+2/0/0/0/0/0
+3/0/0/0/0/0
+
+$
+# '$' denotes objects
+
+#   --  Floor
+1/1
+pos 0.0 0.0 -1.497
+orn 0.0 0.0 1.57
+sc 3.0
+
+#   --  Side table
+6/1
+pos 4.683 -0.142 0.34
+orn 0.0 0.0 0.0
+sc 0.454
+
+#   --  Candlesticks
+10/1
+pos 0.215 -0.251 -1.805
+orn 0.0 0.0 0.0
+sc 0.251
+
+10/1
+pos 0.215 -0.251 -1.805
+orn 0.0 0.0 0.0
+sc 0.251
+
+#   --  Carpet
+11/3
+pos 0.0 0.0 0.0
+orn 0.0 0.0 0.0
+sc 1.0
+
+#   --  Pillars
+9/2
+pos 1.475 0.0 1.5
+orn 0.0 0.0 0.0
+sc 1.0
+
+9/2
+pos 1.475 0.0 -1.5
+orn 0.0 0.0 0.0
+sc 1.0
+
+9/2
+pos -1.475 0.0 1.5
+orn 0.0 0.0 0.0
+sc 1.0
+
+9/2
+pos -1.475 0.0 -1.5
+orn 0.0 0.0 0.0
+sc 1.0
+
+#   --  Window walls
+7/1
+pos 1.494 0.0 0.0
+orn 0.0 0.0 0.0
+sc 1.0
+
+8/1
+pos 0.0 0.0 1.5
+orn 0.0 0.0 0.0
+sc 1.0
+
+#   --  Windows
+2/1
+pos -6.828 -4.043 -6.288
+orn 0.0 0.0 0.0
+sc 1.173
+
+3/1
+pos -6.828 -0.971 -5.139
+orn 0.0 0.0 0.0
+sc 1.173
+
+4/1
+pos -6.828 -4.043 -6.288
+orn 0.0 0.0 0.0
+sc 1.173
+
+
+2/1
+pos -6.401 -3.227 -0.386
+orn 0.0 0.0 0.0
+sc 1.173
+
+3/1
+pos -6.401 -0.606 0.599
+orn 0.0 0.0 0.0
+sc 1.173
+
+4/1
+pos -6.401 -3.227 -0.386
+orn 0.0 0.0 0.0
+sc 1.173
+
+
+2/1
+pos -0.081 -3.227 -0.386
+orn 0.0 0.0 0.0
+sc 1.173
+
+3/1
+pos -0.081 -0.606 0.599
+orn 0.0 0.0 0.0
+sc 1.173
+
+4/1
+pos -0.081 -3.227 -0.386
+orn 0.0 0.0 0.0
+sc 1.173
+
+&
+# '&' denotes lights
+
+d
+0.2 0.2 0.2 1.0
+0.7 0.3 .3 1
+1 -1 0
+
+s
+0.1 0.1 0.1 0.1
+0.7 0.7 0.7 0.7
+0.0 -1.0 0.0 0.5
+0.0 1.0 0.0

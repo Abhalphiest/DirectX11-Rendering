@@ -54,8 +54,9 @@ void Game::Init()
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
 	// uint scene =scenemanager->LoadScene("scenes/testscene.txt");
-    uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
+    // uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
     // uint scene = scenemanager->LoadScene("scenes/walltestscene.txt");
+    uint scene = scenemanager->LoadScene("scenes/entryway.txt");
 	scenemanager->SetScene(scene);
 
     spriteBatch = new DirectX::SpriteBatch(context);
@@ -122,7 +123,7 @@ void Game::Draw(float deltaTime, float totalTime)
         spriteBatch->End();
     }
     else if (gs == PLAYING)         // TODO: Added for demo, consider removing
-        context->ClearRenderTargetView(backBufferRTV, blackBG);
+        context->ClearRenderTargetView(backBufferRTV, color);
 	context->ClearDepthStencilView(
 		depthStencilView, 
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,

@@ -185,6 +185,15 @@ void CalcTBN(vector<oldVertex> p_vertices, vector<unsigned int> p_indices)
                                 faceIndex + 1,
                                 faceIndex + 1 });
 
+        // Fourth vertex
+        if (currentFace.indices.size() > 3) {
+            nf.indices.push_back({ currentFace.indices[3][0],
+                                    currentFace.indices[3][1],
+                                    currentFace.indices[3][2],
+                                    faceIndex + 1,
+                                    faceIndex + 1 });
+        }
+
         resultFaces.push_back(nf);
 
         // Get next face
@@ -308,6 +317,8 @@ void LoadObj(char* filepath, char* outfilepath)
             f.push_back({ i[3], i[4], i[5] });
             f.push_back({ i[6], i[7], i[8] });
 
+            vector<vector<unsigned int>> sf;
+
             // Was there a 4th face?
             if (facesRead == 12)
             {
@@ -330,10 +341,17 @@ void LoadObj(char* filepath, char* outfilepath)
                 indices.push_back(vertCounter); vertCounter += 1;
                 indices.push_back(vertCounter); vertCounter += 1;
 
-                f.push_back({ i[9], i[10], i[11] });
+                // Just add another face
+                sf.push_back({ i[0], i[1], i[2] });
+                sf.push_back({ i[6], i[7], i[8] });
+                sf.push_back({ i[9], i[10], i[11] });
             }
 
             faces.push_back({ f });
+            if (sf.size() > 0)
+            {
+                faces.push_back({ sf });
+            }
         }
 
     }
@@ -345,13 +363,20 @@ void LoadObj(char* filepath, char* outfilepath)
 
 int main()
 {
-    char inpath[256];
-    char outpath[256];
-    cout << "Please enter the path of the .obj file you would like to load (including the .obj extension):" << endl;
-    cin >> inpath;
+    std::string inputLine;
+    char inpath [256];
+    char outpath [256];
+    cout << "Please enter the path of the .obj file you would like to load (excluding the .obj extension):" << endl;
+    std::getline(std::cin, inputLine);
+    inputLine += ".obj";
+    
+    strcpy_s(inpath, inputLine.c_str());
 
-    cout << endl << "Please enter the path of the .model file you would like to write to (be sure to inlcude the .model extension):" << endl;
-    cin >> outpath;
+    cout << endl << "Please enter the path of the .model file you would like to write to (do NOT inlcude the .model extension):" << endl;
+    std::getline(std::cin, inputLine);
+    inputLine += ".model";
+
+    strcpy_s(outpath, inputLine.c_str());
 
     LoadObj(inpath, outpath);
 
