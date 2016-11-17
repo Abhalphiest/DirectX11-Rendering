@@ -131,7 +131,6 @@ float spec_s(SpotLight light, float3 mapNormal, VertexToPixel input)
 // --------------------------------------------------------
 float4 main(VertexToPixel input) : SV_TARGET
 {
-
     //normalize our normals (heh)
     //normal mapping
     float3 tangentNormal = normalTexture.Sample(sampleState, input.uv).rgb; //lose the alpha channel
@@ -156,7 +155,7 @@ float4 main(VertexToPixel input) : SV_TARGET
     float4 multColor = multiplyTexture.Sample(sampleState, input.uv);
     float specColor = specularTexture.Sample(sampleState, input.uv).r; //all channels should be equal
 
-                                                                       //return textureColor;
+	//return textureColor;                                                                      //return textureColor;
     return (lightCompute1
         + lightCompute2
         + lightCompute3 + lightCompute4)*textureColor + specular*specColor;
