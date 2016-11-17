@@ -310,6 +310,7 @@ void DXCore::OnResize()
 	depthStencilDesc.MiscFlags			= 0;
 	depthStencilDesc.SampleDesc.Count	= 1;
 	depthStencilDesc.SampleDesc.Quality = 0;
+	
 
 	// Create the depth buffer and its view, then 
 	// release our reference to the texture

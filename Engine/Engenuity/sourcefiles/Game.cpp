@@ -53,9 +53,6 @@ void Game::Init()
 	scenemanager->SetContext(context);
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
-	// uint scene =scenemanager->LoadScene("scenes/testscene.txt");
-    // uint scene = scenemanager->LoadScene("scenes/demoscene.txt");
-    // uint scene = scenemanager->LoadScene("scenes/walltestscene.txt");
     uint scene = scenemanager->LoadScene("scenes/entryway.txt");
 	scenemanager->SetScene(scene);
 
@@ -66,6 +63,7 @@ void Game::Init()
 	// geometric primitives (points, lines or triangles) we want to draw.  
 	// Essentially: "What kind of shape should the GPU draw with our data?"
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	
 }
 
 // --------------------------------------------------------
@@ -91,8 +89,7 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('S') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
 	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
-	// if (GetAsyncKeyState(VK_SPACE) & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, deltaTime*MOVE_SCALE, 0)); }
-	// if (GetAsyncKeyState('X') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, -deltaTime*MOVE_SCALE, 0)); }
+	
 
     if (GetAsyncKeyState(VK_SPACE) & 0x8000) { gs = PLAYING; }
 	
@@ -106,6 +103,7 @@ void Game::Update(float deltaTime, float totalTime)
 // --------------------------------------------------------
 void Game::Draw(float deltaTime, float totalTime)
 {
+	
 	// Background color (Cornflower Blue in this case) for clearing
 	const float color[4] = {0.4f, 0.6f, 0.75f, 0.0f};
     // TODO: Added for demo, consider removing
@@ -115,15 +113,16 @@ void Game::Draw(float deltaTime, float totalTime)
 	//  - Do this ONCE PER FRAME
 	//  - At the beginning of Draw (before drawing *anything*)
     //context->ClearRenderTargetView(backBufferRTV, color);
+	context->ClearRenderTargetView(backBufferRTV, blackBG);
     if (gs == BEGIN)
     {
-        context->ClearRenderTargetView(backBufferRTV, blackBG);
+        
         spriteBatch->Begin();
         spriteFont->DrawString(spriteBatch, L"Press [SPACE] to enter the survival horror. . .", XMFLOAT2(470, 360));
         spriteBatch->End();
     }
-    else if (gs == PLAYING)         // TODO: Added for demo, consider removing
-        context->ClearRenderTargetView(backBufferRTV, color);
+    
+
 	context->ClearDepthStencilView(
 		depthStencilView, 
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
