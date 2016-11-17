@@ -1,0 +1,32 @@
+
+o Assets/Models/helix.obj
+
+t Assets/Textures/armchair.dds
+
+n Assets/Textures/armchair_n.png
+
+s Assets/Textures/armchair_s.dds
+
+m Assets/Textures/default_m.png
+
+ps PixelShader.cso
+vs VertexShader.cso
+
+%
+
+0/0/0/0/0/0
+
+$
+0/0
+pos -2.5 0.0 0.0
+orn 0.0 0.0 0.0
+sc 1.0
+
+
+&
+
+d
+0.2 0.2 0.2 1.0
+0.7 0.3 .3 1
+1 -1 0
+

@@ -27,6 +27,9 @@ void Scene::Render(ID3D11DeviceContext* context,
                     std::vector<uint> p_plights,
                     std::vector<uint> p_slights)
 {
+
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
 	std::vector<SimplePixelShader*> ps_list; //to avoid pixel buffer data passing redundancy
 	for (std::vector<uint>::size_type i = 0; i != p_indices.size(); i++)
 	{
@@ -66,7 +69,8 @@ void Scene::Render(ID3D11DeviceContext* context,
 			ps->CopyAllBufferData();
 			ps_list.push_back(ps); //add it to the list
 		}
-		
+		context->IASetVertexBuffers(0, 1, m_meshList[p_indices[i]]->GetVertexBuffer(), &stride, &offset);
+		context->IASetIndexBuffer(m_meshList[p_indices[i]]->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 		//simple shader should handle our nullptrs if we happen to pass them
 		m_materialList[p_indices[i]]->GetPixelShader()->SetSamplerState("sampleState", m_materialList[p_indices[i]]->GetSampleState());
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShaderResourceView("diffuseTexture", m_materialList[p_indices[i]]->GetSRV());
@@ -82,18 +86,17 @@ void Scene::Render(ID3D11DeviceContext* context,
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("world", world);
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("view", m_fpc->camera->GetView());
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("projection", m_fpc->camera->GetProjection());
+		// Set buffers in the input assembler
+		
+		
 		m_materialList[p_indices[i]]->GetVertexShader()->CopyAllBufferData();
-
+		ps->CopyAllBufferData();
 		// Set our vertex and pixel shaders to use for the next draw
 		m_materialList[p_indices[i]]->GetVertexShader()->SetShader();
 		m_materialList[p_indices[i]]->GetPixelShader()->SetShader();
 
 
-		// Set buffers in the input assembler
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		context->IASetVertexBuffers(0, 1, m_meshList[p_indices[i]]->GetVertexBuffer(), &stride, &offset);
-		context->IASetIndexBuffer(m_meshList[p_indices[i]]->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+		
 
 
 		//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)

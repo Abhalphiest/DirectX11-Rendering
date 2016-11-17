@@ -140,10 +140,10 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			SimplePixelShader* pixelShader = new SimplePixelShader(m_device, m_context);
 			s = std::string(chars +i+ 3);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
-			std::wstring fwstr = L"../x64/Debug/";
+			std::wstring fwstr = L"../Debug/";
 			if (!pixelShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 			{
-				fwstr = L"../x64/";
+				fwstr = L"../";
 				if(!pixelShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 					printf("Failed to load pixel shader %s\n", wstr.c_str());
 			}
@@ -155,10 +155,10 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			SimpleVertexShader* vertexShader = new SimpleVertexShader(m_device, m_context);
 			s = std::string(chars + i + 3);
 			std::wstring wstr(s.begin(), s.end()); //wide strings... ugh
-			std::wstring fwstr = L"../x64/Debug/";
+			std::wstring fwstr = L"../Debug/";
 			if (!vertexShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 			{
-				fwstr = L"../x64/";
+				fwstr = L"../";
 
 				if(!vertexShader->LoadShaderFile(fwstr.append(wstr).c_str()))
 					printf("Failed to load vertex shader %s\n", wstr.c_str());
@@ -485,5 +485,5 @@ void SceneManager::RenderCurrentScene()
 		m_dataList[m_currScene].m_dlights,
 		m_dataList[m_currScene].m_plights,
 		m_dataList[m_currScene].m_slights);
-	int i = 0; //just here to set a breakpoint
+	
 }
