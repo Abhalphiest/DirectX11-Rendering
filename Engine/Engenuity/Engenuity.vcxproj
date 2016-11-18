@@ -124,6 +124,7 @@
     <ClInclude Include="headers\Vertex.h" />
     <ClInclude Include="headers\FirstPersonController.h" />
     <ClInclude Include="headers\SceneManager.h" />
+    <ClInclude Include="headers\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sourcefiles\Camera.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="sourcefiles\Scene.cpp" />
     <ClCompile Include="sourcefiles\SceneManager.cpp" />
     <ClCompile Include="sourcefiles\SimpleShader.cpp" />
+    <ClCompile Include="sourcefiles\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
