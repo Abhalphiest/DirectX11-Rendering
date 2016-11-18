@@ -26,6 +26,7 @@ t Assets/Textures/carpet_diffuse.jpg
 n Assets/Textures/armchair_n.png
 # Fake bump map
 n Assets/Textures/wood_n.jpg
+n Assets/Textures/testnormal.jpg
 
 s Assets/Textures/armchair_s.dds
 
@@ -40,7 +41,7 @@ vs VertexShader.cso
 
 # Material's diffuse/normal/specular/multiply/pixel shader/vertex shader indices
 0/0/0/0/0/0
-1/1/0/0/0/0
+1/2/0/0/0/0
 2/0/0/0/0/0
 3/0/0/0/0/0
 
@@ -54,7 +55,22 @@ pos 0.0 0.0 0.0
 orn 0.0 0.0 1.57
 sc 7.024
 
+#   --  Side table
+3/1
+pos -1.847 0.028 -2.940
+orn 0.0 0.0 0.0
+sc 1.063
 
+#   --  Candlesticks
+8/1
+pos -1.377 0.851 -2.928
+orn 0.0 0.0 0.0
+sc 0.588
+
+8/1
+pos -2.291 0.851 -2.928
+orn 0.0 0.0 0.0
+sc 0.588
 
 #   --  Carpet
 9/3
@@ -150,22 +166,7 @@ pos 2.224 0.0 -2.363
 orn 0.0 2.3031 0.0
 sc .816
 
-#   --  Side table
-3/1
-pos -1.847 0.028 -2.940
-orn 0.0 0.0 0.0
-sc 1.063
 
-#   --  Candlesticks
-8/1
-pos -1.377 0.851 -2.928
-orn 0.0 0.0 0.0
-sc 0.588
-
-8/1
-pos -2.291 0.851 -2.928
-orn 0.0 0.0 0.0
-sc 0.588
 
 &
 # '&' denotes lights

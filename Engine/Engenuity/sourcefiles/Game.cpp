@@ -1,6 +1,6 @@
 #include "../headers/Game.h"
 #include "../headers/Vertex.h"
-
+#include "DDSTextureLoader.h"
 // For the DirectX Math library
 using namespace DirectX;
 
@@ -58,6 +58,36 @@ void Game::Init()
 
     spriteBatch = new DirectX::SpriteBatch(context);
     spriteFont = new DirectX::SpriteFont(device, L"Assets/Fonts/candara.spritefont");
+
+	//skybox stuff, will be moved
+	skyVS = new SimpleVertexShader(device, context);
+	skyVS->GetInstance();
+	skyPS = new SimplePixelShader(device, context);
+	skyPS->GetInstance();
+	if (!skyVS->LoadShaderFile(L"../Debug/skyVS.cso"))
+		skyVS->LoadShaderFile(L"../skyVS.cso");
+	if (!skyPS->LoadShaderFile(L"../Debug/skyPS.cso"))
+		skyPS->LoadShaderFile(L"../skyPS.cso");
+
+	skyboxMesh = Mesh::LoadObj("Assets/Models/cube.obj", device);
+	CreateDDSTextureFromFile(device, L"Assets/Textures/SunnyCubeMap.dds", 0, &skySRV);
+
+	// Create a rasterizer state so we can render backfaces
+	D3D11_RASTERIZER_DESC rsDesc = {};
+	rsDesc.FillMode = D3D11_FILL_SOLID;
+	rsDesc.CullMode = D3D11_CULL_FRONT;
+	rsDesc.DepthClipEnable = true;
+	device->CreateRasterizerState(&rsDesc, &skyRastState);
+
+
+	// Create a depth state so that we can accept pixels
+	// at a depth less than or EQUAL TO an existing depth
+	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+	dsDesc.DepthEnable = true;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL; // Make sure we can see the sky (at max depth)
+	device->CreateDepthStencilState(&dsDesc, &skyDepthState);
+
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives (points, lines or triangles) we want to draw.  
@@ -120,8 +150,9 @@ void Game::Draw(float deltaTime, float totalTime)
         spriteBatch->Begin();
         spriteFont->DrawString(spriteBatch, L"Press [SPACE] to enter the survival horror. . .", XMFLOAT2(470, 360));
         spriteBatch->End();
+		context->OMSetDepthStencilState(NULL,0);
     }
-    
+	
 
 	context->ClearDepthStencilView(
 		depthStencilView, 
@@ -131,7 +162,41 @@ void Game::Draw(float deltaTime, float totalTime)
 	
     if (gs == PLAYING) {
         scenemanager->RenderCurrentScene();
+
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0;
+
+		// Grab the buffers
+		ID3D11Buffer* skyVB = *skyboxMesh->GetVertexBuffer();
+		ID3D11Buffer* skyIB = skyboxMesh->GetIndexBuffer();
+		context->IASetVertexBuffers(0, 1, &skyVB, &stride, &offset);
+		context->IASetIndexBuffer(skyIB, DXGI_FORMAT_R32_UINT, 0);
+
+		// Set up shaders
+		Camera* camera = scenemanager->GetFPC()->camera;
+		skyVS->SetMatrix4x4("view", camera->GetView());
+		skyVS->SetMatrix4x4("projection", camera->GetProjection());
+		skyVS->CopyAllBufferData();
+		skyVS->SetShader();
+
+		skyPS->SetShaderResourceView("cubemap", skySRV);
+		skyPS->CopyAllBufferData();
+		skyPS->SetShader();
+
+		// Set the proper render states
+		context->RSSetState(skyRastState);
+		context->OMSetDepthStencilState(skyDepthState, 0);
+
+		// Actually draw
+		context->DrawIndexed(skyboxMesh->GetIndexCount(), 0, 0);
+
+		// Reset the states!
+		context->RSSetState(0);
+		context->OMSetDepthStencilState(0, 0);
     }
+
+
+
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
 	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)

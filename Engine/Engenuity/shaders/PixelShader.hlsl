@@ -136,19 +136,19 @@ float4 main(VertexToPixel input) : SV_TARGET
     //normal mapping
     float3 tangentNormal = normalTexture.Sample(sampleState, input.uv).rgb; //lose the alpha channel
     tangentNormal = (tangentNormal*2.0f) - 1.0f; //take from (0,1) to (-1,1)
-    //float3 mapNormal = (tangentNormal.x*input.tangent) + (tangentNormal.y*input.binormal)
-    //    + (tangentNormal.z*input.normal);
-    //mapNormal = normalize(mapNormal);
-	float3 mapNormal = input.normal; 
+    float3 mapNormal = (tangentNormal.x*input.tangent) + (tangentNormal.y*input.binormal)
+        + (tangentNormal.z*input.normal);
+    mapNormal = normalize(mapNormal);
+	
 
 	
     //directional lights
     float4 lightCompute1 = directionallight(dlight0, mapNormal, input);
-    //float4 lightCompute2 = directionallight(dlight1, mapNormal, input);
+    float4 lightCompute2 = directionallight(dlight1, mapNormal, input);
 
     //point light and specular
-    //float4 lightCompute3 = pointlight(plight0, mapNormal, input);
-    //float specular = spec_p(plight0, mapNormal, input);
+    float4 lightCompute3 = pointlight(plight0, mapNormal, input);
+    float specular = spec_p(plight0, mapNormal, input);
 
     float4 lightCompute4 = spotlight(slight0, mapNormal, input);
 

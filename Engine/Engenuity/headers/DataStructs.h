@@ -46,7 +46,7 @@ struct Collider
         // For testing purposes, give FPC basic cube(-ish) collider
         m_minX = -0.1;
         m_maxX = 0.1;
-        m_minY = 0;
+        m_minY = -0.5;
         m_maxY = 0.1;
         m_minZ = -0.1;
         m_maxZ = 0.1;
