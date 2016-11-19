@@ -54,7 +54,7 @@ void Game::Init()
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
 	scenemanager->BuildSkybox();
-    uint scene = scenemanager->LoadScene("scenes/entryway.txt");
+    uint scene = scenemanager->LoadScene("scenes/parlor.txt");
 	scenemanager->SetScene(scene);
 
     spriteBatch = new DirectX::SpriteBatch(context);
