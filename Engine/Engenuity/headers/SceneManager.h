@@ -9,6 +9,7 @@
 #include <sstream>
 #include "FirstPersonController.h"
 #include "Scene.h"
+#include "Skybox.h"
 
 #define DIRECTIONALLIGHT 0
 #define POINTLIGHT 1
@@ -66,6 +67,7 @@ public:
 	void RenderCurrentScene();
 	void SetDevice(ID3D11Device* device) { m_device = device; }
 	void SetContext(ID3D11DeviceContext* context) { m_context = context; }
+	void BuildSkybox();
 	void SetSamplerState(D3D11_SAMPLER_DESC samplerDesc);
 	void SetSamplerState();
 	//toggle lights and such will come later, right now we just always draw all the lights
@@ -82,6 +84,7 @@ private:
 	
 
 	static SceneManager* m_instance;
+	Skybox* m_skybox;
 	FirstPersonController* m_FPC;
 	std::vector<Scene*> m_sceneList;
 	std::vector<SceneData> m_dataList;

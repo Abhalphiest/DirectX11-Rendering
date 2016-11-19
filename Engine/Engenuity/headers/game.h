@@ -54,14 +54,5 @@ private:
 
 	SceneManager* scenemanager;
 
-	//skybox stuff
-	//will be moved after skybox is tested
-
-	ID3D11ShaderResourceView* skySRV;
-	ID3D11RasterizerState* skyRastState;
-	ID3D11DepthStencilState* skyDepthState;
-	SimpleVertexShader* skyVS;
-	SimplePixelShader* skyPS;
-	Mesh* skyboxMesh;
 };
 

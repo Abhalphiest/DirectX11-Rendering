@@ -53,12 +53,13 @@ void Game::Init()
 	scenemanager->SetContext(context);
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
+	scenemanager->BuildSkybox();
     uint scene = scenemanager->LoadScene("scenes/entryway.txt");
 	scenemanager->SetScene(scene);
 
     spriteBatch = new DirectX::SpriteBatch(context);
     spriteFont = new DirectX::SpriteFont(device, L"Assets/Fonts/candara.spritefont");
-
+	
 	
 
 

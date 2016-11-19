@@ -10,6 +10,8 @@ SceneManager::~SceneManager()
 			ReleaseScene(i);
 	}
 	delete m_FPC;
+	if (m_skybox)
+		delete m_skybox;
 	if (m_samplerState)
 		m_samplerState->Release();
 }
@@ -446,12 +448,20 @@ SceneManager::SceneManager()
 	//make first person controller
 	m_FPC = new FirstPersonController(1280 / (float)720);
 	
+	
+	
 }
 void SceneManager::SetSamplerState(D3D11_SAMPLER_DESC samplerDesc)
 {
 	if (m_samplerState)
 		m_samplerState->Release();
 	m_device->CreateSamplerState(&samplerDesc, &m_samplerState);
+}
+void SceneManager::BuildSkybox()
+{
+	if (!m_device || !m_context) return;
+	Mesh* skyboxmesh = Mesh::LoadObj("Assets/Models/cube.obj", m_device);
+	m_skybox = new Skybox(skyboxmesh, "Assets/Textures/SunnyCubeMap.dds", 0, m_device, m_context);
 }
 void SceneManager::SetSamplerState()
 {
@@ -485,5 +495,7 @@ void SceneManager::RenderCurrentScene()
 		m_dataList[m_currScene].m_dlights,
 		m_dataList[m_currScene].m_plights,
 		m_dataList[m_currScene].m_slights);
+	if(m_skybox)
+		m_skybox->Render(m_device, m_context, m_FPC->camera);
 	
 }

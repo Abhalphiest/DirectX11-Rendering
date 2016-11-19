@@ -242,6 +242,11 @@ HRESULT DXCore::InitDirectX()
 	depthStencilDesc.SampleDesc.Count	= 1;
 	depthStencilDesc.SampleDesc.Quality = 0;
 
+
+
+
+
+
 	// Create the depth buffer and its view, then 
 	// release our reference to the texture
 	ID3D11Texture2D* depthBufferTexture;
@@ -264,6 +269,7 @@ HRESULT DXCore::InitDirectX()
 	viewport.MaxDepth	= 1.0f;
 	context->RSSetViewports(1, &viewport);
 
+	
 	// Return the "everything is ok" HRESULT value
 	return S_OK;
 }

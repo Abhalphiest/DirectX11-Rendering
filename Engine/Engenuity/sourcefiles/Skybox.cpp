@@ -1,6 +1,7 @@
 #include"../headers/Skybox.h"
 #include"../headers/DXCore.h"
-#include"DDSTextureLoader.h"
+#include "WICTextureLoader.h" // From DirectX Tool Kit
+#include "DDSTextureLoader.h"
 
 
 Skybox::Skybox(Mesh* mesh, char* mappath, int rotate,ID3D11Device* device, ID3D11DeviceContext* context)
@@ -17,8 +18,10 @@ Skybox::Skybox(Mesh* mesh, char* mappath, int rotate,ID3D11Device* device, ID3D1
 	if (!skyPS->LoadShaderFile(L"../Debug/skyPS.cso"))
 		skyPS->LoadShaderFile(L"../skyPS.cso");
 
-	CreateDDSTextureFromFile(device, L"Assets/Textures/SunnyCubeMap.dds", 0, &skySRV);
-
+	//DirectX::CreateDDSTextureFromFile(device, L"Assets/Textures/SunnyCubeMap.dds", 0, &skySRV);
+	ID3D11ShaderResourceView* srv;
+	DirectX::CreateDDSTextureFromFile(device, L"Assets/Textures/SunnyCubeMap.dds", 0, &srv);
+	skySRV.push_back(srv);
 	// Create a rasterizer state so we can render backfaces
 	D3D11_RASTERIZER_DESC rsDesc = {};
 	rsDesc.FillMode = D3D11_FILL_SOLID;
