@@ -119,6 +119,7 @@
     <ClInclude Include="headers\Lights.h" />
     <ClInclude Include="headers\Material.h" />
     <ClInclude Include="headers\Mesh.h" />
+    <ClInclude Include="headers\ParticleSystem.h" />
     <ClInclude Include="headers\Scene.h" />
     <ClInclude Include="headers\SimpleShader.h" />
     <ClInclude Include="headers\Vertex.h" />

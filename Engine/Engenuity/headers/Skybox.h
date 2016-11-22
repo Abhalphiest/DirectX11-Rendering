@@ -6,6 +6,9 @@
 #include"Camera.h"
 class Skybox
 {
+
+	//LAYERS ARE NOT YET IMPLEMENTED
+
 private:
 	std::vector<ID3D11ShaderResourceView*> skySRV; //list of skybox layer textures
 	ID3D11RasterizerState* skyRastState;
