@@ -363,22 +363,33 @@ void LoadObj(char* filepath, char* outfilepath)
 
 int main()
 {
-    std::string inputLine;
-    char inpath [256];
-    char outpath [256];
-    cout << "Please enter the path of the .obj file you would like to load (excluding the .obj extension):" << endl;
-    std::getline(std::cin, inputLine);
-    inputLine += ".obj";
-    
-    strcpy_s(inpath, inputLine.c_str());
+    bool loop = true;
+    while (loop)
+    {
+        std::string inputLine;
+        char inpath[256];
+        char outpath[256];
+        cout << "Please enter the path of the .obj file you would like to load (excluding the .obj extension):" << endl;
+        std::getline(std::cin, inputLine);
+        inputLine += ".obj";
 
-    cout << endl << "Please enter the path of the .model file you would like to write to (do NOT inlcude the .model extension):" << endl;
-    std::getline(std::cin, inputLine);
-    inputLine += ".model";
+        strcpy_s(inpath, inputLine.c_str());
 
-    strcpy_s(outpath, inputLine.c_str());
+        cout << endl << "Please enter the path of the .model file you would like to write to (do NOT inlcude the .model extension):" << endl;
+        std::getline(std::cin, inputLine);
+        inputLine += ".model";
 
-    LoadObj(inpath, outpath);
+        strcpy_s(outpath, inputLine.c_str());
+
+        LoadObj(inpath, outpath);
+
+        cout << endl << "Would you like to convert another model? (Q to quit)" << endl;
+        std::getline(std::cin, inputLine);
+        if (inputLine == "Q" || inputLine == "q")
+        {
+            loop = false;
+        }
+    }
 
     cout << endl << "Press any key to exit:" << endl;
     cin.ignore();
