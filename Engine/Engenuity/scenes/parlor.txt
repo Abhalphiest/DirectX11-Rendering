@@ -22,7 +22,7 @@ t Assets/Textures/piano_d.dds
 
 
 # Fake bump map
-n Assets/Textures/armchair_n.png
+n Assets/Textures/fabric_normal.jpg
 n Assets/Textures/defaultnormal.jpg
 n Assets/Textures/piano_n.dds
 
