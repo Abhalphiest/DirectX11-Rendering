@@ -58,8 +58,8 @@ protected:
 	bool		titleBarStats;	// Show extra stats in title bar?
 	
 	// Size of the window's client area
-	unsigned int width;
-	unsigned int height;
+	unsigned static int width;
+	unsigned static int height;
 	
 	// DirectX related objects and variables
 	D3D_FEATURE_LEVEL		dxFeatureLevel;
@@ -67,8 +67,8 @@ protected:
 	ID3D11Device*			device;
 	ID3D11DeviceContext*	context;
 
-	ID3D11RenderTargetView* backBufferRTV;
-	ID3D11DepthStencilView* depthStencilView;
+	static ID3D11RenderTargetView* backBufferRTV;
+	static ID3D11DepthStencilView* depthStencilView;
 
 	// Helper function for allocating a console window
 	void CreateConsoleWindow(int bufferLines, int bufferColumns, int windowLines, int windowColumns);

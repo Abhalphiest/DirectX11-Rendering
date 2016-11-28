@@ -12,7 +12,7 @@
 class Scene
 {
 public:
-	Scene(FirstPersonController* p_fpc);
+	Scene(FirstPersonController* p_fpc, ID3D11Device* p_device, ID3D11DeviceContext* p_context);
 	~Scene();
 
 	/**
@@ -32,7 +32,7 @@ public:
 				std::vector<uint> p_slights);
 
 
-
+	void RenderShadowMaps(ID3D11DeviceContext* context);
 	/**
 	* CreateObject takes in a mesh and material, creates the appropriate world
 	* & collider data, and creates an "object" with them (pushes them to the
@@ -125,5 +125,17 @@ private:
 	std::vector<SpotLight> m_slightList;
 	std::vector<PointLight> m_plightList;
 
+	//shadow stuff
+	std::vector<DirectX::XMFLOAT4X4> m_dlightShadowViewList;
+	std::vector<DirectX::XMFLOAT4X4> m_dlightShadowProjectionList;
+	std::vector<ID3D11ShaderResourceView*> m_dlightSRVList;
+	std::vector<ID3D11DepthStencilView*> m_dlightDSVList;
+	ID3D11SamplerState* m_shadowSampler;
+	ID3D11RasterizerState* m_shadowRasterizer;
+	int m_shadowMapSize;
+	SimpleVertexShader* m_shadowVS;
+
 	FirstPersonController* m_fpc;
+
+	ID3D11Device* m_device;
 };

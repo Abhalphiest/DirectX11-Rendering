@@ -7,6 +7,12 @@
 // message handling function below can talk to our object
 DXCore* DXCore::DXCoreInstance = 0;
 
+
+//initialize static members to default values
+ID3D11RenderTargetView* DXCore::backBufferRTV = nullptr;
+ID3D11DepthStencilView* DXCore::depthStencilView = nullptr;
+unsigned int DXCore::width=1280;
+unsigned int DXCore::height=720;
 // --------------------------------------------------------
 // The global callback function for handling windows OS-level messages.
 //

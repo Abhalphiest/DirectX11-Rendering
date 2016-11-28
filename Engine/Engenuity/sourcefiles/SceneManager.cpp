@@ -18,7 +18,7 @@ SceneManager::~SceneManager()
 unsigned int SceneManager::LoadScene(char* p_filename)
 {
 	//create new scene
-	Scene* newScene = new Scene(m_FPC);
+	Scene* newScene = new Scene(m_FPC,m_device,m_context);
 	SceneData newData = SceneData();
 	//for loading all textures, meshes, etc and making our materials
 	std::vector<Mesh*> meshes;
@@ -490,6 +490,7 @@ int SceneManager::skipWSandComments(char* chars, std::ifstream* file)
 
 void SceneManager::RenderCurrentScene()
 {
+	m_sceneList[m_currScene]->RenderShadowMaps(m_context);
 	m_sceneList[m_currScene]->Render(m_context,
 		m_dataList[m_currScene].m_indices,
 		m_dataList[m_currScene].m_dlights,

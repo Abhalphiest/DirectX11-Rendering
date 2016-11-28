@@ -15,7 +15,7 @@
 #define CAMERA_DELTA .005
 #define MOVE_SCALE 3
 
-class Game 
+class Game
 	: public DXCore
 {
 
@@ -31,10 +31,15 @@ public:
 	void Draw(float deltaTime, float totalTime);
 
 	// Overridden mouse input helper methods
-	void OnMouseDown (WPARAM buttonState, int x, int y);
-	void OnMouseUp	 (WPARAM buttonState, int x, int y);
-	void OnMouseMove (WPARAM buttonState, int x, int y);
-	void OnMouseWheel(float wheelDelta,   int x, int y);
+	void OnMouseDown(WPARAM buttonState, int x, int y);
+	void OnMouseUp(WPARAM buttonState, int x, int y);
+	void OnMouseMove(WPARAM buttonState, int x, int y);
+	void OnMouseWheel(float wheelDelta, int x, int y);
+
+	static int getWidth() { return width; }
+	static int getHeight() { return height; }
+	static ID3D11RenderTargetView* const *getRTV() { return &backBufferRTV; }
+	static ID3D11DepthStencilView* getDSV() { return depthStencilView; }
 private:
 
     // This can be moved to a more appropriate place later
