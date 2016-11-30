@@ -460,7 +460,7 @@ void SceneManager::SetSamplerState(D3D11_SAMPLER_DESC samplerDesc)
 void SceneManager::BuildSkybox()
 {
 	if (!m_device || !m_context) return;
-	Mesh* skyboxmesh = Mesh::LoadObj("Assets/Models/cube.obj", m_device);
+	Mesh* skyboxmesh = Mesh::LoadObj("Assets/Models/skybox.obj", m_device);
 	m_skybox = new Skybox(skyboxmesh, "Assets/Textures/SunnyCubeMap.dds", 0, m_device, m_context);
 }
 void SceneManager::SetSamplerState()
