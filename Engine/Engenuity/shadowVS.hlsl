@@ -27,7 +27,7 @@ VertexToPixel main(VertexShaderInput input)
 	VertexToPixel output;
 
 	// Calculate output position
-	matrix worldViewProj = mul(mul(world, view), projection);
+	matrix worldViewProj = mul(mul(world,view),projection);
 	output.position = mul(float4(input.position, 1.0f), worldViewProj);
 
 	return output;

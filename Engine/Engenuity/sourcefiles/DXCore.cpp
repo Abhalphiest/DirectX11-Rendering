@@ -326,7 +326,7 @@ void DXCore::OnResize()
 
 	// Create the depth buffer and its view, then 
 	// release our reference to the texture
-	ID3D11Texture2D* depthBufferTexture;
+	ID3D11Texture2D* depthBufferTexture = NULL;
 	device->CreateTexture2D(&depthStencilDesc, 0, &depthBufferTexture);
 	device->CreateDepthStencilView(depthBufferTexture, 0, &depthStencilView);
 	depthBufferTexture->Release();

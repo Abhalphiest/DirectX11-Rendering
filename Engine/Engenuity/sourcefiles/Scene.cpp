@@ -1,11 +1,12 @@
 #include"../headers/Scene.h"
 #include"../headers/Game.h"
+#include <DirectXMath.h>
 
 Scene::Scene(FirstPersonController* p_fpc, ID3D11Device* p_device, ID3D11DeviceContext* p_context)
 {
 	m_shadowVS = new SimpleVertexShader(p_device, p_context);
-	if (!m_shadowVS->LoadShaderFile(L"Debug/ShadowVS.cso"))
-		m_shadowVS->LoadShaderFile(L"ShadowVS.cso");
+	if (!m_shadowVS->LoadShaderFile(L"../Debug/shadowVS.cso"))
+		m_shadowVS->LoadShaderFile(L"../shadowVS.cso");
 	m_shadowVS->GetInstance();
 
 	m_device = p_device;
@@ -128,7 +129,7 @@ void Scene::Render(ID3D11DeviceContext* context,
 		//vertex shader
 
 		DirectX::XMFLOAT4X4 world;
-		XMStoreFloat4x4(&world, XMMatrixTranspose(XMLoadFloat4x4(&m_worldDatas[p_indices[i]].GetWorld())));
+		XMStoreFloat4x4(&world, DirectX::XMMatrixTranspose(XMLoadFloat4x4(&m_worldDatas[p_indices[i]].GetWorld())));
 
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("world", world);
 		m_materialList[p_indices[i]]->GetVertexShader()->SetMatrix4x4("view", m_fpc->camera->GetView());
@@ -159,6 +160,7 @@ void Scene::Render(ID3D11DeviceContext* context,
 
 void Scene::RenderShadowMaps(ID3D11DeviceContext* context)
 {
+	m_shadowVS->SetShader();
 	for (int i = 0; i < m_dlightList.size(); i++) //do all our directional lights
 	{
 		// Set up targets
@@ -198,7 +200,10 @@ void Scene::RenderShadowMaps(ID3D11DeviceContext* context)
 			context->IASetVertexBuffers(0, 1, &vb, &stride, &offset);
 			context->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
 
-			m_shadowVS->SetMatrix4x4("world", m_worldDatas[j].GetWorld());
+			
+			DirectX::XMFLOAT4X4 world;
+			XMStoreFloat4x4(&world, DirectX::XMMatrixTranspose(XMLoadFloat4x4(&m_worldDatas[j].GetWorld())));
+			m_shadowVS->SetMatrix4x4("world", world);
 			m_shadowVS->CopyAllBufferData();
 
 			// Finally do the actual drawing
@@ -306,7 +311,7 @@ uint Scene::AddDirectionalLight(DirectionalLight p_dlight)
 
 	DirectX::XMVECTOR lightpos;
 	lightpos = DirectX::XMLoadFloat4(
-			&DirectX::XMFLOAT4(p_dlight.Direction.x,p_dlight.Direction.y,p_dlight.Direction.z, 0));
+			&DirectX::XMFLOAT4(-p_dlight.Direction.x,-p_dlight.Direction.y,-p_dlight.Direction.z, 0));
 	//need code to calculate shadow view and projection matrices here
 	DirectX::XMMATRIX shView = DirectX::XMMatrixLookAtLH(
 		lightpos,
@@ -316,8 +321,8 @@ uint Scene::AddDirectionalLight(DirectionalLight p_dlight)
 
 	m_dlightShadowViewList.push_back(shadowViewMatrix);
 	// Orthographic to match the directional light
-	DirectX::XMMATRIX shProj = DirectX::XMMatrixOrthographicLH(100, 100, 0.1f, 100.0f);
-	XMStoreFloat4x4(&shadowProjectionMatrix, XMMatrixTranspose(shProj));
+	DirectX::XMMATRIX shProj = DirectX::XMMatrixOrthographicLH(10, 10, 0.1f, 100.0f);
+	DirectX::XMStoreFloat4x4(&shadowProjectionMatrix, XMMatrixTranspose(shProj));
 	m_dlightShadowProjectionList.push_back(shadowProjectionMatrix);
 	return m_dlightList.size() - 1;
 
