@@ -190,7 +190,7 @@ void Scene::RenderShadowMaps(ID3D11DeviceContext* context)
 
 		for (int j = 0; j < m_meshList.size(); j++)
 		{
-			// Grab the data from the first entity's mesh
+			// Grab the data from the first object's mesh
 			ID3D11Buffer* vb = *m_meshList[j]->GetVertexBuffer();
 			ID3D11Buffer* ib = m_meshList[j]->GetIndexBuffer();
 

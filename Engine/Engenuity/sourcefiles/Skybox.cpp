@@ -51,6 +51,8 @@ Skybox::~Skybox()
 	}
 	skyDepthState->Release();
 	skyRastState->Release();
+	skyPS->RemoveInstance();
+	skyVS->RemoveInstance();
 
 }
 void Skybox::Render(ID3D11Device* device, ID3D11DeviceContext* context, Camera* camera)
