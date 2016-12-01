@@ -54,8 +54,9 @@ void Game::Init()
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
 	scenemanager->BuildSkybox();
-    uint scene = scenemanager->LoadScene("scenes/testscene.txt");
-	scenemanager->SetScene(scene);
+    scene1 = scenemanager->LoadScene("scenes/testscene.txt");
+	scene2 = scenemanager->LoadScene("scenes/parlor.txt");
+	scenemanager->SetScene(scene1);
 
     spriteBatch = new DirectX::SpriteBatch(context);
     spriteFont = new DirectX::SpriteFont(device, L"Assets/Fonts/candara.spritefont");
@@ -94,7 +95,8 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
 	
-
+	if (GetAsyncKeyState('1') & 0x8000) { scenemanager->SetScene(scene1); }
+	if (GetAsyncKeyState('2') & 0x8000) { scenemanager->SetScene(scene2); }
     if (GetAsyncKeyState(VK_SPACE) & 0x8000) { gs = PLAYING; }
 	
 	// Quit if the escape key is pressed
