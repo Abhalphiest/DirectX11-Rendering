@@ -111,8 +111,21 @@ void Scene::Render(ID3D11DeviceContext* context,
 				&m_fpc->camera->GetPosition(),  // The address of the data to copy
 				sizeof(DirectX::XMFLOAT3));     // The size of the data to copy
 
+            SpotLight fpcl;
+            // Add in FPC light, if it's on
+            if (m_fpc->GetLightState())
+            {
+                fpcl = m_fpc->GetLight();
+            }
+            else
+            {
+                fpcl = { DirectX::XMFLOAT4(0.0, 0.0, 0.0, 0.0), DirectX::XMFLOAT4(0.0, 0.0, 0.0, 0.0), DirectX::XMFLOAT4(0.0, 0.0, 0.0, 0.0), DirectX::XMFLOAT3(0.0, 0.0, 0.0) };
+            }
 
-
+            ps->SetData(
+                "fpcLight",             // The name of the variable in the shader
+                &fpcl,                  // The address of the data to copy
+                sizeof(SpotLight));     // The size of the data to copy
 
 			ps->CopyAllBufferData();
 			ps_list.push_back(ps); //add it to the list

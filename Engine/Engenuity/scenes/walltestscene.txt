@@ -28,6 +28,11 @@ sc 15.0
 #spot light goes ambient (vec4) diffuse (vec4) direction/angle (vec4) 
 # position(vec3)
 
+#d
+#0.1 0.1 0.1 0.1
+#1 1 1 1
+#0 0 -1
+
 s
 0.1 0.1 0.1 0.1
 1.0 1.0 1.0 1.0

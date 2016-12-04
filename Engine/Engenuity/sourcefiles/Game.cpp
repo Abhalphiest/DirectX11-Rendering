@@ -56,6 +56,7 @@ void Game::Init()
 	scenemanager->BuildSkybox();
     scene1 = scenemanager->LoadScene("scenes/testscene.txt");
 	scene2 = scenemanager->LoadScene("scenes/parlor.txt");
+    scene3 = scenemanager->LoadScene("scenes/walltestscene.txt");
 	scenemanager->SetScene(scene1);
 
     spriteBatch = new DirectX::SpriteBatch(context);
@@ -94,9 +95,11 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('S') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
 	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
+    if (GetAsyncKeyState('F') & 0x8000) { fpc->ToggleLightState(); }
 	
 	if (GetAsyncKeyState('1') & 0x8000) { scenemanager->SetScene(scene1); }
 	if (GetAsyncKeyState('2') & 0x8000) { scenemanager->SetScene(scene2); }
+    if (GetAsyncKeyState('3') & 0x8000) { scenemanager->SetScene(scene3); }
     if (GetAsyncKeyState(VK_SPACE) & 0x8000) { gs = PLAYING; }
 	
 	// Quit if the escape key is pressed
@@ -192,8 +195,12 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
     // TODO: Add check to rot val either here or in the camera to prevent over-rotation
-	if(buttonState&0x0001) //left button down
-		scenemanager->GetFPC()->camera->Rotate(XMFLOAT3(CAMERA_DELTA*(y- prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0));
+    if (buttonState & 0x0001) //left button down
+    {
+        XMFLOAT3 rotVec = XMFLOAT3(CAMERA_DELTA*(y - prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0);
+        //scenemanager->GetFPC()->camera->Rotate(rotVec);
+        scenemanager->GetFPC()->SetOrientation(rotVec);
+    }
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;

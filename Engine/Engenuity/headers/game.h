@@ -57,7 +57,7 @@ private:
     DirectX::SpriteBatch* spriteBatch;
     DirectX::SpriteFont* spriteFont;
 
-	uint scene1, scene2;
+	uint scene1, scene2, scene3;
 	SceneManager* scenemanager;
 
 };

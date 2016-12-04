@@ -44,6 +44,8 @@ cbuffer shaderData : register(b0)
     DirectionalLight dlight1;
     PointLight plight0;
     SpotLight slight0;
+    SpotLight fpcLight;
+
     float3 cameraPos;
 };
 
@@ -87,6 +89,12 @@ float4 spotlight(SpotLight slight, float3 mapNormal, VertexToPixel input)
         if (spotEffect > cos(slAngle))
         {
             spotEffect = pow(spotEffect, 0.5);
+            // Alt calculation - gave dim results, but much nicer fallof
+            // spotEffect = 1 - pow(clamp(spotEffect / cos(slAngle), 0, 1), 0.5);
+        }
+        else
+        {
+            spotEffect = 0;
         }
     }
     return spotEffect * slight.DiffuseColor + slight.AmbientColor;
@@ -152,12 +160,13 @@ float4 main(VertexToPixel input) : SV_TARGET
 
     float4 lightCompute4 = spotlight(slight0, mapNormal, input);
 
+    float4 fpcLightCompute = spotlight(fpcLight, mapNormal, input);
+
     //textures
     float4 textureColor = diffuseTexture.Sample(sampleState, input.uv);
     float4 multColor = multiplyTexture.Sample(sampleState, input.uv);
-    float specColor = specularTexture.Sample(sampleState, input.uv).r; //all channels should be equal
+    float specColor = specularTexture.Sample(sampleState, input.uv).r;  //all channels should be equal
 
-	//return textureColor;                                                                      //return textureColor;
-    return (lightCompute1
-+ lightCompute4)*textureColor ;
+	//return textureColor;
+    return (lightCompute1 + lightCompute4 + fpcLightCompute) * textureColor;
 }

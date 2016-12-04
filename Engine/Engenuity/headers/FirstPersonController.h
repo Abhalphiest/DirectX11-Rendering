@@ -14,8 +14,12 @@ public:
     {
         camera = new Camera(p_aspratio);
         fpcCollider = Collider(camera->GetPosition());
-        fpcLight = SpotLight();
-		fpcLight.Position = DirectX::XMFLOAT3(0.0, 0.0, 0.0);
+        //fpcLight = SpotLight();
+        fpcLight = {};
+        fpcLight.AmbientColor = DirectX::XMFLOAT4(0.3, 0.3, 0.3, 0);
+        fpcLight.DiffuseColor = DirectX::XMFLOAT4(0.5, 0.5, 0.5, 1);
+        fpcLight.Direction_Angle = DirectX::XMFLOAT4(0.0, 0.0, 0.0, 0.9);
+        fpcLight.Position = DirectX::XMFLOAT3(0.0, 0.0, 0.0);
     }
 
     FirstPersonController(float p_aspratio, Collider* p_collider)
@@ -83,10 +87,27 @@ public:
         lightOn = on;
     }
 
+    void ToggleLightState()
+    {
+        lightOn = !lightOn;
+    }
+
     // Returns whether fpcLight is on or off (without changing it)
     bool GetLightState()
     {
         return lightOn;
+    }
+
+    SpotLight GetLight()
+    {
+        return fpcLight;
+    }
+
+    void SetOrientation(DirectX::XMFLOAT3 rotVec)
+    {
+        camera->Rotate(rotVec);
+        rotVec = camera->GetRotation();
+        fpcLight.Direction_Angle = DirectX::XMFLOAT4(rotVec.x, rotVec.y, rotVec.z, fpcLight.Direction_Angle.w);
     }
 
 private:
