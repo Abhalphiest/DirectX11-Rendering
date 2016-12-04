@@ -1,6 +1,6 @@
 #one mesh, one of each texture just for testing
 
-o Assets/Models/armchair.obj
+l Assets/Models/armchair.model
 
 t Assets/Textures/armchair.dds
 

@@ -1,14 +1,14 @@
 #models
 l Assets/Models/armchair.model
-o Assets/Models/floor.obj
-o Assets/Models/wall.obj
+l Assets/Models/floor.model
+l Assets/Models/wall.model
 o Assets/Models/windowwall.obj
 l Assets/Models/door.model
 l Assets/Models/doorframehalf.model
 l Assets/Models/window.model
 l Assets/Models/windowframe.model
-o Assets/Models/endtable.obj
-o Assets/Models/piano.obj
+l Assets/Models/endtable.model
+l Assets/Models/piano.model
 l Assets/Models/pianobench.model
 
 #textures
