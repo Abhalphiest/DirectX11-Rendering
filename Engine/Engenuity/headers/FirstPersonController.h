@@ -16,9 +16,9 @@ public:
         fpcCollider = Collider(camera->GetPosition());
         //fpcLight = SpotLight();
         fpcLight = {};
-        fpcLight.AmbientColor = DirectX::XMFLOAT4(0.3, 0.3, 0.3, 0);
+        fpcLight.AmbientColor = DirectX::XMFLOAT4(0.0, 0.0, 0.0, 0);
         fpcLight.DiffuseColor = DirectX::XMFLOAT4(0.5, 0.5, 0.5, 1);
-        fpcLight.Direction_Angle = DirectX::XMFLOAT4(0.0, 0.0, 0.0, 0.9);
+        fpcLight.Direction_Angle = DirectX::XMFLOAT4(0.0, 0.0, -1.0, 0.3);
         fpcLight.Position = DirectX::XMFLOAT3(0.0, 0.0, 0.0);
     }
 
@@ -107,6 +107,11 @@ public:
     {
         camera->Rotate(rotVec);
         rotVec = camera->GetRotation();
+        DirectX::XMVECTOR rot_quaternion = DirectX::XMQuaternionRotationRollPitchYaw(rotVec.x, rotVec.y, rotVec.z);
+        DirectX::XMFLOAT3 forward = DirectX::XMFLOAT3(0, 0, -1);
+        DirectX::XMVECTOR f_vec = DirectX::XMLoadFloat3(&forward);
+        f_vec = DirectX::XMVector3Transform(f_vec, DirectX::XMMatrixRotationQuaternion(rot_quaternion));
+        DirectX::XMStoreFloat3(&rotVec, f_vec);
         fpcLight.Direction_Angle = DirectX::XMFLOAT4(rotVec.x, rotVec.y, rotVec.z, fpcLight.Direction_Angle.w);
     }
 

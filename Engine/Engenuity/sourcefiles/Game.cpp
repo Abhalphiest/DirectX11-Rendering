@@ -198,7 +198,6 @@ void Game::OnMouseMove(WPARAM buttonState, int x, int y)
     if (buttonState & 0x0001) //left button down
     {
         XMFLOAT3 rotVec = XMFLOAT3(CAMERA_DELTA*(y - prevMousePos.y), CAMERA_DELTA*(x - prevMousePos.x), 0);
-        //scenemanager->GetFPC()->camera->Rotate(rotVec);
         scenemanager->GetFPC()->SetOrientation(rotVec);
     }
 	// Save the previous mouse position, so we have it for the future
