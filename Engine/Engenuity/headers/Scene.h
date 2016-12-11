@@ -94,11 +94,28 @@ public:
 
     void SetObjectCollider(uint p_index);
 
+    void SetDoors(std::vector<Door> p_doors) { m_doors = p_doors; }
+
+    void SetName(std::string p_name) { m_name = p_name; }
+    std::string GetName() { return m_name; }
+
+    /**
+    * Returns whether or not FPC is within certain distance of door
+    *
+    * @param collisionDistance  - The distance at which FPC and the door are considered to be "colliding"
+    * @return int   - index of door FPC is "colliding" with, or -1 if no such
+    *  collision exists
+    */
+    int CollidingWithDoor(float collisionDistance);
+
 	//  --  Getters --
 	DirectX::XMFLOAT3 GetObjectPosition(uint p_index)		{ return m_worldDatas[p_index].m_position; }
 	DirectX::XMFLOAT3 GetObjectOrientation(uint p_index)	{ return m_worldDatas[p_index].m_orientation; }
 	DirectX::XMFLOAT4X4 GetObjectWorld(uint p_index)		{ return m_worldDatas[p_index].GetWorld(); }
 	float GetObjectScale(uint p_index)						{ return m_worldDatas[p_index].m_scale; }
+    // Terrible naming. . .
+    Door GetDoor(uint p_index)                              { return m_doors[p_index]; }
+    std::vector<Door> GetDoors()                            { return m_doors; }
     Collider GetObjectCollider(uint p_index)                { return m_colliders[p_index]; }
     std::vector<Collider> GetColliders()                    { return m_colliders; }
 
@@ -119,6 +136,7 @@ private:
 	std::vector<Material*> m_materialList;  // Holds materials
 	std::vector<Collider> m_colliders;      // Holds bounding boxes, etc
 	std::vector<WorldData> m_worldDatas;    // Holds position, orientation, scale, velocity, etc..
+    std::vector<Door> m_doors;
 
 											// Three separate lists for lights.. for now
 	std::vector<DirectionalLight> m_dlightList;
@@ -134,6 +152,8 @@ private:
 	ID3D11RasterizerState* m_shadowRasterizer;
 	int m_shadowMapSize;
 	SimpleVertexShader* m_shadowVS;
+
+    std::string m_name;
 
 	FirstPersonController* m_fpc;
 

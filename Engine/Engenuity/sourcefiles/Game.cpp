@@ -54,9 +54,10 @@ void Game::Init()
 	scenemanager->SetDevice(device);
 	scenemanager->SetSamplerState();
 	scenemanager->BuildSkybox();
-    scene1 = scenemanager->LoadScene("scenes/testscene.txt");
-	scene2 = scenemanager->LoadScene("scenes/parlor.txt");
-    scene3 = scenemanager->LoadScene("scenes/walltestscene.txt");
+    scene1 = scenemanager->LoadScene("scenes/entrywayAlt.txt");
+	scene2 = scenemanager->LoadScene("scenes/parlorAlt.txt");
+    //scene3 = scenemanager->LoadScene("scenes/walltestscene.txt");
+    scene3 = 1;     // Think I've reached a new low of lazy here. . .
 	scenemanager->SetScene(scene1);
 
     spriteBatch = new DirectX::SpriteBatch(context);
@@ -96,6 +97,36 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
     if (GetAsyncKeyState('F') & 0x8000) { fpc->ToggleLightState(); }
+    if (GetAsyncKeyState('E') & 0x8000) {
+        int colIndex = scenemanager->GetCurrentScene()->CollidingWithDoor(1.5f);
+        if (colIndex != -1)
+        {
+            Door exitDoor = scenemanager->GetCurrentScene()->GetDoor(colIndex);
+            uint entryDoor = exitDoor.destIndex;
+            int destSceneIndex = scenemanager->GetSceneByName(exitDoor.destScene);
+            if (destSceneIndex != -1)
+            {
+                DirectX::XMFLOAT3 fpcEntryPos = scenemanager->SetScene(destSceneIndex, entryDoor);
+                DirectX::XMFLOAT3 fpcColliderSize = { 1.0f, 1.0f, 1.0f };
+                DirectX::XMVECTOR fpcEntryPosVec = DirectX::XMLoadFloat3(&fpcEntryPos);
+                // Vector from door to origin
+                DirectX::XMVECTOR displaceVector = DirectX::XMVectorSubtract({ 0.0f, 0.0f, 0.0f }, fpcEntryPosVec);
+                DirectX::XMVECTOR colliderSizeVec = DirectX::XMLoadFloat3(&fpcColliderSize);
+
+                // Project colliderSizeVec onto vector to origin
+                displaceVector = DirectX::XMVector3Normalize(displaceVector);
+                float collSizeScale;
+                DirectX::XMStoreFloat(&collSizeScale, DirectX::XMVector3Dot(colliderSizeVec, displaceVector));
+                displaceVector = DirectX::XMVectorScale(displaceVector, collSizeScale);
+
+                // Always assumed that moving towards center will displace FPC correctly
+                fpcEntryPosVec = DirectX::XMVectorAdd(fpcEntryPosVec, displaceVector);
+                DirectX::XMStoreFloat3(&fpcEntryPos, fpcEntryPosVec);
+                fpcEntryPos.y = 1.5f;   // Make sure we don't start in floor
+                fpc->camera->SetPosition(fpcEntryPos);
+            }
+        }
+    }
 	
 	if (GetAsyncKeyState('1') & 0x8000) { scenemanager->SetScene(scene1); }
 	if (GetAsyncKeyState('2') & 0x8000) { scenemanager->SetScene(scene2); }

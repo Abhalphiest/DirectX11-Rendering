@@ -1,0 +1,189 @@
+#models
+l Assets/Models/armchair.model
+l Assets/Models/plane.model
+l Assets/Models/windowwithframe.model
+l Assets/Models/pianobench.model
+
+l Assets/Models/candlestick.model
+l Assets/Models/dualwindowwall.model
+l Assets/Models/singlewindowwall.model
+l Assets/Models/entrypillar.model
+
+l Assets/Models/candlestick.model
+l Assets/Models/carpet.model
+l Assets/Models/wallwithdoor.model
+l Assets/Models/wall.model
+
+l Assets/Models/door.model
+l Assets/Models/doorframehalf.model
+
+#textures
+t Assets/Textures/armchair.dds
+t Assets/Textures/wood.jpg
+t Assets/Textures/metal.jpg
+t Assets/Textures/carpet_diffuse.jpg
+
+n Assets/Textures/armchair_n.png
+# Fake bump map
+n Assets/Textures/wood_n.jpg
+n Assets/Textures/testnormal.jpg
+
+s Assets/Textures/armchair_s.dds
+
+m Assets/Textures/default_m.png
+
+ps PixelShader.cso
+
+vs VertexShader.cso
+
+i entryway
+
+%
+# '%' char denotes materials
+
+# Material's diffuse/normal/specular/multiply/pixel shader/vertex shader indices
+0/0/0/0/0/0
+1/2/0/0/0/0
+2/0/0/0/0/0
+3/0/0/0/0/0
+
+$
+# '$' denotes objects
+
+
+#   --  Floor
+1/1
+pos 0.0 0.0 0.0
+orn 0.0 0.0 1.57
+sc 7.024
+
+#   --  Side table
+3/1
+pos -1.847 0.028 -2.940
+orn 0.0 0.0 0.0
+sc 1.063
+
+#   --  Candlesticks
+8/1
+pos -1.377 0.851 -2.928
+orn 0.0 0.0 0.0
+sc 0.588
+
+8/1
+pos -2.291 0.851 -2.928
+orn 0.0 0.0 0.0
+sc 0.588
+
+#   --  Carpet
+9/3
+pos 0.0 0.0 0.0
+orn 0.0 0.0 0.0
+sc 2.341
+
+#   --  Pillars
+7/2
+pos -3.454 0.0 -3.512
+orn 0.0 0.0 0.0
+sc 2.341
+
+7/2
+pos 3.454 0.0 -3.512
+orn 0.0 0.0 0.0
+sc 2.341
+
+7/2
+pos 3.454 0.0 3.512
+orn 0.0 0.0 0.0
+sc 2.341
+
+7/2
+pos -3.454 0.0 3.512
+orn 0.0 0.0 0.0
+sc 2.341
+
+#   --  Window walls
+5/1
+pos 3.499 0.0 0.0
+orn 0.0 0.0 0.0
+sc 2.341
+
+6/1
+pos 0.0 0.0 3.518
+orn 0.0 0.0 0.0
+sc 2.341
+
+#	--	Other walls
+10/1
+pos -3.513 0.0 0.0
+orn 0.0 0.0 0.0
+sc 2.341
+
+11/1
+pos 0.0 0.0 -3.492
+orn 0.0 0.0 0.0
+sc 2.341
+
+#   --  Windows
+2/1
+pos 3.561 2.099 -1.805
+orn 0.0 1.57 0.0
+sc 0.751
+
+2/1
+pos 3.561 2.099 1.898
+orn 0.0 1.57 0.0
+sc 0.751
+
+2/1
+pos -0.056 2.027 3.580
+orn 0.0 0.0 0.0
+sc 0.751
+
+
+#	--	Doors
+12/1
+pos 3.494 0.0 0.0
+orn 0.0 4.71 0.0
+sc 0.749
+
+13/1
+pos 3.494 0.0 0.0
+orn 0.0 4.71 0.0
+sc 0.749
+
+
+12/1
+pos -3.512 0.0 -0.059
+orn 0.0 1.57 0.0
+sc 0.749
+
+13/1
+pos -3.512 0.0 -0.059
+orn 0.0 1.57 0.0
+sc 0.749
+
+#   --  Chair
+0/0
+pos 2.224 0.0 -2.363
+orn 0.0 2.3031 0.0
+sc .816
+
+
+@
+# '@' denotes doors
+18/parlor/0
+
+
+&
+# '&' denotes lights
+
+d
+0.2 0.2 0.2 1.0
+0.7 0.3 .3 1
+1 -1 0
+
+s
+0.1 0.1 0.1 1
+0.7 0.7 0.7 1
+0.0 -1.0 0.0 0.5
+0.0 1.0 0.0

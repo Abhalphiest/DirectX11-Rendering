@@ -16,6 +16,8 @@ Scene::Scene(FirstPersonController* p_fpc, ID3D11Device* p_device, ID3D11DeviceC
 	m_colliders = std::vector<Collider>();
 	m_worldDatas = std::vector<WorldData>();
 
+    m_doors = std::vector<Door>();
+
 	m_dlightList = std::vector<DirectionalLight>();
 	m_slightList = std::vector<SpotLight>();
 	m_plightList = std::vector<PointLight>();
@@ -351,6 +353,30 @@ uint Scene::AddPointLight(PointLight p_plight)
 	return m_plightList.size() - 1;
 }
 
+int Scene::CollidingWithDoor(float collisionDistance)
+{
+    int i = 0;
+    DirectX::XMVECTOR fpcPos = DirectX::XMLoadFloat3(&(m_fpc->camera->GetPosition()));
+    while (i < m_doors.size())
+    {
+        int currDoorIndex = m_doors[i].getIndex();
+        DirectX::XMVECTOR doorPos = DirectX::XMLoadFloat3(&m_worldDatas[currDoorIndex].m_position);
+        DirectX::XMVECTOR dist = DirectX::XMVectorSubtract(fpcPos, doorPos);
+        float fDistance = 0.0f;
+        
+        // Length of distance duplicated in x, y, and z components of XMVECTOR dist
+        // Just store float to "truncate" down to a single distance float
+        DirectX::XMStoreFloat(&fDistance, dist);
+        if (fDistance < collisionDistance)
+        {
+            return i;
+        }
+
+        i++;
+    }
+
+    return -1;
+}
 
 //object relative change functions
 // TODO: update m_colliders[p_index] in these as well (or just give it world data. . .?)

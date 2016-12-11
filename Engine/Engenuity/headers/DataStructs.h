@@ -1,6 +1,7 @@
 #pragma once
 #include <DirectXMath.h>
 #include "Vertex.h"
+#include <string>
 #define uint unsigned int
 
 struct WorldData
@@ -112,4 +113,32 @@ struct Collider
         return colliding;
     }
 
+};
+
+struct Door {
+    uint index;
+    std::string destScene;
+    uint destIndex;
+
+    Door(uint i, std::string ds, uint di)
+    {
+        index = i;
+        destScene = ds;
+        destIndex = di;
+    }
+
+    uint getIndex()
+    {
+        return index;
+    }
+
+    std::string getDestScene()
+    {
+        return destScene;
+    }
+
+    uint getDestIndex()
+    {
+        return destIndex;
+    }
 };

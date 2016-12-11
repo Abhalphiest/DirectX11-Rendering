@@ -23,6 +23,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 	//for loading all textures, meshes, etc and making our materials
 	std::vector<Mesh*> meshes;
 	std::vector<Material*> materials;
+    std::vector<Door> doors;
 	std::vector<SimplePixelShader*> pixelShaders;
 	std::vector<SimpleVertexShader*> vertexShaders;
 	std::vector<ID3D11ShaderResourceView*> dsrvList; //diffuse srvs
@@ -168,6 +169,12 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 			vertexShaders.push_back(vertexShader);
 			break;
 		}
+        case 'i': //scene name
+        {
+            s = std::string(chars + i + 2);
+            newScene->SetName(s);
+            break;
+        }
 		}
 		
 	}
@@ -210,7 +217,7 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 
 	}
 	//now we make objects
-	while (file.getline(chars, 100) && chars[0] != '&')
+	while (file.getline(chars, 100) && chars[0] != '@')
 	{
 		i = 0;
 		while (chars[i] != '\n' && iswspace(chars[i])) i++;
@@ -281,6 +288,28 @@ unsigned int SceneManager::LoadScene(char* p_filename)
 
 		//done with this object
 	}
+
+    //now make doors
+    while (file.getline(chars, 100) && chars[0] != '&')
+    {
+        i = 0;
+        while (chars[i] != '\n' && iswspace(chars[i])) i++;
+        if (chars[i] == '\n' || chars[i] == '\0' || chars[i] == '#')
+            continue; //go to next line if this one is over or a comment
+
+        s = std::string(chars + i);
+        pos = s.find('/');
+        uint doorObjectIndex = std::stoul(s.substr(0, pos));
+        pos2 = ++pos;
+        pos = s.find('/', pos2);
+        std::string doorDestName = s.substr(pos2, pos - pos2);
+        pos2 = ++pos;
+        uint doorDestIndex = std::stoul(s.substr(pos2, s.length()));
+
+        doors.push_back(Door(doorObjectIndex, doorDestName, doorDestIndex));
+    }
+
+    newScene->SetDoors(doors);
 
 	//now we make the lights
 	while (file.getline(chars, 100))

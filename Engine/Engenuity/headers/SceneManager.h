@@ -43,6 +43,29 @@ public:
     
 	FirstPersonController* GetFPC() { return m_FPC; }
 
+    int GetSceneByName(std::string p_name)
+    {
+        int i = 0;
+        while (i < m_sceneList.size())
+        {
+            if (m_sceneList[i]->GetName() == p_name)
+            {
+                return i;
+            }
+            i++;
+        }
+
+        return -1;
+    }
+
+    DirectX::XMFLOAT3 SetScene(unsigned int p_index, unsigned int p_doorIndex)
+    {
+        m_currScene = p_index;
+
+        std::vector<Door> doorList = m_sceneList[m_currScene]->GetDoors();
+        return m_sceneList[m_currScene]->GetObjectPosition(doorList[p_doorIndex].index);
+    }
+
     /**
      * LoadScene takes the provided filename and loads the scene file at that
      * path.
