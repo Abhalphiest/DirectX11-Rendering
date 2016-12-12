@@ -19,7 +19,7 @@ public:
         fpcLight.AmbientColor = DirectX::XMFLOAT4(0.0, 0.0, 0.0, 0);
         fpcLight.DiffuseColor = DirectX::XMFLOAT4(0.5, 0.5, 0.5, 1);
         fpcLight.Direction_Angle = DirectX::XMFLOAT4(0.0, 0.0, -1.0, 0.3);
-        fpcLight.Position = DirectX::XMFLOAT3(0.0, 0.0, 0.0);
+        fpcLight.Position = camera->GetPosition();
     }
 
     FirstPersonController(float p_aspratio, Collider* p_collider)
