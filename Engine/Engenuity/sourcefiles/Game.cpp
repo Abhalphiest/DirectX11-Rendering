@@ -96,8 +96,8 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('S') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(0, 0, -deltaTime*MOVE_SCALE)); }
 	if (GetAsyncKeyState('A') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(-deltaTime*MOVE_SCALE, 0, 0)); }
 	if (GetAsyncKeyState('D') & 0x8000) { fpc->Move(sceneColliders, XMFLOAT3(deltaTime*MOVE_SCALE, 0, 0)); }
-    if (GetAsyncKeyState('F') & 0x8000) { fpc->ToggleLightState(); }
-    if (GetAsyncKeyState('E') & 0x8000) {
+    if (GetAsyncKeyState('F') & 0x8000 == 0x8000) { fpc->ToggleLightState(); }
+    if (GetAsyncKeyState('E') & 0x8000 == 0x8000) {
         int colIndex = scenemanager->GetCurrentScene()->CollidingWithDoor(1.5f);
         if (colIndex != -1)
         {
